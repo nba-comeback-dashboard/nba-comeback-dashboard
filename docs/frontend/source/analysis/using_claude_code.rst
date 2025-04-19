@@ -52,7 +52,7 @@ data processing and `tried my hand at vibe coding
 In broad strokes, I:
 
 * Downloaded the games using `the nba_api.stats package
-  <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/blob/main/nba_comeback_dashboard/form_json_season_data/form_nba_game_sqlite_database.py>`_
+  <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/blob/main/python_backend/form_json_season_data/form_nba_game_sqlite_database.py>`_
   and stored that data in an SQLite database I could more quickly iterate upon. Then, I
   converted all the data I needed for each game into reduced data structures and stored
   them in JSON files, one for each season.
@@ -291,13 +291,13 @@ The four key Python modules that were translated into equivalent JavaScript file
 
     * - Python Module (in form_nba_chart_json_data_api/)
       - JavaScript Equivalent
-    * - `form_nba_chart_json_data_api.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/nba_comeback_dashboard/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_api.py>`_
+    * - `form_nba_chart_json_data_api.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/python_backend/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_api.py>`_
       - `nbacd_dashboard_api.js <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/docs/frontend/source/_static/js/nbacd_dashboard_api.js>`_
-    * - `form_nba_chart_json_data_num.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/nba_comeback_dashboard/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_num.py>`_
+    * - `form_nba_chart_json_data_num.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/python_backend/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_num.py>`_
       - `nbacd_dashboard_num.js <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/docs/frontend/source/_static/js/nbacd_dashboard_num.js>`_
-    * - `form_nba_chart_json_data_plot_primitives.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/nba_comeback_dashboard/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_plot_primitives.py>`_
+    * - `form_nba_chart_json_data_plot_primitives.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/python_backend/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_plot_primitives.py>`_
       - `nbacd_dashboard_plot_primitives.js <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/docs/frontend/source/_static/js/nbacd_dashboard_plot_primitives.js>`_
-    * - `form_nba_chart_json_data_season_game_loader.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/nba_comeback_dashboard/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_season_game_loader.py>`_
+    * - `form_nba_chart_json_data_season_game_loader.py <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/python_backend/form_json_chart_data/form_nba_chart_json_data_api/form_nba_chart_json_data_season_game_loader.py>`_
       - `nbacd_dashboard_season_game_loader.js <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/tree/main/docs/frontend/source/_static/js/nbacd_dashboard_season_game_loader.js>`_
 
 To be clear, this still did not work out of the box, *many* bugs (50?) to squash one by
