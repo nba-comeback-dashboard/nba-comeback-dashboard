@@ -1,26 +1,26 @@
-# NBA Comeback Calculator
+# NBA Comeback Dashboard
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**What lead is safe and what comeback is possible?** 
+**What lead is safe and what comeback is possible?**
 
-The NBA Comeback Calculator analyzes over 25 years of NBA play-by-play data (1996-2024) to scientifically answer this question. By analyzing thousands of games, we can determine the probability of a successful comeback based on point deficit, time remaining, team ranking, and home/away status.
+The NBA Comeback Dashboard analyzes over 25 years of NBA play-by-play data (1996-2024) to scientifically answer this question. By analyzing thousands of games, we can determine the probability of a successful comeback based on point deficit, time remaining, team ranking, and home/away status.
 
 ## Website
 
-Visit our site at [nba-comeback-calculator.github.io](https://nba-comeback-calculator.github.io) to explore:
+Visit our site at [nba-comeback-dashboard.github.io](https://nba-comeback-dashboard.github.io) to explore:
 
 - **Analysis**: Trends in NBA comebacks over time
 - **Methodology**: How the data was compiled and analyzed
 - **Plots**: Pre-generated charts for common scenarios
-- **Interactive Calculator**: Create your own custom analyses
+- **Interactive Dashboard**: Create your own custom analyses
 
 ## Features
 
 - **Statistical Analysis**: Win probabilities by point margin across different game situations
 - **Historical Trends**: Compare comeback rates across different NBA eras
 - **Team-specific Analysis**: Filter data by team, rank, or home/away status
-- **Interactive Calculator**: Generate custom charts with your own parameters
+- **Interactive Dashboard**: Generate custom charts with your own parameters
 - **Data Visualization**: Modern, interactive charts using Chart.js
 
 ## Technical Overview
@@ -33,9 +33,9 @@ This project consists of two main components:
    - Performs statistical analysis using probit regression
    - Generates chart data JSON files
 
-2. **JavaScript Frontend**: Data visualization and interactive calculator
+2. **JavaScript Frontend**: Data visualization and interactive dashboard
    - Renders interactive charts using Chart.js
-   - Provides interactive calculator with filtering options
+   - Provides interactive dashboard with filtering options
    - Implements statistical analysis in browser
    - Offers features like zooming, full-screen mode, and PNG export
 
@@ -43,7 +43,7 @@ This project consists of two main components:
 
 ### Python Components
 ```
-nba_comeback_calculator/
+python_backend/
 ├── form_json_season_data/       # Data acquisition
 │   ├── form_nba_game_sqlite_database.py  # Creates SQLite database
 │   └── form_nba_game_json_seasons.py     # Generates season JSON files
@@ -80,8 +80,8 @@ docs/frontend/source/_static/
 
 ```bash
 # Clone the repository
-git clone https://github.com/nba-comeback-calculator/nba-comeback-calculator.git
-cd nba-comeback-calculator
+git clone https://github.com/nba-comeback-dashboard/nba-comeback-dashboard.git
+cd nba-comeback-dashboard
 
 # Install Python dependencies
 pip install -r requirements.txt
@@ -92,7 +92,7 @@ make html
 
 # Note: We use an unorthodox docs folder structure to work with GitHub Pages limitations.
 # The Sphinx Makefile is configured to build output directly to the /docs folder
-# This allows the site to be served from nba-comeback-calculator.github.io without a subdirectory.
+# This allows the site to be served from nba-comeback-dashboard.github.io without a subdirectory.
 # See: https://stackoverflow.com/questions/36782467/set-subdirectory-as-website-root-on-github-pages
 ```
 
