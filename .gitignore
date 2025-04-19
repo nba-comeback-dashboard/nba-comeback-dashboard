@@ -1,0 +1,35 @@
+# Sphinx documentation
+*/build/
+frontend-docs/build/
+developer-docs/build/
+
+# Python bytecode and cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.cache/
+
+# Compressed data files
+*.json.gz
+
+# Merge conflict files
+*.orig
+*.rej
+*_BACKUP_*
+*_BASE_*
+*_LOCAL_*
+*_REMOTE_*
+
+# Common files to ignore
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+.project
+.pydevproject
+.doctrees
+docs/frontend/build
