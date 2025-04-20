@@ -29,7 +29,7 @@ team was down 25 at the start of the 4th and then went down 26 and then back to 
 the 11th minute, the 26 is not recorded here).
 
 
-.. _modern-era:
+.. _modern-era-goto:
 
 Modern Era
 ==========
