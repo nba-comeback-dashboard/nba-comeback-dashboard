@@ -14,7 +14,7 @@ pretty good sense of how steep of a mountain your team has to climb.  Plus, I li
 being able to see the current record for a given time, knowing that if you are beyond
 the record it would be, well, a record if you came back.  (And, ahem, our
 :doc:`Minnesota Timberwolves </analysis/do_the_twolves_give_up_big_leads>` hold or tie
-the record` for allowing the biggest comeback at the 3, 6, 7, and 10 minute marks).
+the record for allowing the biggest comeback at the 3, 6, 7, and 10 minute marks).
 
 You can click on data points and see which game(s) hold the record.  Going full screen
 makes it easier (and on mobile, you have to go full screen first).
@@ -28,7 +28,7 @@ last 8 years (modern era) you get:
 
     <div id="goto/nbacd_points_versus_36_time_modern_era" class="nbacd-chart"></div>
 
-But overall, I don't this is that drastically different, and I like to see the
+But overall, I don't think this is that drastically different, and I like to see the
 all-time-since-1996 record so I generally prefer the first chart. And if you limit it
 to, say, just the playoffs for most practical purposes the numbers are the same:
 

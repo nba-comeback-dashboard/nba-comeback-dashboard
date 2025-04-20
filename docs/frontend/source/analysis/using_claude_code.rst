@@ -37,12 +37,12 @@ of using AI to build out a front-end tool.
 When I started at the beginning of March 2025, Claude Code was newly released and,
 `like others
 <https://waleedk.medium.com/claude-code-top-tips-lessons-from-the-first-20-hours-246032b943b4>`_,
-it didn't take me long to settle on using it over Cursor or Copilot. Agentic/agent
+it didn't take me long to settle on using it over Cursor or Copilot. Agentic/agent-
 based AI code systems are newly emerging and Claude Code seems to be the state of the
 art of these approaches.  And with a price tag of 10 to 100x over other options, you
 pay for this extra power. To boot, I really like that it's a REPL as opposed to having
 it integrated in an IDE.  (And recently, after I finished this project up, Open AI has
-`released CodeX which takes a similar tact -- something I'm checking out next
+`released CodeX which takes a similar tack -- something I'm checking out next
 <https://openai.com/index/openai-codex/>`_).
 
 Overall, I settled on a hybrid project where I wrote most of the Python myself for the
@@ -217,7 +217,7 @@ fed these four files into Claude and had it take a crack at it.
 
     Let's try this Python to JavaScript translation again.
 
-    Currently, we have working js/nbacd_chart_loader.js and js/nbacd_plotter_*.js files
+    Currently, we have the working js/nbacd_chart_loader.js and js/nbacd_plotter_*.js files
     that can load the JSON data from _static/json/charts/* and plot the charts.
 
     Now we need to add a new 'dashboard' feature that will provide a UI to select plot
@@ -313,14 +313,14 @@ For example it created this code:
     }
 
 when the equivalent Python code was ``range(start_time, stop_time, -1)``.  This is off
-by 1, leading to t being 0 in the javascript case, creating a really hard to pin down
+by 1, leading to t being 0 in the JavaScript case, creating a really hard to pin down
 bug.
 
 Also, for some reason, it made a bunch of JavaScript namespaces like this:
 
 .. code::
 
-  // Use a module pattern to avoid polluting the global namespace 
+  // Use a module pattern to avoid polluting the global namespace. 
   // But also make it available globally for other modules 
   const nbacd_utils = (() => {
 
