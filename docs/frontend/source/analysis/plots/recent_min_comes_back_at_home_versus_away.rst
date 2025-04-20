@@ -5,8 +5,8 @@ Comebacks For MIN @ Away v. Comebacks For MIN @ Home
 Max Points Down or More
 =======================
 
-Max Points Down Or More During Entire Game | 2021-22 to 2024-25
----------------------------------------------------------------
+Win % v. Max Points Down Or More During Entire Game | 2021-22 to 2024-25
+------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_max_down_or_more_48:
 
@@ -14,8 +14,8 @@ Max Points Down Or More During Entire Game | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/max_down_or_more_48" class="nbacd-chart"></div>
 
-Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
-------------------------------------------------------------
+Win % v. Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
+---------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_max_down_or_more_24:
 
@@ -23,8 +23,8 @@ Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/max_down_or_more_24" class="nbacd-chart"></div>
 
-Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
----------------------------------------------------------------
+Win % v. Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
+------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_max_down_or_more_12:
 
@@ -35,8 +35,8 @@ Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
 Max Points Down
 ===============
 
-Max Points Down During Entire Game | 2021-22 to 2024-25
--------------------------------------------------------
+Win % v. Max Points Down During Entire Game | 2021-22 to 2024-25
+----------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_max_down_48:
 
@@ -44,8 +44,8 @@ Max Points Down During Entire Game | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/max_down_48" class="nbacd-chart"></div>
 
-Max Points Down During 2nd Half | 2021-22 to 2024-25
-----------------------------------------------------
+Win % v. Max Points Down During 2nd Half | 2021-22 to 2024-25
+-------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_max_down_24:
 
@@ -53,8 +53,8 @@ Max Points Down During 2nd Half | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/max_down_24" class="nbacd-chart"></div>
 
-Max Points Down During 4th Quarter | 2021-22 to 2024-25
--------------------------------------------------------
+Win % v. Max Points Down During 4th Quarter | 2021-22 to 2024-25
+----------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_max_down_12:
 
@@ -65,8 +65,8 @@ Max Points Down During 4th Quarter | 2021-22 to 2024-25
 Points Down At Time
 ===================
 
-Points Down At Start of 2nd Half | 2021-22 to 2024-25
------------------------------------------------------
+Win % v. Points Down At Start of 2nd Half | 2021-22 to 2024-25
+--------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_down_at_24:
 
@@ -74,8 +74,8 @@ Points Down At Start of 2nd Half | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/down_at_24" class="nbacd-chart"></div>
 
-Points Down At Start of 4th Quarter | 2021-22 to 2024-25
---------------------------------------------------------
+Win % v. Points Down At Start of 4th Quarter | 2021-22 to 2024-25
+-----------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_down_at_12:
 
@@ -83,8 +83,8 @@ Points Down At Start of 4th Quarter | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/down_at_12" class="nbacd-chart"></div>
 
-Points Down At Start of Final 6 Minutes | 2021-22 to 2024-25
-------------------------------------------------------------
+Win % v. Points Down At Start of Final 6 Minutes | 2021-22 to 2024-25
+---------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_down_at_6:
 
@@ -95,8 +95,8 @@ Points Down At Start of Final 6 Minutes | 2021-22 to 2024-25
 Occurrence of Max Points Down Or More
 =====================================
 
-Occurrences of Max Points Down Or More During Entire Game | 2021-22 to 2024-25
-------------------------------------------------------------------------------
+Occurrences of Win % v. Max Points Down Or More During Entire Game | 2021-22 to 2024-25
+---------------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_occurs_down_or_more_48:
 
@@ -104,8 +104,8 @@ Occurrences of Max Points Down Or More During Entire Game | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/occurs_down_or_more_48" class="nbacd-chart"></div>
 
-Occurrences of Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
----------------------------------------------------------------------------
+Occurrences of Win % v. Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
+------------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_occurs_down_or_more_24:
 
@@ -113,8 +113,8 @@ Occurrences of Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/occurs_down_or_more_24" class="nbacd-chart"></div>
 
-Occurrences of Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
-------------------------------------------------------------------------------
+Occurrences of Win % v. Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
+---------------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_occurs_down_or_more_12:
 
@@ -125,8 +125,8 @@ Occurrences of Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
 Percent Chance of Winning: Time Remaining Versus Points Down
 ============================================================
 
-% Chance of Coming Back Deficit Versus Time | 2021-22 to 2024-25 | For MIN @ Away
----------------------------------------------------------------------------------
+% Chance of Coming Back: Points Down v. Time | 2021-22 to 2024-25 | For MIN @ Away
+----------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_percent_plot_group_0:
 
@@ -134,8 +134,8 @@ Percent Chance of Winning: Time Remaining Versus Points Down
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/percent_plot_group_0" class="nbacd-chart"></div>
 
-% Chance of Coming Back Deficit Versus Time | 2021-22 to 2024-25 | For MIN @ Home
----------------------------------------------------------------------------------
+% Chance of Coming Back: Points Down v. Time | 2021-22 to 2024-25 | For MIN @ Home
+----------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_percent_plot_group_1:
 

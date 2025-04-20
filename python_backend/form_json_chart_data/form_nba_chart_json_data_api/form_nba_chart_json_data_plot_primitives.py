@@ -163,7 +163,7 @@ class PointsDownLine(PlotLine):
         all_game_ids = self.get_all_game_ids()
         self.number_of_games = len(all_game_ids)
         if self.legend:
-            self.legend = f"{legend} ({self.number_of_games} Games)"
+            self.legend = f"{legend} ({self.number_of_games:,} Games)"
 
         if cumulate:
             self.cumulate_point_totals(point_margin_map)

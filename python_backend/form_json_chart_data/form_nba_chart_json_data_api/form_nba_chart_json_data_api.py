@@ -409,12 +409,12 @@ def plot_biggest_deficit(
         3 if fit_min_win_game_count is None else fit_min_win_game_count
     )
     if down_mode == "at":
-        title = f"Points Down{or_more} At Start of {time_desc}"
+        title = f"Win % v. Points Down{or_more} At Start of {time_desc}"
         or_more = ""
         max_point_margin = -1 if max_point_margin is None else max_point_margin
         fit_max_points = -1 if fit_max_points is None else fit_max_points
     else:
-        title = f"Max Points Down{or_more} During {time_desc}"
+        title = f"Win % v. Max Points Down{or_more} During {time_desc}"
         max_point_margin = "auto" if max_point_margin is None else max_point_margin
         if fit_max_points is None:
             fit_max_points = "10%"
@@ -747,7 +747,7 @@ def plot_percent_versus_time(
             #     display_percent = f"{amount}t"
             legend = f"{percent_string}"
             if number_of_year_groups > 1:
-                legend = f"{legend} | {games.get_years_string()} ({game_count} Games)"
+                legend = f"{legend} | {games.get_years_string()} ({game_count:,} Games)"
             if number_of_game_filters > 1:
                 legend = f"{legend} | {game_filter.get_filter_string()}"
             percent_lines.append(PercentLine(games, legend, times, percent_value))
@@ -785,9 +785,9 @@ def plot_percent_versus_time(
     if plot_3x_bad_guide:
         percent_lines.append(PercentLine(None, "3t", times, [-3.0 * x for x in times]))
 
-    title = "% Chance of Coming Back Deficit Versus Time"
+    title = "% Chance of Coming Back: Points Down v. Time"
     if number_of_year_groups == 1:
-        title = f"{title} | {games.get_years_string()} ({game_count} Games)"
+        title = f"{title} | {games.get_years_string()} ({game_count:,} Games)"
     if number_of_game_filters == 1:
         title = f"{title} | {game_filters[0].get_filter_string()}"
 
