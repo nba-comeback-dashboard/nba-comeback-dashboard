@@ -47,7 +47,7 @@ it integrated in an IDE.  (And recently, after I finished this project up, Open 
 
 Overall, I settled on a hybrid project where I wrote most of the Python myself for the
 data processing and `tried my hand at vibe coding
-<https://zapier.com/blog/vibe-coding/>`_ the JavaScript front-end UI using Claude Code.
+<https://zapier.com/blog/vibe-coding/>`_ for the JavaScript front-end UI using Claude Code.
 
 In broad strokes, I:
 

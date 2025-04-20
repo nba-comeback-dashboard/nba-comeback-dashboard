@@ -100,7 +100,7 @@ inclined (on mobile, go full screen before clicking).  To focus on a few we get:
      - 12.82 %
      - 1.39x (39% increase)
 
-So while coming back from down 30 or more happens 2.8 times more than in the past, it's
+So while coming back from down 30 or more happens 2.8 times more often than in the past, it's
 still very unlikely. In fact, you need to move over a little less than one
 three-pointer to get about the same chance: in the old school era, if you were down -27
 or more there was about a ``~0.50%`` chance of winning. And being down 20 or more now

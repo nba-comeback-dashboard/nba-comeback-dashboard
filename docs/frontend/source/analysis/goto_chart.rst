@@ -2,6 +2,12 @@
 Goto Chart: The Only Chart You Really Need
 ******************************************
 
+
+.. _all-the-available-data:
+
+All The Available Data
+======================
+
 Overall, the goto chart I think is this one:
 
 .. raw:: html
@@ -17,9 +23,18 @@ the record it would be, well, a record if you came back.  (And, ahem, our
 the record for allowing the biggest comeback at the 3, 6, 7, and 10 minute marks).
 
 You can click on data points and see which game(s) hold the record.  Going full screen
-makes it easier (and on mobile, you have to go full screen first).
+makes it easier (and on mobile, you have to go full screen first).  (Please note, the
+'Record' is calculated by getting the point margin exactly at that minute mark, so if a
+team was down 25 at the start of the 4th and then went down 26 and then back to 25 by
+the 11th minute, the 26 is not recorded here).
 
-Of course, this is all games -- regular season, playin, and playoffs -- and this
+
+.. _modern-era:
+
+Modern Era
+==========
+
+Of course, this is all games -- regular season, play-in, and playoffs -- and this
 :doc:`chart will change if you change the conditions
 </analysis/rule_of_thumb_that_actually_works>`.  For example, if we limit it to the
 last 8 years (modern era) you get:
@@ -44,6 +59,12 @@ haven't changed as drastically as popular perception </analysis/20_is_new_18>`).
 Some conditions (like top 10 playing bottom 10 team) will change this chart a lot, but
 overall I think the first chart does a pretty good job of calibrating where you are
 based on the current point deficit.
+
+
+.. _supplementals:
+
+Supplementals
+=============
 
 Sometimes, watching a Timberwolves game, a chart like this limited to our recent
 history is useful to look at during the break:

@@ -7,7 +7,7 @@ Methodology and Forming the Plot Trend Lines
 Methodology
 ===========
 
-At core, this is a simple dashboard -- it:
+At its core, this is a simple dashboard -- it:
 
 * Finds all the games that meet the conditions specified (:doc:`comeback type
   </analysis/understanding_and_using_the_plots>`, seasons, time left, team rank, etc.)
