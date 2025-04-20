@@ -14,9 +14,9 @@ NBA Comeback Dashboard
 
    Game data last updated: 04/18/2025.
 
-:doc:`Looking to answer a long-held question </analysis/about>`, I downloaded all games
-from when play-by-play data was available (from the 1996-1997 season to now) and looked
-at the percentage of times games were won under varying conditions.
+The NBA Comeback Dashboard is a plotting tool that lets you :doc:`analyze and compare
+</analysis/methodology_forming_the_plot_trend_lines>` NBA comeback probability data
+taken from the NBA play-by-play database from the 1996-1997 season to now.
 
 * :doc:`./analysis/index`: Looks at some trends in the data and tries to answer "Are
   big comebacks just much more common nowadays?" and other questions, plus includes a
