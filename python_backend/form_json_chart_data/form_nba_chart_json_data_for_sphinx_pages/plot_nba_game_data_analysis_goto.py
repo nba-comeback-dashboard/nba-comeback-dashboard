@@ -54,7 +54,7 @@ plot_percent_versus_time(
     json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_all_eras.json",
     year_groups=eras,
     start_time=36,
-    percents=["20%", "10%", "5%", "1%", "Record"],
+    percents=["33%", "20%", "10%", "5%", "1%", "Record"],
 )
 
 
@@ -67,7 +67,7 @@ plot_percent_versus_time(
     json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_modern_era.json",
     year_groups=eras,
     start_time=36,
-    percents=["20%", "10%", "5%", "1%", "Record"],
+    percents=["33%", "20%", "10%", "5%", "1%", "Record"],
 )
 
 eras = [
@@ -79,7 +79,7 @@ plot_percent_versus_time(
     json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_modern_era_playoffs.json",
     year_groups=eras,
     start_time=36,
-    percents=["20%", "10%", "5%", "1%", "Record"],
+    percents=["33%", "20%", "10%", "5%", "1%", "Record"],
 )
 
 

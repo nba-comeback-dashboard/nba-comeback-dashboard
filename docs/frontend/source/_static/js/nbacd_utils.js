@@ -395,7 +395,7 @@ const nbacd_utils = (() => {
             "rgba(66, 165, 81, 0.5)", // Green - for showing positive trends
             "rgba(255, 99, 132, 0.5)", // Red - for highlighting important data
             "rgba(153, 102, 255, 0.5)", // Purple - complementary to other colors
-            "rgba(255, 206, 86, 0.5)", // Yellow - high visibility
+            "rgba(190, 140, 0, 0.5)", // Amber/Gold - rich yellow tone with depth
             "rgba(199, 199, 199, 0.5)", // Gray - for secondary or less important data
         ];
 
