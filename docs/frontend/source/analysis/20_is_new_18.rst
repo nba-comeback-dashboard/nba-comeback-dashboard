@@ -41,6 +41,14 @@ same as coming back from 18 points-or-more down (``~4.9%``) in the earlier era.
 This means leads are *roughly* as safe as they have been, perhaps at most needing an
 extra basket to maintain the same level of security.
 
+.. green-box::
+
+    I should note that this result surprised me: when I first started throwing this
+    data together I fully assumed that the results would show a more dramatic shift
+    based on the current perception.  After spending quite a bit of time doubling
+    checking, I felt when I looked at the data in the most fair light, there was a
+    shift, just not as pronounced as I was expecting.
+
 .. _win-percentages-when-max-deficit-is-n-or-more-points:
 
 Win Percentages When Max Deficit is N *Or More* Points
@@ -64,9 +72,9 @@ when comparing these two eras, we can see a mostly stable and constant shift of 
 2-3 points to the left for the modern era versus the past.
 
 You can :ref:`interact with this chart <using-the-plot-controls>` and hover over and
-click the points to see which games compose a point (and compare it with a `list of
+click the points to see which games compose a point and compare it with a `list of
 biggest comebacks <https://en.wikipedia.org/wiki/Comeback_(sports)#NBA>`_ if so
-inclined).  To focus on a few we get:
+inclined (on mobile, go full screen before clicking).  To focus on a few we get:
 
 .. list-table:: Win % Increases When Comparing Modern Versus Old School Eras
    :header-rows: 1

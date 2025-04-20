@@ -19,9 +19,10 @@ the record` for allowing the biggest comeback at the 3, 6, 7, and 10 minute mark
 You can click on data points and see which game(s) hold the record.  Going full screen
 makes it easier (and on mobile, you have to go full screen first).
 
-Of course, this is all games -- regular season, playin, and playoffs -- and this chart
-will change if you change the conditions.  For example, if we limit it to the last 8
-years (modern era) you get:
+Of course, this is all games -- regular season, playin, and playoffs -- and this
+:doc:`chart will change if you change the conditions
+</analysis/rule_of_thumb_that_actually_works>`.  For example, if we limit it to the
+last 8 years (modern era) you get:
 
 .. raw:: html
 
