@@ -23,10 +23,13 @@ the record it would be, well, a record if you came back.  (And, ahem, our
 the record for allowing the biggest comeback at the 3, 6, 7, and 10 minute marks).
 
 You can click on data points and see which game(s) hold the record.  Going full screen
-makes it easier (and on mobile, you have to go full screen first).  (Please note, the
-'Record' is calculated by getting the point margin exactly at that minute mark, so if a
-team was down 25 at the start of the 4th and then went down 26 and then back to 25 by
-the 11th minute, the 26 is not recorded here).
+makes it easier (and on mobile, you have to go full screen first -- also, on mobile, it
+helps to rotate the screen, go full screen, and then you can click on any point to get
+the summary for that minute).
+
+Please note, the 'Record' is calculated by getting the point margin exactly at that
+minute mark, so if a team was down 25 at the start of the 4th and then went down 26 and
+then back to 25 by the 11th minute, the 26 is not recorded here.
 
 
 .. _modern-era-goto:
