@@ -8,19 +8,20 @@ Goto Chart: The Only Chart You Really Need
 All The Available Data
 ======================
 
-Overall, the goto chart I think is this one:
+Overall, I feel the most useful dashboard chart is this one:
 
 .. raw:: html
 
     <div id="goto/nbacd_points_versus_36_time_all_eras" class="nbacd-chart"></div>
 
 
-This includes all games from 1996 (~36,000 games) and, if you're down, gives you a
-pretty good sense of how steep of a mountain your team has to climb.  Plus, I like
-being able to see the current record for a given time, knowing that if you are beyond
-the record it would be, well, a record if you came back.  (And, ahem, our
-:doc:`Minnesota Timberwolves </analysis/do_the_twolves_give_up_big_leads>` hold or tie
-the record for allowing the biggest comeback at the 3, 6, 7, and 10 minute marks).
+This includes all games from 1996 (~36,000 games) and -- if you're down -- gives you a
+pretty good sense of how steep of a mountain your team has to climb (and of course on
+the flip side how safe your lead is).  Plus, I like being able to see the current
+record for a given time, knowing that if you are beyond the record it would be, well, a
+record if you came back.  (And, ahem, our :doc:`Minnesota Timberwolves
+</analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for allowing the
+biggest comeback at the 3, 6, 7, and 10 minute marks).
 
 You can click on data points and see which game(s) hold the record.  Going full screen
 makes it easier (and on mobile, you have to go full screen first -- also, on mobile, it
