@@ -41,19 +41,8 @@ points-or-more down (``~4.9%``) in the earlier era.  To put this in perspective,
 overall ~2 point shift is on par to :doc:`the advantage a home team has over a road
 team </analysis/home_v_away>` when attempting a comeback.
 
-This means leads are *roughly* as safe as they have been, perhaps at most needing an
-extra basket to maintain the same level of security.
-
-
-
-
-.. green-box::
-
-    I should note that this result surprised me: when I first started throwing this
-    data together I fully assumed that the results would show a more dramatic shift
-    based on the current perception.  After spending quite a bit of time doubling
-    checking, I felt when I looked at the data in the most fair light, there was a
-    shift, just not as pronounced as I was expecting.
+This means leads are *roughly* as safe as they have been, perhaps needing an extra
+bucket to maintain the same level of security.
 
 .. _win-percentages-when-max-deficit-is-n-or-more-points:
 
