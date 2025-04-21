@@ -381,7 +381,7 @@ def plot_biggest_deficit(
         time_desc = "Entire Game"
     elif start_time == 36:
         if down_mode == "at":
-            time_desc = "3rd Quarter"
+            time_desc = "2nd Quarter"
         else:
             time_desc = "Final 3 Quarters"
     elif start_time == 24:

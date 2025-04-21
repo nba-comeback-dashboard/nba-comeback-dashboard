@@ -309,7 +309,7 @@ const nbacd_dashboard_api = (() => {
             time_desc = "Entire Game";
         } else if (start_time === 36) {
             if (down_mode === "at") {
-                time_desc = "3rd Quarter";
+                time_desc = "2nd Quarter";
             } else {
                 time_desc = "Final 3 Quarters";
             }
@@ -752,9 +752,7 @@ const nbacd_dashboard_api = (() => {
 
         if (number_of_year_groups === 1) {
             const firstData = all_percent_data[0];
-            title = `${title} | ${firstData.games.get_years_string()} (${
-                firstData.game_count.toLocaleString()
-            } Games)`;
+            title = `${title} | ${firstData.games.get_years_string()} (${firstData.game_count.toLocaleString()} Games)`;
         }
 
         if (number_of_game_filters === 1 && game_filters[0] !== null) {
