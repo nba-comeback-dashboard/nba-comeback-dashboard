@@ -179,13 +179,14 @@ def save_live_probability_plot(fig, away_team, home_team, game_date):
     save_path = os.path.join(
         script_dir, "../../docs/frontend/source/analysis/", filename
     )
+    abs_save_path = os.path.abspath(save_path)
 
     # Ensure the directory exists
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    os.makedirs(os.path.dirname(abs_save_path), exist_ok=True)
 
     # Save the figure
-    fig.savefig(save_path, dpi=300, bbox_inches="tight")
-    print(f"Saved plot to: {save_path}")
+    fig.savefig(abs_save_path, dpi=300, bbox_inches="tight")
+    print(f"Saved plot to absolute path: {abs_save_path}")
 
 
 def plot_win_probability_and_point_margin(
@@ -309,8 +310,16 @@ def plot_win_probability_and_point_margin(
     ax1.tick_params(axis="y", colors="black")
     ax1.set_ylim(-5, 125)  # Add 5% padding at bottom and 25% at top
     ax1.set_xlim(start_time, 48)  # Set x-axis to end at 48 minutes
+
+    # Set y-axis ticks every 10%
+    ax1.set_yticks(range(0, 126, 10))
+
+    # Add sub-grids every 5%
+    ax1.set_yticks(range(0, 126, 5), minor=True)
+    ax1.grid(True, alpha=0.5)  # Increased from 0.3 to 0.5 for major grid
+    ax1.grid(True, which="minor", alpha=0.4)  # Increased from 0.2 to 0.4 for minor grid
+
     ax1.axhline(y=50, color="black", linestyle="--", alpha=0.3)
-    ax1.grid(True, alpha=0.3)
 
     # Create a twin axis for point margin (should be green)
     ax2 = ax1.twinx()
@@ -333,12 +342,6 @@ def plot_win_probability_and_point_margin(
         period_start = (period - 1) * 12
         if period_start >= start_time:  # Only plot if after start_time
             plt.axvline(x=period_start, color="gray", linestyle="-", alpha=0.5)
-            plt.text(
-                period_start,
-                ax1.get_ylim()[1],
-                f" Period {period}",
-                verticalalignment="top",
-            )
 
     # Add potential overtime periods
     if df["period"].max() > 4:
@@ -346,9 +349,6 @@ def plot_win_probability_and_point_margin(
             ot_start = 48 + (ot - 1) * 5  # Each OT is 5 minutes
             if ot_start >= start_time:  # Only plot if after start_time
                 plt.axvline(x=ot_start, color="gray", linestyle="-", alpha=0.5)
-                plt.text(
-                    ot_start, ax1.get_ylim()[1], f" OT{ot}", verticalalignment="top"
-                )
 
     # Create legend with all lines
     ax1.legend(lines, [line.get_label() for line in lines], loc="upper left")
@@ -387,7 +387,7 @@ def main():
     show_team = "away"  # Options: 'both', 'home', 'away'
 
     # Configure whether to save output files
-    save_files = False  # Set to True to save plot and data files
+    files = True  # Set to True to save plot and data files
 
     # Configure line colors (optional)
     colors = ["tab:red", "tab:green", "tab:blue"]  # Default colors
@@ -417,8 +417,8 @@ def main():
     if not df.empty:
         print(f"Game: {home_team} vs {away_team} on {game_date}")
 
-        # Save full dataset only if save_files is True
-        if save_files:
+        # Save full dataset only if files is True
+        if files:
             df.to_csv(f"nba_game_{espn_game_id}_win_prob_data.csv", index=False)
 
             # Create a more focused dataset with just the key columns
@@ -520,7 +520,6 @@ def get_dashboard_prob(time_minutes, point_margin, modern=False, use_game_filter
     times = []
 
     for t in range(18, 48, 1):
-        print(t)
         current_time = 48.0 - t
         current_margin = point_fn(t)
 
@@ -554,8 +553,6 @@ def get_dashboard_prob(time_minutes, point_margin, modern=False, use_game_filter
 
         probabilities.append(percent * 100.0)
         times.append(t)
-
-    print("bye")
 
     return np.array(times), np.array(probabilities)
 
