@@ -8,6 +8,7 @@ Analysis
    :maxdepth: 1
 
    20_is_new_18
+   home_v_away
    rule_of_thumb_that_actually_works
    goto_chart
    close_making_it_a_game

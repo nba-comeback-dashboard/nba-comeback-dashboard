@@ -23,7 +23,7 @@ record if you came back.  (And, ahem, our :doc:`Minnesota Timberwolves
 </analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for allowing the
 biggest comeback at the 3, 6, 7, and 10 minute marks).
 
-You can click on data points and see which game(s) hold the record.  Going full screen
+You can click on data points and see which game(s) hold the record. Going full screen
 makes it easier (and on mobile, you have to go full screen first -- also, on mobile, it
 helps to rotate the screen, go full screen, and then you can click on any point to get
 the summary for that minute).
@@ -32,37 +32,31 @@ Please note, the 'Record' is calculated by getting the point margin exactly at t
 minute mark, so if a team was down 25 at the start of the 4th and then went down 26 and
 then back to 25 by the 11th minute, the 26 is not recorded here.
 
+Of course, this is all games and this :doc:`chart will change if you change the
+conditions </analysis/rule_of_thumb_that_actually_works>`.
 
-.. _modern-era-goto:
 
-Modern Era
-==========
 
-Of course, this is all games -- regular season, play-in, and playoffs -- and this
-:doc:`chart will change if you change the conditions
-</analysis/rule_of_thumb_that_actually_works>`.  For example, if we limit it to the
-last 8 years (modern era) you get:
+.. _home-versus-away-for-the-modern-era:
 
-.. raw:: html
+Home Versus Away For The Modern Era
+===================================
 
-    <div id="goto/nbacd_points_versus_36_time_modern_era" class="nbacd-chart"></div>
+The conditional providing the greatest discrimination is probably adding whether
+:doc:`the team coming back is at home or away </analysis/home_v_away>`. Then,
+:doc:`limiting the seasons to the modern era </analysis/20_is_new_18>`.
 
-But overall, I don't think this is that drastically different, and I like to see the
-all-time-since-1996 record so I generally prefer the first chart. And if you limit it
-to, say, just the playoffs for most practical purposes the numbers are the same:
+Adding those two conditions gives you these two plots, which will give you a closer
+match to the probability given by an in-game probability calculator for example:
 
 .. raw:: html
 
-    <div id="goto/nbacd_points_versus_36_time_modern_era_playoffs" class="nbacd-chart"></div>
+    <div id="goto/nbacd_points_versus_36_for_home_modern_era" class="nbacd-chart"></div>
 
-Looking at the 9 minute mark and the 1% chance line, all-time-since-1996 is about 17
-points down, it's about 18 for the modern era last eight years, and ~16.5 points for
-the playoffs games in the modern era (more evidence :doc:`that the comeback chances
-haven't changed as drastically as popular perception </analysis/20_is_new_18>`).
+.. raw:: html
 
-Some conditions (like top 10 playing bottom 10 team) will change this chart a lot, but
-overall I think the first chart does a pretty good job of calibrating where you are
-based on the current point deficit.
+    <div id="goto/nbacd_points_versus_36_for_away_modern_era" class="nbacd-chart"></div>
+
 
 
 .. _supplementals:
@@ -77,8 +71,7 @@ history is useful to look at during the break:
 
     <div id="goto/twolves_leads_12_recent" class="nbacd-chart"></div>
 
-Just to get a sense of what we're capable of, but really the first chart sets similar
-expectations.
+Just to get a sense of what we're capable of!
 
 
 

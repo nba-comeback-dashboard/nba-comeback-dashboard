@@ -414,8 +414,8 @@ const nbacd_utils = (() => {
             "rgba(66, 165, 81, 0.5)", // Green - for showing positive trends
             "rgba(255, 99, 132, 0.5)", // Red - for highlighting important data
             "rgba(153, 102, 255, 0.5)", // Purple - complementary to other colors
+            "rgba(100, 105, 115, 0.5)", // Slate Gray - darker and more visible than light gray
             "rgba(184, 134, 11, 0.5)", // Dark Gold - like an Olympic medal
-            "rgba(199, 199, 199, 0.5)", // Gray - for secondary or less important data
         ];
 
         // Replace the default opacity (0.5) with the requested opacity

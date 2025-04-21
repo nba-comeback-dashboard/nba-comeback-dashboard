@@ -54,9 +54,13 @@ plot_percent_versus_time(
     json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_all_eras.json",
     year_groups=eras,
     start_time=36,
-    percents=["33%", "20%", "10%", "5%", "1%", "Record"],
+    percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
 )
 
+
+game_filters = [
+    GameFilter(for_at_home=True),
+]
 
 eras = [
     # ERA ONE
@@ -64,23 +68,49 @@ eras = [
 ]
 
 plot_percent_versus_time(
-    json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_modern_era.json",
+    json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_for_home_modern_era.json",
     year_groups=eras,
     start_time=36,
-    percents=["33%", "20%", "10%", "5%", "1%", "Record"],
+    percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
+    game_filters=game_filters,
 )
 
-eras = [
-    # ERA ONE
-    ("P2017", 2024),
+game_filters = [
+    GameFilter(for_at_home=False),
 ]
 
 plot_percent_versus_time(
-    json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_modern_era_playoffs.json",
+    json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_for_away_modern_era.json",
     year_groups=eras,
     start_time=36,
-    percents=["33%", "20%", "10%", "5%", "1%", "Record"],
+    percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
+    game_filters=game_filters,
 )
+
+
+# eras = [
+#     # ERA ONE
+#     (2017, 2024),
+# ]
+
+# plot_percent_versus_time(
+#     json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_modern_era.json",
+#     year_groups=eras,
+#     start_time=36,
+#     percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
+# )
+
+# eras = [
+#     # ERA ONE
+#     ("P2017", 2024),
+# ]
+
+# plot_percent_versus_time(
+#     json_name=f"{chart_base_path}/goto/nbacd_points_versus_36_time_modern_era_playoffs.json",
+#     year_groups=eras,
+#     start_time=36,
+#     percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
+# )
 
 
 eras = [
