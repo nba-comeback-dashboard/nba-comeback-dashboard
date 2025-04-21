@@ -522,10 +522,10 @@ def plot_biggest_deficit(
         cumulate=cumulate,
         calculate_occurrences=calculate_occurrences,
     )
+    if json_name is not None:
+        final_plot.to_json()
 
-    final_plot.to_json()
-
-    return title, game_years_strings, game_filter_strings
+    return title, game_years_strings, game_filter_strings, final_plot
 
 
 def get_points_down_normally_spaced_y_ticks(plot_lines, bound_x=float("inf")):

@@ -705,6 +705,8 @@ class FinalPlot:
             json_lines.append(line.to_json(self.calculate_occurrences))
 
         # Make sure the directory exists
+        if self.json_name is None:
+            return
         os.makedirs(os.path.dirname(self.json_name), exist_ok=True)
         if not self.json_name.endswith(".gz"):
             self.json_name = self.json_name + ".gz"
