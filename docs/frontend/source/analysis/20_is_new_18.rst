@@ -34,15 +34,18 @@ To frame this, I decided to break up the available play-by-play data into:
 (:ref:`As explained below <deciding-on-eras-breakdown>`, a more targeted recent modern
 era does not change the analysis so the larger dataset was chosen).
  
-So while there are about 1.8 times as many 20-points-or-more comebacks comparing the
-eras, the *chance* of coming back from 20 points-or-more down (``~5.3%``) is about the
-same as coming back from 18 points-or-more down (``~4.9%``) in the earlier era.
+To be clear, there has been a marked shift in the data: there are about 1.8 times as
+many 20-points-or-more comebacks comparing the eras.  However, the *chance* of coming
+back from 20 points-or-more down (``~5.3%``) is about the same as coming back from 18
+points-or-more down (``~4.9%``) in the earlier era.  To put this in perspective, this
+overall ~2 point shift is on par to :doc:`the advantage a home team has over a road
+team </analysis/home_v_away>` when attempting a comeback.
 
 This means leads are *roughly* as safe as they have been, perhaps at most needing an
 extra basket to maintain the same level of security.
 
-In fact, the shift overall is not even as extreme as :doc:`the advantage a home team
-has over a road team </analysis/home_v_away>` when attempting a comeback.
+
+
 
 .. green-box::
 
@@ -127,7 +130,7 @@ Now, the shift is about 1.5 points, an even smaller shift.
 
 To me at least, looking at the point shift gives me a better feel for how dramatically
 (or not) the game has changed. I can be convinced you could look at it both ways (Win %
-Increase is more dramatic, point shift is more modest) but as a fan watching your team
+Increase is more dramatic, point shift is more modest), but as a fan watching your team
 sink into a 20 point hole, I don't think the data is telling you to say "20 points,
 that's nothing anymore".
 
@@ -202,9 +205,9 @@ characterization.
 Occurrence Frequencies
 ======================
 
-In a certain sense, the fact the teams can score more quickly does not automatically
+In a certain sense, the fact that teams can score more quickly does not automatically
 lead to the conclusion that big comebacks should be more probable: I mean, if you are
-down and can score quick, so can your opponent and keep you down.
+down and can score quickly, so can your opponent and keep you down.
 
 So a related question is: are there simply more games with large deficits? Plotting the
 occurrence rate between the eras we see:

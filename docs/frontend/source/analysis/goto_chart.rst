@@ -58,7 +58,6 @@ match to the probability given by an in-game probability calculator for example:
     <div id="goto/nbacd_points_versus_36_for_away_modern_era" class="nbacd-chart"></div>
 
 
-
 .. _supplementals:
 
 Supplementals
