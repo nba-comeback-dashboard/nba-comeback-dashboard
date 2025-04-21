@@ -10,23 +10,23 @@ const nbacd_utils = (() => {
     /* SET THIS FIRST */
     // Get the static directory path from chart_loader
     var staticDir = "/_static";
-    
+
     // Configuration for chart loading behavior
     // If true, all charts load immediately; if false, charts load when scrolled into viewport
     var __LOAD_CHART_ON_PAGE_LOAD__ = true;
-    
+
     // Configuration for mobile tooltip behavior
     // If true, tooltips will show on click even when not in fullscreen mode on mobile
     // If false (default), tooltips on mobile only appear in fullscreen mode
     var __HOVER_PLOTS_ON_CLICK_ON_MOBILE_NOT_FULLSCREEN__ = false;
-    
+
     // Controls whether to use localStorage for caching data
     // Set to false to disable caching (e.g., for development)
     var __USE_LOCAL_STORAGE_CACHE__ = true;
-    
+
     // Controls whether to use server file timestamps for cache validation instead of fixed expiration
     var __USE_SERVER_TIMESTAMPS__ = true;
-    
+
     // Maximum cache age in milliseconds (1 day)
     // 1 day = 24 * 60 * 60 * 1000 = 86,400,000 ms
     // Only used if __USE_SERVER_TIMESTAMPS__ is false
@@ -40,7 +40,7 @@ const nbacd_utils = (() => {
     async function readGzJson(urlOrResponse) {
         try {
             let response;
-            if (typeof urlOrResponse === 'string') {
+            if (typeof urlOrResponse === "string") {
                 // If a URL string is provided, fetch it
                 response = await fetch(urlOrResponse);
                 if (!response.ok) {
@@ -52,13 +52,15 @@ const nbacd_utils = (() => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 // Check if the body has already been read
                 if (response.bodyUsed) {
                     // If the body has been consumed, we need to fetch the URL again
                     const responseUrl = response.url;
                     if (!responseUrl) {
-                        throw new Error('Response body has been consumed and URL is not available');
+                        throw new Error(
+                            "Response body has been consumed and URL is not available"
+                        );
                     }
                     response = await fetch(responseUrl);
                     if (!response.ok) {
@@ -66,29 +68,36 @@ const nbacd_utils = (() => {
                     }
                 }
             } else {
-                throw new Error('Invalid parameter: must be a URL string or Response object');
+                throw new Error(
+                    "Invalid parameter: must be a URL string or Response object"
+                );
             }
-            
+
             // Try the standard approach first
             try {
                 const buffer = await response.arrayBuffer();
                 const uint8Array = new Uint8Array(buffer);
-                
+
                 const decompressed = pako.inflate(uint8Array, { to: "string" });
                 const jsonData = JSON.parse(decompressed);
                 return jsonData;
             } catch (inflateError) {
-                console.warn("Standard decompression failed, trying alternative approach:", inflateError);
-                
+                console.warn(
+                    "Standard decompression failed, trying alternative approach:",
+                    inflateError
+                );
+
                 // Fallback: Try the base64 approach from StackOverflow
                 try {
                     // Get the response as text (which might be base64)
                     const responseText = await response.text();
-                    
+
                     // Convert base64 to binary string if it looks like base64
                     // (just a simple heuristic - check if it's mostly alphanumeric plus +/)
-                    const isLikelyBase64 = /^[A-Za-z0-9+/=]+$/.test(responseText.substring(0, 100));
-                    
+                    const isLikelyBase64 = /^[A-Za-z0-9+/=]+$/.test(
+                        responseText.substring(0, 100)
+                    );
+
                     let binaryString;
                     if (isLikelyBase64) {
                         try {
@@ -100,22 +109,29 @@ const nbacd_utils = (() => {
                     } else {
                         binaryString = responseText;
                     }
-                    
+
                     // Convert binary string to Uint8Array
                     const charData = new Array(binaryString.length);
                     for (let i = 0; i < binaryString.length; i++) {
                         charData[i] = binaryString.charCodeAt(i);
                     }
-                    
+
                     const altUint8Array = new Uint8Array(charData);
-                    
+
                     // Try to inflate
-                    const altDecompressed = pako.inflate(altUint8Array, { to: "string" });
+                    const altDecompressed = pako.inflate(altUint8Array, {
+                        to: "string",
+                    });
                     const altJsonData = JSON.parse(altDecompressed);
                     return altJsonData;
                 } catch (altError) {
-                    console.error("Alternative decompression approach also failed:", altError);
-                    throw new Error(`Failed to decompress gzipped JSON: ${inflateError.message}; Alternative method also failed: ${altError.message}`);
+                    console.error(
+                        "Alternative decompression approach also failed:",
+                        altError
+                    );
+                    throw new Error(
+                        `Failed to decompress gzipped JSON: ${inflateError.message}; Alternative method also failed: ${altError.message}`
+                    );
                 }
             }
         } catch (error) {
@@ -283,9 +299,12 @@ const nbacd_utils = (() => {
      */
     function createZoomOptions(updateButtonPositionsCallback) {
         // Default to global updateButtonPositions function if callback not provided
-        updateButtonPositionsCallback = updateButtonPositionsCallback || 
-            (typeof window.updateButtonPositions === 'function' ? window.updateButtonPositions : function() {});
-            
+        updateButtonPositionsCallback =
+            updateButtonPositionsCallback ||
+            (typeof window.updateButtonPositions === "function"
+                ? window.updateButtonPositions
+                : function () {});
+
         return {
             zoom: {
                 drag: {
@@ -309,21 +328,21 @@ const nbacd_utils = (() => {
                 onZoom: function ({ chart }) {
                     // Update buttons during zoom (not just after completion)
                     updateButtonPositionsCallback(chart);
-                    
+
                     // Always try the global function too for better reliability
-                    if (typeof window.updateButtonPositions === 'function') {
+                    if (typeof window.updateButtonPositions === "function") {
                         window.updateButtonPositions(chart);
                     }
                 },
                 onZoomComplete: function ({ chart }) {
                     // Update button positions after zoom
                     updateButtonPositionsCallback(chart);
-                    
+
                     // Always try the global function too for better reliability
-                    if (typeof window.updateButtonPositions === 'function') {
+                    if (typeof window.updateButtonPositions === "function") {
                         window.updateButtonPositions(chart);
                     }
-                    
+
                     // Setup a continuous check to ensure buttons stay in position
                     setupContinuousButtonCheck(chart);
                 },
@@ -336,41 +355,41 @@ const nbacd_utils = (() => {
                 onPan: function ({ chart }) {
                     // Update buttons during panning (not just after completion)
                     updateButtonPositionsCallback(chart);
-                    
+
                     // Always try the global function too for better reliability
-                    if (typeof window.updateButtonPositions === 'function') {
+                    if (typeof window.updateButtonPositions === "function") {
                         window.updateButtonPositions(chart);
                     }
                 },
                 onPanComplete: function ({ chart }) {
                     // Update button positions after panning completes
                     updateButtonPositionsCallback(chart);
-                    
+
                     // Always try the global function too for better reliability
-                    if (typeof window.updateButtonPositions === 'function') {
+                    if (typeof window.updateButtonPositions === "function") {
                         window.updateButtonPositions(chart);
                     }
-                    
+
                     // Setup a continuous check to ensure buttons stay in position
                     setupContinuousButtonCheck(chart);
                 },
             },
         };
-        
+
         // Helper function to continuously check button position during zoom/pan interactions
         function setupContinuousButtonCheck(chart) {
             // Store the interval ID on the chart to avoid multiple intervals
             if (chart._buttonCheckInterval) {
                 clearInterval(chart._buttonCheckInterval);
             }
-            
+
             // Set up interval to continue updating button positions
             chart._buttonCheckInterval = setInterval(() => {
-                if (typeof window.updateButtonPositions === 'function') {
+                if (typeof window.updateButtonPositions === "function") {
                     window.updateButtonPositions(chart);
                 }
             }, 100); // Check every 100ms
-            
+
             // Clear the interval after 2 seconds (when user is likely done interacting)
             setTimeout(() => {
                 if (chart._buttonCheckInterval) {
@@ -395,8 +414,8 @@ const nbacd_utils = (() => {
             "rgba(66, 165, 81, 0.5)", // Green - for showing positive trends
             "rgba(255, 99, 132, 0.5)", // Red - for highlighting important data
             "rgba(153, 102, 255, 0.5)", // Purple - complementary to other colors
-            "rgba(255, 206, 86, 0.5)", // Yellow - high visibility
-            "rgba(199, 199, 199, 0.5)", // Gray - for secondary or less important data
+            "rgba(100, 105, 115, 0.5)", // Slate Gray - darker and more visible than light gray
+            "rgba(184, 134, 11, 0.5)", // Dark Gold - like an Olympic medal
         ];
 
         // Replace the default opacity (0.5) with the requested opacity
@@ -773,31 +792,31 @@ const nbacd_utils = (() => {
      */
     function setLocalStorageWithTimestamp(key, data, lastModified) {
         if (!__USE_LOCAL_STORAGE_CACHE__) return false;
-        
+
         try {
             // Try to clear some space first if localStorage is getting full
             if (isLocalStorageAlmostFull()) {
                 pruneOldestCacheEntries();
             }
-            
+
             // Store the data
             localStorage.setItem(key, JSON.stringify(data));
-            
+
             // Store timestamp metadata
             localStorage.setItem(`${key}_timestamp`, Date.now().toString());
-            
+
             // Store the server Last-Modified header if available
             if (lastModified && __USE_SERVER_TIMESTAMPS__) {
                 localStorage.setItem(`${key}_lastModified`, lastModified);
             }
-            
+
             return true;
         } catch (e) {
             console.error("Error storing in localStorage:", e);
             return false;
         }
     }
-    
+
     /**
      * Checks if localStorage is getting close to its quota
      * @returns {boolean} True if localStorage is more than 80% full
@@ -811,17 +830,17 @@ const nbacd_utils = (() => {
                 const value = localStorage.getItem(key);
                 totalSize += (key.length + value.length) * 2; // Unicode characters take 2 bytes
             }
-            
+
             // Default quota is typically 5MB (5,242,880 bytes)
             // Consider it almost full if using more than 80% of estimated quota
             const estimatedQuota = 5 * 1024 * 1024; // 5MB in bytes
-            return totalSize > (estimatedQuota * 0.8);
+            return totalSize > estimatedQuota * 0.8;
         } catch (e) {
             console.error("Error checking localStorage size:", e);
             return true; // Assume it's almost full if we can't check
         }
     }
-    
+
     /**
      * Removes oldest cache entries to free up space
      * Removes up to 20% of the cached entries, starting with the oldest
@@ -830,30 +849,35 @@ const nbacd_utils = (() => {
         try {
             // Collect all cache entries with their timestamps
             const cacheEntries = [];
-            
+
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                
+
                 // Only process data keys (not metadata keys)
-                if (key && key.startsWith('nbacd_') && !key.endsWith('_timestamp') && !key.endsWith('_lastModified')) {
+                if (
+                    key &&
+                    key.startsWith("nbacd_") &&
+                    !key.endsWith("_timestamp") &&
+                    !key.endsWith("_lastModified")
+                ) {
                     const timestampKey = `${key}_timestamp`;
                     const timestamp = localStorage.getItem(timestampKey);
-                    
+
                     if (timestamp) {
                         cacheEntries.push({
                             key: key,
-                            timestamp: parseInt(timestamp, 10)
+                            timestamp: parseInt(timestamp, 10),
                         });
                     }
                 }
             }
-            
+
             // Sort by timestamp (oldest first)
             cacheEntries.sort((a, b) => a.timestamp - b.timestamp);
-            
+
             // Remove oldest 20% of entries
             const entriesToRemove = Math.ceil(cacheEntries.length * 0.2);
-            
+
             for (let i = 0; i < entriesToRemove; i++) {
                 if (i < cacheEntries.length) {
                     const key = cacheEntries[i].key;
@@ -862,13 +886,13 @@ const nbacd_utils = (() => {
                     localStorage.removeItem(`${key}_lastModified`);
                 }
             }
-            
+
             // console.log(`Pruned ${entriesToRemove} oldest cache entries to free up space`);
         } catch (e) {
             console.error("Error pruning cache entries:", e);
         }
     }
-    
+
     /**
      * Get data from localStorage with validation
      * @param {string} key - The storage key
@@ -876,7 +900,7 @@ const nbacd_utils = (() => {
      */
     function getLocalStorageWithTimestamp(key) {
         if (!__USE_LOCAL_STORAGE_CACHE__) return null;
-        
+
         try {
             // If using server timestamps, we don't check for expiration here
             // The timestamp validation will happen in checkIfCacheIsValid when fetching
@@ -884,11 +908,11 @@ const nbacd_utils = (() => {
                 // Check timestamp first
                 const timestampKey = `${key}_timestamp`;
                 const timestamp = localStorage.getItem(timestampKey);
-                
+
                 if (timestamp) {
                     const cacheTime = parseInt(timestamp, 10);
                     const now = Date.now();
-                    
+
                     // If cache is expired, clear it and return null
                     if (now - cacheTime > __MAX_CACHE_AGE_MS__) {
                         localStorage.removeItem(key);
@@ -897,7 +921,7 @@ const nbacd_utils = (() => {
                     }
                 }
             }
-            
+
             // Get and parse the data
             const data = localStorage.getItem(key);
             return data ? JSON.parse(data) : null;
@@ -906,7 +930,7 @@ const nbacd_utils = (() => {
             return null;
         }
     }
-    
+
     /**
      * Checks if the cache is still valid by comparing with server file's Last-Modified
      * @param {string} key - The storage key
@@ -917,41 +941,44 @@ const nbacd_utils = (() => {
         if (!__USE_LOCAL_STORAGE_CACHE__ || !__USE_SERVER_TIMESTAMPS__) {
             return false;
         }
-        
+
         try {
             // Get the cached Last-Modified value
             const cachedLastModified = localStorage.getItem(`${key}_lastModified`);
             if (!cachedLastModified) {
                 return false;
             }
-            
+
             // Perform a HEAD request to check the Last-Modified header
-            const response = await fetch(url, { method: 'HEAD' });
+            const response = await fetch(url, { method: "HEAD" });
             if (!response.ok) {
                 return true; // If HEAD request fails, assume cache is still valid
             }
-            
-            const serverLastModified = response.headers.get('Last-Modified');
-            
+
+            const serverLastModified = response.headers.get("Last-Modified");
+
             // If server doesn't provide Last-Modified, assume cache is invalid
             if (!serverLastModified) {
                 return false;
             }
-            
+
             // Compare timestamps
-            return new Date(cachedLastModified).getTime() >= new Date(serverLastModified).getTime();
+            return (
+                new Date(cachedLastModified).getTime() >=
+                new Date(serverLastModified).getTime()
+            );
         } catch (e) {
             console.error("Error checking cache validity:", e);
             return true; // On error, assume cache is valid to prevent excessive requests
         }
     }
-    
+
     /**
      * Initialize cache management by cleaning up expired items
      */
     function initCacheManagement() {
         if (!__USE_LOCAL_STORAGE_CACHE__) return;
-        
+
         try {
             // If we're using server timestamps, we don't automatically remove entries based on age
             // Instead, we'll check against server timestamps when the data is requested
@@ -959,17 +986,22 @@ const nbacd_utils = (() => {
                 // Clean up expired cache entries
                 const now = Date.now();
                 const keysToRemove = [];
-                
+
                 for (let i = 0; i < localStorage.length; i++) {
                     const key = localStorage.key(i);
-                    
+
                     // Only process our cache data keys (not metadata keys)
-                    if (key && key.startsWith('nbacd_') && !key.endsWith('_timestamp') && !key.endsWith('_lastModified')) {
+                    if (
+                        key &&
+                        key.startsWith("nbacd_") &&
+                        !key.endsWith("_timestamp") &&
+                        !key.endsWith("_lastModified")
+                    ) {
                         try {
                             // Try to get timestamp metadata
                             const timestampKey = `${key}_timestamp`;
                             const timestamp = localStorage.getItem(timestampKey);
-                            
+
                             if (timestamp) {
                                 const cacheTime = parseInt(timestamp, 10);
                                 if (now - cacheTime > __MAX_CACHE_AGE_MS__) {
@@ -986,9 +1018,9 @@ const nbacd_utils = (() => {
                         }
                     }
                 }
-                
+
                 // Remove expired items
-                keysToRemove.forEach(key => {
+                keysToRemove.forEach((key) => {
                     try {
                         localStorage.removeItem(key);
                     } catch (e) {
@@ -1000,28 +1032,28 @@ const nbacd_utils = (() => {
             console.error("Error during cache initialization:", e);
         }
     }
-    
+
     /**
      * Clears all nbacd-related cache entries from localStorage
      * @returns {number} Count of cleared cache entries
      */
     function clearAllCache() {
         if (!__USE_LOCAL_STORAGE_CACHE__) return 0;
-        
+
         try {
             const keysToRemove = [];
-            const processedCount = {value: 0};
-            
+            const processedCount = { value: 0 };
+
             // Find all NBACD cache keys (both data and metadata)
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key && key.startsWith('nbacd_')) {
+                if (key && key.startsWith("nbacd_")) {
                     keysToRemove.push(key);
                 }
             }
-            
+
             // Remove all identified keys
-            keysToRemove.forEach(key => {
+            keysToRemove.forEach((key) => {
                 try {
                     localStorage.removeItem(key);
                     processedCount.value++;
@@ -1029,63 +1061,63 @@ const nbacd_utils = (() => {
                     // Ignore removal errors
                 }
             });
-            
+
             return processedCount.value;
         } catch (e) {
             console.error("Error clearing cache:", e);
             return 0;
         }
     }
-    
+
     // Check for cache clearing instruction in URL
     function checkUrlForCacheClear() {
-        if (window.location.hash === '#clear') {
+        if (window.location.hash === "#clear") {
             const clearedCount = clearAllCache();
             console.log(`Cache cleared: ${clearedCount} items removed`);
-            
+
             // Remove the #clear from the URL to prevent clearing on every page refresh
             // Replace current URL without the hash
             try {
-                const url = window.location.href.split('#')[0];
+                const url = window.location.href.split("#")[0];
                 window.history.replaceState({}, document.title, url);
             } catch (e) {
                 // Fallback for browsers not supporting history API
-                window.location.hash = '';
+                window.location.hash = "";
             }
-            
+
             // Show a brief message to the user
-            const messageDiv = document.createElement('div');
-            messageDiv.style.position = 'fixed';
-            messageDiv.style.top = '10px';
-            messageDiv.style.left = '50%';
-            messageDiv.style.transform = 'translateX(-50%)';
-            messageDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
-            messageDiv.style.color = 'white';
-            messageDiv.style.padding = '10px 20px';
-            messageDiv.style.borderRadius = '5px';
-            messageDiv.style.zIndex = '9999';
-            messageDiv.style.fontFamily = 'Arial, sans-serif';
+            const messageDiv = document.createElement("div");
+            messageDiv.style.position = "fixed";
+            messageDiv.style.top = "10px";
+            messageDiv.style.left = "50%";
+            messageDiv.style.transform = "translateX(-50%)";
+            messageDiv.style.backgroundColor = "rgba(0,0,0,0.7)";
+            messageDiv.style.color = "white";
+            messageDiv.style.padding = "10px 20px";
+            messageDiv.style.borderRadius = "5px";
+            messageDiv.style.zIndex = "9999";
+            messageDiv.style.fontFamily = "Arial, sans-serif";
             messageDiv.textContent = `Cache cleared: ${clearedCount} items removed`;
-            
+
             document.body.appendChild(messageDiv);
-            
+
             // Remove the message after 3 seconds
             setTimeout(() => {
                 if (messageDiv.parentNode) {
                     messageDiv.parentNode.removeChild(messageDiv);
                 }
             }, 3000);
-            
+
             return true;
         }
         return false;
     }
-    
+
     // Run cache initialization
     setTimeout(() => {
         // First check for cache clear instruction
         const cacheCleared = checkUrlForCacheClear();
-        
+
         // Then run normal cache management if cache wasn't just cleared
         if (!cacheCleared) {
             initCacheManagement();
@@ -1119,6 +1151,6 @@ const nbacd_utils = (() => {
         __HOVER_PLOTS_ON_CLICK_ON_MOBILE_NOT_FULLSCREEN__,
         __USE_LOCAL_STORAGE_CACHE__,
         __USE_SERVER_TIMESTAMPS__,
-        __MAX_CACHE_AGE_MS__
+        __MAX_CACHE_AGE_MS__,
     };
 })();

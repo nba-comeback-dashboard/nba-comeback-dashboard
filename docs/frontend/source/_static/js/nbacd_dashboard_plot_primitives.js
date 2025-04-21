@@ -197,7 +197,7 @@ const nbacd_dashboard_plot_primitives = (() => {
             this.all_game_ids = this.get_all_game_ids();
             this.number_of_games = this.all_game_ids.size;
             if (this.legend) {
-                this.legend = `${legend} (${this.number_of_games} Games)`;
+                this.legend = `${legend} (${this.number_of_games.toLocaleString()} Games)`;
             }
 
             if (cumulate) {

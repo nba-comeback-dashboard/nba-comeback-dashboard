@@ -7,7 +7,7 @@ Methodology and Forming the Plot Trend Lines
 Methodology
 ===========
 
-At core, this is a simple dashboard -- it:
+At its core, this is a simple dashboard -- it:
 
 * Finds all the games that meet the conditions specified (:doc:`comeback type
   </analysis/understanding_and_using_the_plots>`, seasons, time left, team rank, etc.)
@@ -18,20 +18,20 @@ At core, this is a simple dashboard -- it:
 * And then fits a normal model to that data so we can see the trend in the underlying
   data more clearly.
 
-This is different than other probability dashboards (like the one you see on a Google
-game summary page or the ESPN app for example). Those have `involved formulas
+This is different than other real-time probability calculators (like the one you see on
+a Google game summary page, the ESPN app, or what 538 put together for example). Those
+have `very involved formulas
 <https://fivethirtyeight.com/methodology/how-our-nba-predictions-work/>`_ that also
-consider additional factors (BPI rating, player lineups, vegas odds, etc.) and are
-closed so it's not clear what the input conditions are (e.g. what seasons) or what
-algorithm is used.  And, just to note, the entire concept of how accurate prediction
-models are is complicated `and debated
-<https://www.reddit.com/r/CFB/comments/1048sou/i_analyzed_850000_espn_ingame_win_probabilities/>`_).
+consider additional factors (BPI rating, player lineups, vegas odds, etc.).  Also, they
+are closed so it's not clear what the input conditions are (e.g. what seasons) or what
+algorithm is used.
 
-Rather, the idea here is just to plot the available data based on a set of conditions
-in a way that allows analysis and comparison, trying to show as much of the actual
-historical game data that makes up the data points as possible.  The only part of the
-process where judgement is applied is the approach to the trend line fitting which is
-described below.
+Here, the idea is not to pinpoint the exact win probability but rather is just to plot
+the available data based on a set of conditions in a way that allows analysis and
+comparison (while trying to show as much of the actual historical game data that makes
+up the data points as possible).  The only part of the process where judgement is
+applied is the approach to the trend line fitting which is described below.
+
 
 .. _trend-lines-help-reduce-statistical-noise:
 

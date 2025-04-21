@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath('_ext'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "NBA comeback dashboard"
+project = "NBA Comeback Dashboard"
 copyright = "2025"
 author = ""
 
@@ -99,7 +99,7 @@ html_theme_options = {
     "navbar_end": ["navbar-icon-links", "search-button"],
     "show_prev_next": False,
     "logo": {
-        "text": "NBA comeback dashboard",
+        "text": "NBA Comeback Dashboard",
         # "image_light": "_static/logo-light.png",
     },
     "icon_links": [

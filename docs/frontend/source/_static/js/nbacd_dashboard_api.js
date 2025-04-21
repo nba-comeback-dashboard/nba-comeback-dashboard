@@ -309,7 +309,7 @@ const nbacd_dashboard_api = (() => {
             time_desc = "Entire Game";
         } else if (start_time === 36) {
             if (down_mode === "at") {
-                time_desc = "3rd Quarter";
+                time_desc = "2nd Quarter";
             } else {
                 time_desc = "Final 3 Quarters";
             }
@@ -343,11 +343,11 @@ const nbacd_dashboard_api = (() => {
         let title;
 
         if (down_mode === "at") {
-            title = `Points Down${or_more} At Start of ${time_desc}`;
+            title = `Win % v. Points Down${or_more} At Start of ${time_desc}`;
             max_point_margin = max_point_margin === null ? -1 : max_point_margin;
             fit_max_points = fit_max_points === null ? -1 : fit_max_points;
         } else {
-            title = `Max Points Down${or_more} During ${time_desc}`;
+            title = `Win % v. Max Points Down${or_more} During ${time_desc}`;
             max_point_margin = max_point_margin === null ? "auto" : max_point_margin;
             // Match Python behavior EXACTLY: set fit_max_points to "10%" if it's null OR undefined
             if (fit_max_points === null || fit_max_points === undefined) {
@@ -612,7 +612,7 @@ const nbacd_dashboard_api = (() => {
                         }
 
                         let point_margin;
-                        if (percent === "Record") {
+                        if (percent === "Record" || percent === "R") {
                             point_margin = points_down_line.margin_at_record();
                         } else {
                             // Handle percentage strings with trailing %
@@ -655,7 +655,7 @@ const nbacd_dashboard_api = (() => {
                 let legend = `${percent_string}`;
 
                 if (number_of_year_groups > 1) {
-                    legend = `${legend} | ${games.get_years_string()} (${game_count} Games)`;
+                    legend = `${legend} | ${games.get_years_string()} (${game_count.toLocaleString()} Games)`;
                 }
 
                 if (number_of_game_filters > 1) {
@@ -748,13 +748,11 @@ const nbacd_dashboard_api = (() => {
         }
 
         // Create title
-        let title = "% Chance of Coming Back Deficit Versus Time";
+        let title = "% Chance of Coming Back: Points Down v. Time";
 
         if (number_of_year_groups === 1) {
             const firstData = all_percent_data[0];
-            title = `${title} | ${firstData.games.get_years_string()} (${
-                firstData.game_count
-            } Games)`;
+            title = `${title} | ${firstData.games.get_years_string()} (${firstData.game_count.toLocaleString()} Games)`;
         }
 
         if (number_of_game_filters === 1 && game_filters[0] !== null) {

@@ -8,7 +8,9 @@ Analysis
    :maxdepth: 1
 
    20_is_new_18
+   home_v_away
    rule_of_thumb_that_actually_works
+   goto_chart
    close_making_it_a_game
    do_the_twolves_give_up_big_leads
    methodology_forming_the_plot_trend_lines

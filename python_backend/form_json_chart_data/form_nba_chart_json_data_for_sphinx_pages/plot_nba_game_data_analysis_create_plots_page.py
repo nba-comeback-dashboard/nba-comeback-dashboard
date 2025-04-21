@@ -298,7 +298,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
             json_name=json_name,
             year_groups=[years_groups[0]],
             game_filters=game_filters,
-            start_time=12,
+            start_time=24,
             percents=["20%", "10%", "5%", "1%", "Record"],
         )
         clean_title = remove_game_count(title)
@@ -310,7 +310,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
             json_name=json_name,
             year_groups=[years_groups[1]],
             game_filters=game_filters,
-            start_time=12,
+            start_time=24,
             percents=["20%", "10%", "5%", "1%", "Record"],
         )
         clean_title = remove_game_count(title)
@@ -321,7 +321,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
             json_name=json_name,
             year_groups=years_groups,
             game_filters=[game_filters[-2]],
-            start_time=12,
+            start_time=24,
             percents=["20%", "10%", "5%", "1%", "Record"],
         )
         clean_title = remove_game_count(title)
@@ -333,7 +333,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
             json_name=json_name,
             year_groups=years_groups,
             game_filters=[game_filters[-1]],
-            start_time=12,
+            start_time=24,
             percents=["20%", "10%", "5%", "1%", "Record"],
         )
         clean_title = remove_game_count(title)
@@ -352,7 +352,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
-        start_time=12,
+        start_time=24,
         percents=["10%"],
     )
     # Already using custom_title which doesn't have game count, no need to apply remove_game_count
@@ -368,7 +368,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
-        start_time=12,
+        start_time=24,
         percents=["1%"],
     )
     # Already using custom_title which doesn't have game count, no need to apply remove_game_count

@@ -36,7 +36,7 @@ So if you're down 20 after the first, historical game data suggests you have:
 * A 34.5% chance of pulling within five.
 
 So a third of the time, you get a pretty close game, but not "more often than not". And
-just to note, `this 2022 Cleveland playin game did get down to within 5
+just to note, `this 2022 Cleveland play-in game did get down to within 5
 <https://www.nba.com/game/cle-vs-bkn-0052100101/play-by-play?period=Q4>`_ albeit in the
 last 20 seconds.
 

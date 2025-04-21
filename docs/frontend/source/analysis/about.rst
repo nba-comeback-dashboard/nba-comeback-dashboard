@@ -3,13 +3,14 @@ About
 *****
 
 .. green-box::
-   Feel free to `email me <mailto:nba.comeback.dashboard@gmail.com>`_ or `click here
-   if you would like to tip this work
-   <https://buymeacoffee.com/nba.comeback.dashboard>`_ so I can buy some more tokens.
+   Feel free to `email me <mailto:nba.comeback.dashboard@gmail.com>`_ or `click here if
+   you would like to tip this work <https://buymeacoffee.com/nba.comeback.dashboard>`_
+   so I can buy some more tokens.
 
 This project started when I was :doc:`trying to examine a rule of thumb
 </analysis/rule_of_thumb_that_actually_works>` about how safe leads are while watching
-NBA games.
+NBA games and I wanted to create :doc:`a chart I could reference when watching games
+</analysis/goto_chart>`.
 
 While showing a friend some of the data, he suggested that I :doc:`should try using AI
 to code </analysis/using_claude_code>` the front end for this project since -- in my

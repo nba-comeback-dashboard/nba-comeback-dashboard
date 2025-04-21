@@ -66,12 +66,17 @@ const nbacd_dashboard_state = (() => {
             
             // Build pc parameter (percents) for Percent Chance plot type
             let pcParam = '';
-            if (plotTypeIndex === 0 && state.selectedPercents && state.selectedPercents.length > 0) {
-                pcParam = state.selectedPercents.join('_');
+            if (plotTypeIndex === 3 && state.selectedPercents && state.selectedPercents.length > 0) {
+                // Convert "Record" to "R" for URL encoding
+                pcParam = state.selectedPercents.map(p => p === "Record" ? "R" : p).join('_');
                 
                 // Add guide flags if set
-                if (state.plotGuides || state.plotCalculatedGuides) {
-                    pcParam += `_${state.plotGuides ? '1' : '0'}${state.plotCalculatedGuides ? '1' : '0'}`;
+                if (state.plotGuides) {
+                    pcParam += "_G";
+                }
+                
+                if (state.plotCalculatedGuides) {
+                    pcParam += "_C";
                 }
             }
             
@@ -174,7 +179,7 @@ const nbacd_dashboard_state = (() => {
                 startTime: 48,
                 endTime: 0,
                 specificTime: 12,
-                selectedPercents: ["20", "10", "5", "1", "Record"],
+                selectedPercents: ["20", "10", "5", "1", "R"],
                 plotGuides: false,
                 plotCalculatedGuides: false,
                 maxPointMargin: null, // Auto by default
@@ -214,6 +219,7 @@ const nbacd_dashboard_state = (() => {
             const pParam = params.get('p');
             const tParam = params.get('t');
             const pcParam = params.get('pc');
+            
             
             // Try to parse the plot type parameter
             if (pParam !== null) {
@@ -314,24 +320,33 @@ const nbacd_dashboard_state = (() => {
                     // Split by underscore and filter out empty parts
                     const parts = percentStr.split('_').filter(p => p.length > 0);
                     
-                    // Check if the last part contains guide flags (it would be a 2-character string with 0/1)
-                    if (parts.length > 0 && parts[parts.length - 1].length === 2 && 
-                        (parts[parts.length - 1][0] === '0' || parts[parts.length - 1][0] === '1') &&
-                        (parts[parts.length - 1][1] === '0' || parts[parts.length - 1][1] === '1')) {
-                        
-                        // Extract guide flags
-                        const guideFlags = parts.pop();
-                        stateObj.plotGuides = guideFlags[0] === '1';
-                        stateObj.plotCalculatedGuides = guideFlags[1] === '1';
-                    }
+                    // Initialize guide flags
+                    stateObj.plotGuides = false;
+                    stateObj.plotCalculatedGuides = false;
                     
-                    // Remaining parts are percent values
-                    if (parts.length > 0) {
-                        stateObj.selectedPercents = parts;
+                    // Extract special flags
+                    const percents = [];
+                    parts.forEach(part => {
+                        if (part === 'G') {
+                            stateObj.plotGuides = true;
+                        } else if (part === 'C') {
+                            stateObj.plotCalculatedGuides = true;
+                        } else {
+                            // Keep as is - all values R, 20, 10, etc.
+                            percents.push(part);
+                        }
+                    });
+                    
+                    // Set the percent values
+                    if (percents.length > 0) {
+                        // Normalize "R" to "Record" for consistent internal representation
+                        stateObj.selectedPercents = percents.map(p => p === "R" ? "Record" : p);
                     } else {
                         // If no valid percents were parsed, use defaults
-                        stateObj.selectedPercents = ["20", "10", "5", "1"];
+                        stateObj.selectedPercents = ["20", "10", "5", "1", "Record"];
                     }
+                } else {
+                    stateObj.selectedPercents = ["20", "10", "5", "1", "Record"];
                 }
             }
             

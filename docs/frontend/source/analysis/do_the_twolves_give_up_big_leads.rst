@@ -94,23 +94,23 @@ different in giving up big leads than the league average.
 Other Ways To Cut It
 ====================
 
-But they are *exceptional* that is for sure. For example, check out the the biggest
+But they are *exceptional* that is for sure. For example, check out the biggest
 comebacks ever at 4 minutes remaining from when play by play was recorded:
 
 .. raw:: html
 
     <div id="twolves_leads/max_4min_all_time" class="nbacd-chart"></div>
 
-Another one for the record books is a 17-point comeback given up by our 2020 Twolves.
+Another one for the record books is a 17-point comeback given up by our 2020 Timberwolves.
 
 But to bolster what I said before, if you look at the next dot over at 16 points, it's
-the Twolves who came back against OKC on 2/24/2025. Not to mention the recent comeback
+the Timberwolves who came back against OKC on 2/24/2025. Not to mention the recent comeback
 from 13 points down with 4 minutes left against Houston on 12/27/2024 (hover over the
-dots to get the game details and links to nba.com).  So once again the recent Twolves
+dots to get the game details and links to nba.com).  So once again the recent Timberwolves
 come back more than they let the lead slip away.
 
 In the end, there's probably some other statistically significant stat (maybe size of
-their runs versus runs they let opponents go on) that explain the frequency of these
+their runs versus runs they let opponents go on) that explains the frequency of these
 outliers and why we are collectively chewing our nails to bloody stubs watching them
 with a 20 point lead in the 4th.  Again on Twitter, `Britt noted
 <https://x.com/brittrobson/status/1909794675004702866>`_:

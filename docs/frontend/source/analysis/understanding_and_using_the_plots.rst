@@ -17,7 +17,7 @@ project:
     Note, for the first three plot types, the percent chance of coming back versus
     point deficit is normally distributed.  So when plotted on a `normal probability
     plot <https://en.wikipedia.org/wiki/Normal_probability_plot>`_ and :doc:`we fit
-    trend lines (e.g. fit a normal model) to the statistical data
+    trend lines (that is, fit a normal model) to the statistical data
     </analysis/methodology_forming_the_plot_trend_lines>` we can then better examine
     the lower probability events and also more easily compare different eras or
     situations.

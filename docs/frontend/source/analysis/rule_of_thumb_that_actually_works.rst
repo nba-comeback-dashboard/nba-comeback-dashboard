@@ -55,7 +55,7 @@ Where :math:`\Phi^{-1}` is the inverse of the standard normal cumulative distrib
 function and the ``2.49`` constant applies when looking at all data from 1996 to now
 (if you change the conditions, that number changes, usually slightly, :ref:`as
 explained below<best-fit-guides>`). This allows us to expand this rule for the (more
-interesting) 5% chance and the extremely unlikely 1% chance:
+interesting) 5% chance and the snowball-in-hell 1% chance:
 
 .. list-table::
     :header-rows: 1 
