@@ -612,7 +612,7 @@ const nbacd_dashboard_api = (() => {
                         }
 
                         let point_margin;
-                        if (percent === "Record") {
+                        if (percent === "Record" || percent === "R") {
                             point_margin = points_down_line.margin_at_record();
                         } else {
                             // Handle percentage strings with trailing %

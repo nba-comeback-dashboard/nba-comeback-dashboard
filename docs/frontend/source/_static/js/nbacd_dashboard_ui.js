@@ -282,9 +282,9 @@ const nbacd_dashboard_ui = (() => {
                                     <li><input type="checkbox" id="percent-10" value="10" checked /><label for="percent-10">10%</label></li>
                                     <li><input type="checkbox" id="percent-5" value="5" checked /><label for="percent-5">5%</label></li>
                                     <li><input type="checkbox" id="percent-1" value="1" checked /><label for="percent-1">1%</label></li>
-                                    <li><input type="checkbox" id="percent-record" value="Record" checked /><label for="percent-record">Record</label></li>
-                                    <li><input type="checkbox" id="percent-guides" value="Guides" /><label for="percent-guides">Guides</label></li>
-                                    <li><input type="checkbox" id="percent-calculated-guides" value="CalculatedGuides" /><label for="percent-calculated-guides">Calculated Guides</label></li>
+                                    <li><input type="checkbox" id="percent-record" value="R" checked /><label for="percent-record">Record</label></li>
+                                    <li><input type="checkbox" id="percent-guides" value="G" /><label for="percent-guides">Guides</label></li>
+                                    <li><input type="checkbox" id="percent-calculated-guides" value="C" /><label for="percent-calculated-guides">Calculated Guides</label></li>
                                 </ul>
                             </div>
                         </div>
@@ -446,11 +446,13 @@ const nbacd_dashboard_ui = (() => {
                 '#percent-options-list ul.items input[type="checkbox"]'
             );
             percentCheckboxes.forEach((checkbox) => {
-                checkbox.checked =
-                    state.selectedPercents.includes(checkbox.value) ||
-                    (checkbox.id === "percent-guides" && state.plotGuides) ||
-                    (checkbox.id === "percent-calculated-guides" &&
-                        state.plotCalculatedGuides);
+                if (checkbox.id === "percent-guides" && state.plotGuides) {
+                    checkbox.checked = true;
+                } else if (checkbox.id === "percent-calculated-guides" && state.plotCalculatedGuides) {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = state.selectedPercents.includes(checkbox.value);
+                }
             });
 
             // Initialize selected text
@@ -753,8 +755,8 @@ const nbacd_dashboard_ui = (() => {
             // Get all checked values
             const selectedOptions = Array.from(percentCheckboxes)
                 .filter((cb) => cb.checked)
-                .map((cb) => cb.value);
-
+                .map((cb) => cb.value === "R" ? "Record" : cb.value);
+                
             // Ensure at least one option is selected
             if (selectedOptions.length === 0) {
                 // If nothing is selected, reset to default selections
@@ -773,12 +775,12 @@ const nbacd_dashboard_ui = (() => {
             state.plotCalculatedGuides = false;
 
             // Check for special options
-            state.plotGuides = selectedOptions.includes("Guides");
-            state.plotCalculatedGuides = selectedOptions.includes("CalculatedGuides");
+            state.plotGuides = selectedOptions.includes("G");
+            state.plotCalculatedGuides = selectedOptions.includes("C");
 
             // Filter out guide options to keep only numerical percents and Record
             const filteredOptions = selectedOptions.filter(
-                (option) => option !== "Guides" && option !== "CalculatedGuides"
+                (option) => option !== "G" && option !== "C"
             );
 
             // Save selected percents
@@ -818,10 +820,11 @@ const nbacd_dashboard_ui = (() => {
                 // This ensures hover boxes are closed when hitting Calculate button
                 nbacd_utils.chartJsToolTipClearer(event);
 
-                // Make sure year groups and game filters are up to date before rendering
+                // Make sure all state is up to date before rendering
                 updateYearGroupsState();
                 updateGameFiltersState();
-
+                updatePercentState(); // Make sure percents are up to date
+                
                 // Update URL and reload the page
                 if (typeof nbacd_dashboard_state !== "undefined") {
                     const urlParams = nbacd_dashboard_state.updateBrowserUrl(state);
@@ -1551,10 +1554,17 @@ const nbacd_dashboard_ui = (() => {
             const apiStartTime = formatTimeForApi(state.startTime);
 
             if (state.plotType === "Percent Chance: Time Vs. Points Down") {
+                // Ensure selectedPercents is not empty or undefined
+                if (!state.selectedPercents || state.selectedPercents.length === 0) {
+                    // Use defaults if empty
+                    state.selectedPercents = ["20", "10", "5", "1", "R"];
+                }
+                
                 // Format percents with % sign
                 const formattedPercents = state.selectedPercents.map((p) =>
-                    p === "Record" ? p : p + "%"
+                    p === "R" ? "Record" : p + "%"
                 );
+                
 
                 // Handle empty game filter array - use null when empty
                 const gameFilters =
@@ -1877,7 +1887,7 @@ const nbacd_dashboard_ui = (() => {
             if (state.plotType === "Percent Chance: Time Vs. Points Down") {
                 // Format percents with % sign
                 const formattedPercents = state.selectedPercents.map((p) =>
-                    p === "Record" ? p : p + "%"
+                    p === "Record" || p === "R" ? "Record" : p + "%"
                 );
 
                 // Handle empty game filter array - use null when empty
