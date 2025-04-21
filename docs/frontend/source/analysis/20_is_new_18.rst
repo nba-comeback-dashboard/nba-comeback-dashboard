@@ -124,7 +124,6 @@ sink into a 20 point hole, I don't think the data is telling you to say "20 poin
 that's nothing anymore".
 
 
-
 .. _win-percentages-when-teams-are-down-n-points-with-so-much-time-left:
 
 Win Percentages When Teams Are Down N Points With So Much Time Left
@@ -209,10 +208,12 @@ Now, teams fall down 30 points or more ``~12%`` of the time compared to ``~7.6%`
 the past, a notable 1.59x increase (or about 59% more frequently).
 
 
-.. _what-would-be-dramatic:
 
-What *Would* Be Dramatic
-========================
+
+.. _what-an-8-point-shift-looks-like:
+
+What An 8 Point Shift Looks Like
+================================
 
 When I started to compare the modern versus old school eras, I was expecting (based on
 the current perception out there) that the shift was going to be large.  When it
