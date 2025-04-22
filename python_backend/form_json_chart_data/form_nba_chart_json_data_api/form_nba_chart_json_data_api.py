@@ -1061,7 +1061,7 @@ def plot_espn_versus_dashboard(
         plot_type="espn_versus_dashboard",
         title=title,
         x_label="Minutes Elapsed",
-        y_label="Win Probability (σ)",
+        y_label="Win Probability (%)",
         y_ticks=y_ticks,
         y_tick_labels=y_tick_labels,
         min_x=start_time,

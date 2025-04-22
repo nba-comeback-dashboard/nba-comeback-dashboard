@@ -190,7 +190,6 @@ class DashboardLine(PlotLine):
         json_data = {
             "legend": self.legend,
             "team_name": self.team_name,
-            "url": self.url,
             "line_type": "dashboard",
         }
         
@@ -201,6 +200,12 @@ class DashboardLine(PlotLine):
         json_data["x_values"] = [float(x) for x in self.x_values]
         json_data["y_values"] = y_values = []
         
+        # Base URL parameters
+        plot_type = "2"  # Default: Points Down At Time plot
+        seasons = "2017-2024-B"  # Modern era, both regular and playoffs
+        game_filter = "ANY-h-ANY"  # Default: Any team, home games, vs any team
+        mode = "auto"  # Auto mode
+        
         for index, y_value in enumerate(self.y_values):
             # y_value is already in sigma space after the transformation in plot_espn_versus_dashboard
             # Convert sigma back to probability for percent field
@@ -209,15 +214,76 @@ class DashboardLine(PlotLine):
             except:
                 # Handle any errors by providing a default
                 percent = 0.5
-                
+            
+            # Get the time value for this point and format it for URL
+            x_value = float(self.x_values[index])
+            time_param = self._format_time_for_url(x_value)
+            
+            # Create the URL for this data point
+            url = f"p={plot_type}&t={time_param}&s={seasons}&g={game_filter}&m={mode}"
+            
             point_json = {
-                "x_value": float(self.x_values[index]),
+                "x_value": x_value,
                 "y_value": float(y_value),
                 "percent": percent,  # Already in 0-1 decimal format
+                "url": url
             }
             y_values.append(point_json)
             
         return json_data
+        
+    def _format_time_for_url(self, time_elapsed):
+        """
+        Format time elapsed for URL parameter.
+        
+        Converts the elapsed time into the appropriate URL parameter format.
+        For sub-minute times in the final minute, uses special second formats.
+        
+        Parameters:
+        -----------
+        time_elapsed : float
+            Time elapsed in minutes
+            
+        Returns:
+        --------
+        str
+            Formatted time string for URL
+        """
+        # Check if time is within the final minute
+        if 47 <= time_elapsed < 48:
+            # Calculate seconds remaining
+            seconds_remaining = int((48 - time_elapsed) * 60)
+            
+            # Special handling for specific second intervals
+            if 44 <= seconds_remaining <= 46:
+                return "45s"
+            elif 29 <= seconds_remaining <= 31:
+                return "30s"
+            elif 14 <= seconds_remaining <= 16:
+                return "15s"
+            elif 9 <= seconds_remaining <= 11:
+                return "10s"
+            elif 4 <= seconds_remaining <= 6:
+                return "5s"
+            elif seconds_remaining < 3:
+                return "0"  # End of regulation
+            else:
+                # For other seconds in the final minute, return the minute remaining
+                return "1"
+        elif time_elapsed >= 48:
+            # Overtime handling
+            ot_period = 1 + int((time_elapsed - 48) / 5)
+            minutes_in_ot = (time_elapsed - 48) % 5
+            
+            if minutes_in_ot > 4.9:  # Very end of OT
+                return f"{ot_period}OT-0"
+            else:
+                minutes_remaining = 5 - minutes_in_ot
+                return f"{ot_period}OT-{int(minutes_remaining)}"
+        else:
+            # Regular game time (return minutes remaining)
+            minutes_remaining = 48 - time_elapsed
+            return str(int(minutes_remaining))
 
 
 def get_espn_game_data(espn_game_id: str) -> dict:

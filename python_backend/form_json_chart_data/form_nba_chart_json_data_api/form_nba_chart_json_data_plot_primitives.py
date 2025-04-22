@@ -672,7 +672,12 @@ class FinalPlot:
         self.min_x = min_x
         self.max_x = max_x
         self.x_label = x_label
-        self.y_label = ("Win " + "\u03c3") if use_normal_labels else y_label
+        
+        # For ESPN vs Dashboard plots, always use Win Probability (%)
+        if plot_type == "espn_versus_dashboard":
+            self.y_label = "Win Probability (%)"
+        else:
+            self.y_label = ("Win " + "\u03c3") if use_normal_labels else y_label
         # self.x_ticks = x_ticks
         if use_normal_labels == "max_or_more":
             y_ticks = list(Num.arange(-4.0, 2.0, 0.5))
