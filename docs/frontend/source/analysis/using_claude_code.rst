@@ -2,6 +2,10 @@
 Using Claude Code to AI Auto-Generate This Site
 ***********************************************
 
+.. green-box::
+    
+    Last updated 4/22/2025
+
 .. contents::
   :depth: 1
   :local:
@@ -47,7 +51,8 @@ it integrated in an IDE.  (And recently, after I finished this project up, Open 
 
 Overall, I settled on a hybrid project where I wrote most of the Python myself for the
 data processing and `tried my hand at vibe coding
-<https://zapier.com/blog/vibe-coding/>`_ for the JavaScript front-end UI using Claude Code.
+<https://zapier.com/blog/vibe-coding/>`_ for the JavaScript front-end UI using Claude
+Code.
 
 In broad strokes, I:
 
@@ -71,10 +76,10 @@ In broad strokes, I:
   but :ref:`mostly I let Claude do the work via prompts <vibe-coding-the-front-end>`.
 
 * Then, asked Claude Code :ref:`to convert my analysis Python
-  code <creating-the-interactive-dashboard>` so the game processing could happen in
-  the browser to build the :doc:`dashboard </dashboard/index>`.  This includes
-  converting some fairly involved numpy/scipy number crunching code so in the browser
-  we can perform :doc:`probit regression using maximum likelihood estimation running a
+  code <creating-the-interactive-dashboard>` so the game processing could happen in the
+  browser to build the :doc:`dashboard </dashboard/index>`.  This includes converting
+  some fairly involved numpy/scipy number crunching code so in the browser we can
+  perform :doc:`probit regression using maximum likelihood estimation running a
   gradient descent fmin algorithm </analysis/methodology_forming_the_plot_trend_lines>`.
 
 * Then, I again vibe coded the dashboard bootstrap form UI that allows users to set up
@@ -467,14 +472,14 @@ advice:
   just causes more problems that are harder to debug and leads to bloated code. Again,
   touching on the memory issue, that's why `in the CLAUDE.md file
   <https://github.com/nba-comeback-dashboard/nba-comeback-dashboard/blob/main/docs/frontend/source/_static/CLAUDE.md>`_
-  you'll see many, many notes about error handling, over and over. It would be ok for
-  a while but would usually revert back to adding error handling code again, leading me to
-  tell it again not to do this.
+  you'll see many, many notes about error handling, over and over. It would be ok for a
+  while but would usually revert back to adding error handling code again, leading me
+  to tell it again not to do this.
 
 * **After a couple of tries, debug the error yourself**: And this problem gets worse
-  and worse as you try to get Claude to solve a tough bug that it is not able to
-  solve. Here, I found it's often better after a try or two to figure out what is
-  going on and directly guide the tool.
+  and worse as you try to get Claude to solve a tough bug that it is not able to solve.
+  Here, I found it's often better after a try or two to figure out what is going on and
+  directly guide the tool.
 
 * **Make sure you're actually testing what you are asking Claude to fix**: A combo of
   the above points, I wasted more than a few dollars asking Claude to repeatedly fix
@@ -485,13 +490,14 @@ advice:
 
 * **Commit, then ask for a single feature one at a time**: I got into a flow where
   every time before I asked for a feature, I would commit, ask, test, then (usually)
-  diff the change using ``git difftool``. If it was a mess, I would revert. Many
-  times I didn't follow this advice, asking for multiple features at a time or not
-  committing changes and that's when I would get into the most trouble. (Also, Claude
-  Code can commit for you, something I didn't do much in an effort to save cost but
-  something I'm revisiting more in the future.)
+  diff the change using ``git difftool``. If it was a mess, I would revert. Many times
+  I didn't follow this advice, asking for multiple features at a time or not committing
+  changes and that's when I would get into the most trouble. (Also, Claude Code can
+  commit for you, something I didn't do much in an effort to save cost but something
+  I'm revisiting more in the future.)
 
-* **Use Claude to help write your requirements**: Since the whole point is to save effort,
+* **Use Claude to help write your requirements**: Since the whole point is to save
+  effort,
   you'll start to notice that typing all the .md files and prompts can take time, too.
   So I did get into a habit of writing bad specs and giving bad prompts, asking Claude
   to clean up and flesh out my requirements before writing code. I had good success

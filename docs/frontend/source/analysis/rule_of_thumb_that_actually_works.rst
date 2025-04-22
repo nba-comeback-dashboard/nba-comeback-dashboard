@@ -5,6 +5,10 @@
 A Rule Of Thumb That Actually Works If Your Thumb Is Good At Math
 *****************************************************************
 
+.. green-box::
+    
+    Last updated 4/22/2025
+
 
 .. _a-rule-of-thumb:
 
