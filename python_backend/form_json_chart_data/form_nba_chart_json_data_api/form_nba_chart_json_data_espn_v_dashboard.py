@@ -261,17 +261,17 @@ class DashboardLine(PlotLine):
 
         return json_data
 
-    def _format_time_for_url(self, time_elapsed):
+    def _format_time_for_url(self, time_remaining):
         """
-        Format time elapsed for URL parameter.
+        Format time remaining for URL parameter.
 
-        Converts the elapsed time into the appropriate URL parameter format.
+        Converts the remaining time into the appropriate URL parameter format.
         For sub-minute times in the final minute, uses special second formats.
 
         Parameters:
         -----------
-        time_elapsed : float
-            Time elapsed in minutes
+        time_remaining : float
+            Time remaining in minutes
 
         Returns:
         --------
@@ -279,9 +279,9 @@ class DashboardLine(PlotLine):
             Formatted time string for URL
         """
         # Check if time is within the final minute
-        if 47 <= time_elapsed < 48:
+        if 0 < time_remaining <= 1:
             # Calculate seconds remaining
-            seconds_remaining = int((48 - time_elapsed) * 60)
+            seconds_remaining = int(time_remaining * 60)
 
             # Special handling for specific second intervals
             if 44 <= seconds_remaining <= 46:
@@ -299,10 +299,10 @@ class DashboardLine(PlotLine):
             else:
                 # For other seconds in the final minute, return the minute remaining
                 return "1"
-        elif time_elapsed >= 48:
+        elif time_remaining <= 0:
             # Overtime handling
-            ot_period = 1 + int((time_elapsed - 48) / 5)
-            minutes_in_ot = (time_elapsed - 48) % 5
+            ot_period = 1 + int(abs(time_remaining) / 5)
+            minutes_in_ot = abs(time_remaining) % 5
 
             if minutes_in_ot > 4.9:  # Very end of OT
                 return f"{ot_period}OT-0"
@@ -311,8 +311,7 @@ class DashboardLine(PlotLine):
                 return f"{ot_period}OT-{int(minutes_remaining)}"
         else:
             # Regular game time (return minutes remaining)
-            minutes_remaining = 48 - time_elapsed
-            return str(int(minutes_remaining))
+            return str(int(time_remaining))
 
 
 def get_espn_game_data(espn_game_id: str) -> dict:

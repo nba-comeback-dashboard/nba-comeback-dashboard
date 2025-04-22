@@ -657,8 +657,8 @@ nbacd_plotter_data = (() => {
                 // Use the min/max from the chart data, but with some padding
                 min: chartData.min_x - 1,
                 max: chartData.max_x + 1,
-                // For time_v_point_margin plot type, reverse the axis
-                reverse: plotType === "time_v_point_margin",
+                // For time_v_point_margin and espn_versus_dashboard plot types, reverse the axis
+                reverse: plotType === "time_v_point_margin" || plotType === "espn_versus_dashboard",
                 title: {
                     display: true,
                     text: chartData.x_label,

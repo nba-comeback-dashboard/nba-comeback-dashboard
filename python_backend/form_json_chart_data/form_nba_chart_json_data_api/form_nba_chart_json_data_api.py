@@ -1112,16 +1112,20 @@ def plot_espn_versus_dashboard(
     final_plot = FinalPlot(
         plot_type="espn_versus_dashboard",
         title=title,
-        x_label="Minutes Elapsed",
+        x_label="Time Remaining",
         y_label="Win Probability (%)",
         y_ticks=y_ticks,
         y_tick_labels=y_tick_labels,
-        min_x=start_time,
-        max_x=48,  # End at regulation time
+        min_x=0,  # Changed to 0 since we're showing time remaining
+        max_x=48 - start_time,  # Changed to show time remaining
         lines=lines,
         json_name=json_name,
         espn_game_id=espn_game_id,  # Include ESPN game ID in the top level
     )
+
+    # Convert x_values to time remaining for all lines
+    for line in lines:
+        line.x_values = [48 - x for x in line.x_values]
 
     final_plot.to_json()
 
