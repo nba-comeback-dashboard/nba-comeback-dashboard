@@ -729,7 +729,34 @@ function createHoverGuidancePlugin() {
                         const dataPoint = dataset.data[element.index];
                         if (dataPoint) {
                             const timeValue = dataPoint.x;
-                            const percent = dataPoint.y ? Math.round(dataPoint.y * 100) : 0;
+                            
+                            // For dashboard points, we need to look up the percent in pointMarginData
+                            // since the y_value is in sigma units, not percentage
+                            let percent = 0;
+                            
+                            // Try to get from chart's pointMarginData
+                            if (chart.pointMarginData && 
+                                chart.pointMarginData[dataPoint.x] && 
+                                chart.pointMarginData[dataPoint.x]["Dashboard Win Probability"]) {
+                                
+                                const pointData = chart.pointMarginData[dataPoint.x]["Dashboard Win Probability"];
+                                percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
+                            } 
+                            // Fallback to direct CDF calculation if available
+                            else if (typeof Num !== 'undefined' && Num.CDF) {
+                                percent = (Num.CDF(dataPoint.y) * 100).toFixed(2);
+                            }
+                            // Fallback to placeholder
+                            else {
+                                // Just use a reasonable value based on sigma
+                                // 0 sigma = 50%
+                                if (dataPoint.y > 0) {
+                                    percent = Math.min(99.99, (50 + dataPoint.y * 25)).toFixed(2);
+                                } else {
+                                    percent = Math.max(0.01, (50 + dataPoint.y * 25)).toFixed(2);
+                                }
+                            }
+                            
                             guidanceEl.textContent = `Dashboard @ ${timeValue}: ${percent}% (click for data)`;
                         } else {
                             guidanceEl.textContent = 'Dashboard (click for data)';
@@ -743,7 +770,34 @@ function createHoverGuidancePlugin() {
                         const dataPoint = dataset.data[element.index];
                         if (dataPoint) {
                             const timeValue = dataPoint.x;
-                            const percent = dataPoint.y ? Math.round(dataPoint.y * 100) : 0;
+                            
+                            // For ESPN points, we need to look up the percent in pointMarginData
+                            // since the y_value is in sigma units, not percentage
+                            let percent = 0;
+                            
+                            // Try to get from chart's pointMarginData
+                            if (chart.pointMarginData && 
+                                chart.pointMarginData[dataPoint.x] && 
+                                chart.pointMarginData[dataPoint.x]["ESPN Win Probability"]) {
+                                
+                                const pointData = chart.pointMarginData[dataPoint.x]["ESPN Win Probability"];
+                                percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
+                            } 
+                            // Fallback to direct CDF calculation if available
+                            else if (typeof Num !== 'undefined' && Num.CDF) {
+                                percent = (Num.CDF(dataPoint.y) * 100).toFixed(2);
+                            }
+                            // Fallback to placeholder
+                            else {
+                                // Just use a reasonable value based on sigma
+                                // 0 sigma = 50%
+                                if (dataPoint.y > 0) {
+                                    percent = Math.min(99.99, (50 + dataPoint.y * 25)).toFixed(2);
+                                } else {
+                                    percent = Math.max(0.01, (50 + dataPoint.y * 25)).toFixed(2);
+                                }
+                            }
+                            
                             guidanceEl.textContent = `ESPN @ ${timeValue}: ${percent}%`;
                         } else {
                             guidanceEl.textContent = 'ESPN Win Probability';
