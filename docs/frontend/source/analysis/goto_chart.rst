@@ -44,9 +44,9 @@ this :doc:`chart will change if you change the conditions
 Home Versus Away For The Modern Era
 ===================================
 
-The conditional providing the greatest discrimination is probably adding whether
-:doc:`the team coming back is at home or away </analysis/home_v_away>`. Then,
-:doc:`limiting the seasons to the modern era </analysis/20_is_new_18>`.
+The conditional providing the greatest value is probably adding whether :doc:`the team
+coming back is at home or away </analysis/home_v_away>`. Then, :doc:`limiting the
+seasons to the modern era </analysis/20_is_new_18>`.
 
 Adding those two conditions gives you these two plots, which will give you a closer
 match to the probability given by an in-game probability calculator for example:
