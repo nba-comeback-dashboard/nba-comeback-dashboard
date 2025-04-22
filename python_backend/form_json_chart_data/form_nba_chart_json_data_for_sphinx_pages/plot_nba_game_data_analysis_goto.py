@@ -48,22 +48,35 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (2021, 2024),
+    (1996, 2024),
 ]
 
 plot_espn_versus_dashboard(
-    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705718.json.gz",
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_min_at_bucks_401705718.json.gz",
     espn_game_id="401705718",
     year_groups=eras,
     game_filters=None,
 )
 
+eras = [
+    # ERA ONE
+    (2017, 2024),
+]
+
 plot_espn_versus_dashboard(
-    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705392.json.gz",
-    espn_game_id="401705392",
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718.json.gz",
+    espn_game_id="401705718",
     year_groups=eras,
-    game_filters=None,
+    game_filters=[GameFilter(for_at_home=True)],
 )
+
+
+# plot_espn_versus_dashboard(
+#     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705392.json.gz",
+#     espn_game_id="401705392",
+#     year_groups=eras,
+#     game_filters=None,
+# )
 
 
 exit()

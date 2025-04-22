@@ -199,8 +199,8 @@ const nbacd_plotter_core = (() => {
                         axis: "xy",
                         hoverRadius: 10, // Larger hover detection
                     },
-                    events: ['mousemove', 'click'],
-                    hoverEvents: ['mousemove'],
+                    events: [], // No events at all for live-data - disable both mousemove and click
+                    hoverEvents: ['mousemove'], // Keep hover events only for visual feedback
                     hitRadius: 15, // Larger hit area
                     pointBackgroundColor: color.replace("0.5", "0.7"),
                     pointBorderColor: color.replace("0.5", "0.7"),
@@ -209,6 +209,7 @@ const nbacd_plotter_core = (() => {
                     hoverBackgroundColor: color.replace("0.5", "0.9"),
                     hoverBorderWidth: 0,
                     line_type: "live-data",
+                    skipTooltip: true, // Explicitly skip tooltips for live-data
                 };
                 
                 // Add the combined dataset to the chart configuration

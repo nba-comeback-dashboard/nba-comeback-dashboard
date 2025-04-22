@@ -957,6 +957,10 @@ nbacd_plotter_data = (() => {
             </td></tr>`;
                 }
             );
+        } else if (context.chart.plotType === "espn_versus_dashboard") {
+            // For espn_versus_dashboard plot type, we should never reach here
+            // because live-data line clicks should be blocked earlier
+            return ""; // Return empty bodyHtml to prevent tooltip display
         } else {
             console.warn(`Unknown plot type: ${context.chart.plotType}`);
             return bodyHtml; // Return existing body HTML instead of throwing
@@ -1089,29 +1093,9 @@ nbacd_plotter_data = (() => {
                 }
             }
             
-            // For live-data lines, show win percentage in a simple tooltip
+            // For live-data lines, no tooltip on click
             if (lineType === "live-data") {
-                const xValue = dataPoint.x.toString();
-                const legendKey = dataset.label;
-                
-                // Get win percentage from pointMarginData if available
-                if (context.chart.pointMarginData && 
-                    context.chart.pointMarginData[xValue] && 
-                    context.chart.pointMarginData[xValue][legendKey]) {
-                    
-                    const liveData = context.chart.pointMarginData[xValue][legendKey];
-                    const winPercent = liveData.winPercent || "0.00";
-                    
-                    // Format the time value to 1 decimal place
-                    const formattedTime = (typeof xValue === 'string' && !isNaN(parseFloat(xValue))) 
-                        ? parseFloat(xValue).toFixed(1) 
-                        : xValue;
-                    
-                    // Create a simple tooltip with ESPN and time and win percentage
-                    return `<tr><td style="text-align: left;">ESPN @ ${formattedTime}<br>Win %: ${winPercent}%</td></tr>`;
-                }
-                
-                // If no data found, return empty string
+                // Return empty string to prevent any tooltip from showing
                 return "";
             }
             
@@ -1318,6 +1302,11 @@ nbacd_plotter_data = (() => {
                 
                 // Check for the skipTooltip flag - if present, don't show any tooltip
                 if (dataset && dataset.skipTooltip) {
+                    return; // Exit immediately without showing tooltip
+                }
+                
+                // For live-data line type, never show a tooltip on click
+                if (dataset && dataset.line_type === "live-data") {
                     return; // Exit immediately without showing tooltip
                 }
             }

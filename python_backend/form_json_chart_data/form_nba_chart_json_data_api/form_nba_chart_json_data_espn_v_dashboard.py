@@ -235,7 +235,7 @@ class DashboardLine(PlotLine):
             # Create the URL for this data point
             url = f"p={plot_type}&t={time_param}&s={seasons}&g={game_filter}&m={mode}"
 
-            breakpoint()
+            # breakpoint()
             point_json = {
                 "x_value": x_value,
                 "y_value": float(y_value),

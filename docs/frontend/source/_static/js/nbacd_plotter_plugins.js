@@ -760,11 +760,11 @@ function createHoverGuidancePlugin() {
                                 }
                             }
                             
-                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
-                            guidanceEl.textContent = `${shortLegend} @ ${timeValue}: ${percent}% (click for data)`;
+                            // Format the time value to 1 decimal place
+                            const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
+                            guidanceEl.textContent = `Dashboard @ ${formattedTime}: ${percent}%`;
                         } else {
-                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
-                            guidanceEl.textContent = `${shortLegend} (click for data)`;
+                            guidanceEl.textContent = `Dashboard (click for data)`;
                         }
                         guidanceEl.style.opacity = "1";
                     } 
@@ -814,7 +814,7 @@ function createHoverGuidancePlugin() {
                         }
                         guidanceEl.style.opacity = "1";
                     }
-                    // For live-data lines, show ESPN data guidance
+                    // For live-data lines, show ESPN data guidance but no click indication
                     else if (lineType === "live-data") {
                         // Get the data point
                         const element = activeElements[0];
