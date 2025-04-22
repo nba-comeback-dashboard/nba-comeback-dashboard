@@ -123,7 +123,8 @@ game data since 1996:
 
     <div id="goto/espn_v_dashboard_all_time_gsw_at_hou_401767823" class="nbacd-chart"></div>
 
-And here again using recent years and home team advantage:
+And here again using recent years and home team advantage (and again, the dashboard
+model is giving a bigger advantage to the home team):
 
 .. raw:: html
 
