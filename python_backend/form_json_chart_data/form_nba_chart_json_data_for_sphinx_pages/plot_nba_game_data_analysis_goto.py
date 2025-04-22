@@ -20,6 +20,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
     plot_percent_versus_time,
+    plot_espn_versus_dashboard,
     GameFilter,
 )
 
@@ -43,6 +44,29 @@ import form_nba_chart_json_data_season_game_loader as loader
 # Convert relative json_base_path to an absolute path
 json_base_path = os.path.abspath(os.path.join(script_dir, json_base_path))
 loader.json_base_path = json_base_path
+
+
+eras = [
+    # ERA ONE
+    (2021, 2024),
+]
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705718.json.gz",
+    espn_game_id="401705718",
+    year_groups=eras,
+    game_filters=None,
+)
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705392.json.gz",
+    espn_game_id="401705392",
+    year_groups=eras,
+    game_filters=None,
+)
+
+
+exit()
 
 
 eras = [
@@ -111,12 +135,6 @@ plot_percent_versus_time(
 #     start_time=36,
 #     percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
 # )
-plot_espn_versus_dashboard(
-    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705718.json.gz",
-    espn_game_id="401705718"
-    year_groups=eras,
-    game_filters=game_filters,
-)
 
 
 eras = [

@@ -1,15 +1,11 @@
-# plot_nba_game_data_analysis_thumb.py
 """
-Script for generating thumbnail charts for NBA game analysis.
-
-This script creates simplified JSON chart data files intended for thumbnail
-or preview displays of NBA game analysis visualizations.
+Test script for verifying the ESPN vs Dashboard live probability implementation.
 """
 
 import sys
 import os
 
-# Add the API directory to the path using relative path from script location
+# Add the API directory to the path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
 form_nba_chart_json_data_api_dir = os.path.join(
@@ -19,34 +15,33 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    plot_espn_versus_dashboard,
+    GameFilter,
 )
 
-# Base paths for input and output files
-# Base paths for input and output files
-json_base_path = "../../../docs/frontend/source/_static/json/seasons"
-chart_base_path = "../../../docs/frontend/source/_static/json/charts"
-
+# Import the loader module to set json_base_path
 import form_nba_chart_json_data_season_game_loader as loader
 
-# Convert relative json_base_path to an absolute path
-json_base_path = os.path.abspath(os.path.join(script_dir, json_base_path))
+# Set the path to the JSON season data
+json_base_path = os.path.join(parent_dir, "..", "..", "docs", "frontend", "source", "_static", "json", "seasons")
+json_base_path = os.path.abspath(json_base_path)
 loader.json_base_path = json_base_path
+print(f"JSON base path: {json_base_path}")
 
-base_path = f"{chart_base_path}/thumb"
-# Control which plots to generate
-plot_all = True
+# Base path for output
+output_path = os.path.join(script_dir, "test_output.json.gz")
 
-eras_one = [
-    # ERA ONE
-    (1996, 2024),
-    # (2017, 2024),
+# Set up era for analysis
+eras = [
+    (2021, 2024),
 ]
 
-plot_biggest_deficit(
-    json_name=None,
-    year_groups=eras_one,
-    start_time=24,
-    stop_time=None,
-    cumulate=True,
+# Run the function
+plot_espn_versus_dashboard(
+    json_name=output_path,
+    espn_game_id="401705392",  # Use the same ID as in goto script
+    year_groups=eras,
+    game_filters=None,
 )
+
+print(f"Test completed. Output written to: {output_path}")
