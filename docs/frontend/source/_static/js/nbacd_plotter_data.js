@@ -209,10 +209,6 @@ nbacd_plotter_data = (() => {
                 const y = line.m * x + line.b;
 
                 // Calculate win percentage using normalCDF
-                // Where the trend line Win % number is coming from.
-                // if (x == -20) {
-                //     console.log(line.legend, x, y, Num.CDF(y));
-                // }
                 const winPercentage = (100.0 * Num.CDF(y)).toFixed(2);
 
                 // Store the data using legend as key
@@ -919,17 +915,11 @@ nbacd_plotter_data = (() => {
         else if (context.chart.plotType === "time_v_point_margin") {
             // Already defined chartPointMarginData for consistency across code paths
 
-            // This console logging is no longer needed because features are working fine
-            // console.debug(`Chart tooltip for time ${xValue}, using chart-specific data:`,
-            //              !!context.chart.pointMarginData,
-            //              `Chart ID: ${context.chart.id}`);
 
             // Check if we have pre-calculated point margin data
             if (!chartPointMarginData[xValue]) {
                 // Instead of throwing an error, just return the existing body HTML
                 // This handles the case where we have incomplete data in the JSON
-                // This console logging is no longer needed because features are working fine
-                // console.warn(`No pre-calculated data available for time ${xValue} in chart ${context.chart.id}`);
                 return bodyHtml;
             }
 
@@ -938,8 +928,6 @@ nbacd_plotter_data = (() => {
                 ([legend, data], i) => {
                     // Skip if pointValue is missing
                     if (data.pointValue === undefined) {
-                        // This console logging is no longer needed because features are working fine
-                        // console.warn(`Missing pointValue for line ${legend} at time ${xValue}`);
                         return; // Skip this entry instead of throwing error
                     }
 
@@ -1011,7 +999,7 @@ nbacd_plotter_data = (() => {
             !context.tooltip.dataPoints ||
             !context.tooltip.dataPoints[0]
         ) {
-            console.log("Missing required context for generateScatterPointTooltipBody");
+            // Missing required context for tooltip
             return "";
         }
 
@@ -1022,16 +1010,19 @@ nbacd_plotter_data = (() => {
 
         // Ensure we have a valid dataset and index
         if (!dataset || !dataset.data || index >= dataset.data.length) {
-            console.log("Invalid dataset or index in generateScatterPointTooltipBody");
+            // Invalid dataset or index
             return "";
         }
 
         const dataPoint = dataset.data[index];
         if (!dataPoint) return "";
         
+        // No console logging needed here
+                   
         // Check if this is a dataset that should skip tooltips
-        if (dataset.skipTooltip) {
-            // Don't even try to show a tooltip for this dataset type
+        // BUT NEVER skip for dashboard line types - we need the URL redirection to work
+        if (dataset.skipTooltip && (!dataset.line_type || dataset.line_type !== "dashboard")) {
+            // Skip tooltip but allow dashboard points to continue for URL redirection
             return "";
         }
         
@@ -1040,8 +1031,11 @@ nbacd_plotter_data = (() => {
             // Get the line type - defaults to standard if not set
             const lineType = dataset.line_type || "standard";
             
+            // Process dashboard chart point
+            
             // For dashboard type lines, immediately redirect without showing tooltip
             if (lineType === "dashboard") {
+                // Process dashboard point for URL redirection
                 // For dashboard type lines, first check if the dataPoint has a URL
                 // If not, check if we have URL in pointMarginData
                 let url = dataPoint.url;
@@ -1057,17 +1051,36 @@ nbacd_plotter_data = (() => {
                 
                 // If we have a URL, redirect immediately
                 if (url) {
-                    // Construct the correct dashboard URL at the site root level
-                    // Get just the origin without any path components
-                    const baseUrl = window.location.origin + '/dashboard/';
+                    // Construct the correct dashboard URL that works with the site structure
+                    // Calculate base path by getting pathname up to the last directory
+                    const currentPath = window.location.pathname;
+                    // Remove the current page and get the base directory path
+                    const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+                    // Create the dashboard URL by replacing the current path with dashboard path
+                    const baseUrl = window.location.origin + basePath.replace(/\/[^\/]*\/$/, '/dashboard/');
                     const fullUrl = baseUrl + "index.html?" + url;
                     
-                    // Log the URL (but don't show to user)
-                    console.log("Redirecting to dashboard:", fullUrl);
+                    // Redirect to dashboard URL
                     
-                    // Navigate to the dashboard URL with a slight delay to ensure event processing is complete
+                    // Hide any visible tooltip immediately
+                    const tooltipEl = document.getElementById("chartjs-tooltip");
+                    if (tooltipEl) {
+                        tooltipEl.style.opacity = "0";
+                        tooltipEl.setAttribute("data-sticky", "false");
+                        const tableRoot = tooltipEl.querySelector("table");
+                        if (tableRoot) {
+                            tableRoot.innerHTML = "";
+                        }
+                    }
+                    
+                    // Also force any Chart.js tooltips to hide
+                    if (context.chart && context.chart.tooltip) {
+                        context.chart.tooltip.setActiveElements([], {});
+                    }
+                    
+                    // Open dashboard URL in a new tab instead of navigating the current page
                     setTimeout(() => {
-                        window.location.href = fullUrl;
+                        window.open(fullUrl, '_blank');
                     }, 100);
                     
                     // Return empty string to ensure no tooltip is shown
@@ -1240,13 +1253,28 @@ nbacd_plotter_data = (() => {
                 datasetIndex < context.chart.data.datasets.length) {
                 
                 const dataset = context.chart.data.datasets[datasetIndex];
-                // Check for the skipTooltip flag - if present, don't show any tooltip
-                if (dataset && dataset.skipTooltip) {
-                    return; // Exit immediately without showing tooltip
+                
+                // Handle dashboard points specially - don't show tooltip but allow URL redirection
+                if (dataset && dataset.line_type === "dashboard") {
+                    // For dashboard points, we need to allow the click handler to process through generateScatterPointTooltipBody
+                    // so the URL redirection can occur, but we don't want to show an actual tooltip
+                    
+                    // Hide any existing tooltips
+                    const tooltipEl = document.getElementById("chartjs-tooltip");
+                    if (tooltipEl) {
+                        tooltipEl.style.opacity = "0";
+                        tooltipEl.style.display = "none"; // Completely hide it
+                    }
+                    
+                    // Mark this as being handled specially, but DO NOT RETURN
+                    // We need to continue execution to allow the tooltip handler to run
+                    context.chart.isDashboardClick = true;
+                    
+                    // Critical: DO NOT return here, or URL redirection won't work
                 }
                 
-                // Check for line_type = "dashboard" - also don't show tooltip for these
-                if (dataset && dataset.line_type === "dashboard") {
+                // Check for the skipTooltip flag - if present, don't show any tooltip
+                if (dataset && dataset.skipTooltip) {
                     return; // Exit immediately without showing tooltip
                 }
             }

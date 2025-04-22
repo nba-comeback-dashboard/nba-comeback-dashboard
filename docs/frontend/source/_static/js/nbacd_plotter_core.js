@@ -408,10 +408,11 @@ const nbacd_plotter_core = (() => {
                 hoverBackgroundColor: color.replace("0.5", "0.9"),
                 hoverBorderWidth: 0,
                 line_type: "dashboard", // Add line_type for tooltip handler to use
-                // Disable tooltips entirely for dashboard points
-                tooltipEnabled: false,
-                // Special flag to signal no tooltip should be shown
-                skipTooltip: true,
+                // Dashboard points must enable tooltips to get the click events
+                // but we'll hide the actual tooltip display in the tooltip handler
+                tooltipEnabled: true,
+                // DO NOT SET skipTooltip here - it will prevent URL redirection!
+                skipTooltip: false, // EXPLICITLY set to false to ensure tooltips are processed
             };
         }
         
@@ -576,6 +577,13 @@ document.addEventListener('click', function(event) {
                 if (chartInstance) {
                     // Set last click timestamp
                     chartInstance.lastClickEvent = new Date().getTime();
+                    
+                    // Special handling for dashboard chart clicks
+                    if (chartInstance.plotType === "espn_versus_dashboard") {
+                        // Let the normal tooltip handling proceed, but make sure
+                        // we set the lastClickEvent to ensure it's treated as a click
+                        // Dashboard chart click detected
+                    }
                 }
             }
         }
