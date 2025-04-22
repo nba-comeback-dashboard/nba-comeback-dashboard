@@ -965,22 +965,26 @@ def plot_espn_versus_dashboard(
                 if game_filter_index == 0:
                     game_filter_strings.append(filter_string)
 
+            # Get rid of this for now.
             # Generate legend based on whether we have multiple year groups or filters
-            if number_of_year_groups > 1 or number_of_game_filters < 2:
-                legend_prefix = years_string
-            else:
-                legend_prefix = ""
+            # if number_of_year_groups > 1 or number_of_game_filters < 2:
+            #    legend_prefix = years_string
+            # else:
+            legend_prefix = ""
 
-            if number_of_game_filters > 1:
-                if legend_prefix:
-                    legend_prefix = f"{legend_prefix} | "
-                legend_prefix = f"{legend_prefix}{filter_string}"
+            # Changing this to put this in the title.
+            # if number_of_game_filters > 1:
+            #    if legend_prefix:
+            #        legend_prefix = f"{legend_prefix} | "
+            #    legend_prefix = f"{legend_prefix}{filter_string}"
 
             # Calculate dashboard probabilities
-            times, dashboard_probabilities = get_dashboard_win_probability(
-                plays=plays,
-                use_game_filter=(game_filter is not None),
-                modern_era=(start_year_numeric >= 2017),
+            times, dashboard_probabilities, dashboard_point_margins = (
+                get_dashboard_win_probability(
+                    plays=plays,
+                    use_game_filter=(game_filter is not None),
+                    modern_era=(start_year_numeric >= 2017),
+                )
             )
 
             # Create Dashboard line
@@ -1006,6 +1010,7 @@ def plot_espn_versus_dashboard(
                 legend=f"{team_nickname} Dashboard Win Probability {legend_prefix}",
                 x_values=list(times),
                 y_values=list(dashboard_probabilities),
+                point_margins=list(dashboard_point_margins),
                 team_name=team_for_dashboard,
                 url=dashboard_url,
                 game_filter=game_filter,
@@ -1014,10 +1019,14 @@ def plot_espn_versus_dashboard(
 
     # Create title
     title = f"{away_team} @ {home_team} ({game_date})"
-    if number_of_year_groups == 1 and number_of_game_filters > 1:
-        title = f"{title} | {game_years_strings[0]}"
-    elif number_of_game_filters == 1:
-        title = f"{title} | {game_filters[0].get_filter_string()}"
+    title = f"{title} | Use Seasons: {game_years_strings[0]}"
+    if game_filters[0] is not None:
+        title = f"{title} | Use {away_team.split()[-1]} @ Away"
+
+    # if number_of_year_groups == 1 and number_of_game_filters > 1:
+    #    title = f"{title} | {game_years_strings[0]}"
+    # elif number_of_game_filters == 1:
+    #    title = f"{title} | {game_filters[0].get_filter_string()}"
 
     # Convert probabilities to Gaussian sigma values using norm.ppf
     for line in lines:

@@ -109,11 +109,7 @@ class EspnLine(PlotLine):
         for index, y_value in enumerate(self.y_values):
             # y_value is already in sigma space after the transformation in plot_espn_versus_dashboard
             # Convert sigma back to probability for percent field
-            try:
-                percent = norm.cdf(float(y_value))
-            except:
-                # Handle any errors by providing a default
-                percent = 0.5
+            percent = norm.cdf(float(y_value))
 
             point_json = {
                 "x_value": float(self.x_values[index]),
@@ -138,6 +134,7 @@ class DashboardLine(PlotLine):
         legend: str,
         x_values: List[float],
         y_values: List[float],
+        point_margins: List[float],
         team_name: str,
         url: str,
         game_filter=None,
@@ -163,6 +160,7 @@ class DashboardLine(PlotLine):
         self.legend = legend
         self.x_values = x_values
         self.y_values = y_values
+        self.point_margins = point_margins
         self.team_name = team_name
         self.url = url
         self.game_filter = game_filter
@@ -206,8 +204,8 @@ class DashboardLine(PlotLine):
             "line_type": "dashboard",
         }
 
-        if self.game_filter:
-            json_data["filter_string"] = self.game_filter.get_filter_string()
+        # if self.game_filter:
+        #    json_data["filter_string"] = self.game_filter.get_filter_string()
 
         # Convert to native Python types for JSON serialization
         json_data["x_values"] = [float(x) for x in self.x_values]
@@ -219,26 +217,35 @@ class DashboardLine(PlotLine):
         game_filter = "ANY-h-ANY"  # Default: Any team, home games, vs any team
         mode = "auto"  # Auto mode
 
+        # Hard coded right now for looking at away team.
+        sign = -1
+
         for index, y_value in enumerate(self.y_values):
             # y_value is already in sigma space after the transformation in plot_espn_versus_dashboard
             # Convert sigma back to probability for percent field
-            try:
-                percent = norm.cdf(float(y_value))
-            except:
-                # Handle any errors by providing a default
-                percent = 0.5
+            percent = norm.cdf(float(y_value))
 
             # Get the time value for this point and format it for URL
             x_value = float(self.x_values[index])
             time_param = self._format_time_for_url(x_value)
 
-            # Create the URL for this data point
-            url = f"p={plot_type}&t={time_param}&s={seasons}&g={game_filter}&m={mode}"
+            point_margin = self.point_margins[index] * sign
 
-            # breakpoint()
+            if self.game_filter is None:
+                url = f"p={plot_type}&t={time_param}&s={seasons}"
+            else:
+                if point_margin <= 0:
+                    game_filter = "ANY-a-ANY"
+                else:
+                    game_filter = "ANY-h-ANY"
+                url = (
+                    f"p={plot_type}&t={time_param}&s={seasons}&g={game_filter}&m={mode}"
+                )
+
             point_json = {
                 "x_value": x_value,
                 "y_value": float(y_value),
+                "point_margin": int(point_margin),
                 "percent": percent,  # Already in 0-1 decimal format
                 "url": url,
             }
@@ -686,6 +693,7 @@ def get_dashboard_win_probability(
     stop_year = 2024  # Current year
 
     # Calculate probability at each minute
+    point_margin_used = []
     for t in range(
         18, 48
     ):  # 18 to 47 minutes elapsed (excluding the final minute for now)
@@ -712,6 +720,7 @@ def get_dashboard_win_probability(
 
         probabilities.append(float(probability))  # Convert numpy types to Python float
         times.append(int(t))  # Convert numpy types to Python int
+        point_margin_used.append(current_margin)
 
     # Special handling for the final minute with sub-minute intervals
     sub_minute_times = {
@@ -720,32 +729,17 @@ def get_dashboard_win_probability(
         "15s": 47.75,  # 15 seconds remaining in final minute (47 + 0.75)
         "10s": 47.833,  # 10 seconds remaining in final minute (47 + 0.833)
         "5s": 47.917,  # 5 seconds remaining in final minute (47 + 0.917)
-        "0s": 48.0,  # End of game
+        0: 48.0,  # End of game
     }
 
-    # Get the point margin at minute 47 (one minute before the end)
-    base_margin = point_fn(47)
-
-    # For the final interpolation to end of game
-    final_margin = point_fn(min(48, max(time_minutes)))
-
     # Create a simple linear interpolation between the point margins at minute 47 and the final margin
-    for time_str, x_value in sub_minute_times.items():
-        # Calculate interpolation factor (0 at minute 47, 1 at minute 48)
-        factor = (x_value - 47) / 1.0
-
-        # Interpolate the point margin
-        interp_margin = base_margin + factor * (final_margin - base_margin)
-
-        # Calculate the time_point parameter (as string for the sub-minute case)
-        if time_str == "0s":
-            time_point = 0
-        else:
-            time_point = time_str
+    for time_point, x_value in sub_minute_times.items():
+        point_margin = point_fn(x_value)
+        point_margin_used.append(point_margin)
 
         # Create appropriate game filter
         if use_game_filter:
-            if interp_margin <= 0:  # Away team leading
+            if point_margin <= 0:  # Away team leading
                 game_filter = GameFilter(for_at_home=True)  # For home team trailing
             else:  # Home team leading
                 game_filter = GameFilter(for_at_home=False)  # For away team trailing
@@ -756,7 +750,7 @@ def get_dashboard_win_probability(
         probability = calculate_dashboard_probability(
             game_filter=game_filter,
             time_point=time_point,
-            point_margin=interp_margin,
+            point_margin=point_margin,
             start_year=start_year,
             stop_year=stop_year,
         )
@@ -769,4 +763,4 @@ def get_dashboard_win_probability(
     times = [t for t, _ in paired_data]
     probabilities = [p for _, p in paired_data]
 
-    return times, probabilities
+    return times, probabilities, point_margin_used
