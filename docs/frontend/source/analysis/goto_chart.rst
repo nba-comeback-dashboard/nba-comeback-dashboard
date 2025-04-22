@@ -111,11 +111,9 @@ plot this same game again but :doc:`limit to seasons to the last 8 years
     <div id="goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718" class="nbacd-chart"></div>
 
 This now is further away from the ESPN model, but for all practical purposes tells the
-same story. Here, the dashboard model is giving a bigger advantage to the home team, it
-appears but again exact comparisons are not possible due to the closed nature of the
-model (nor would I attempt to understand it even if I had the source code).  It could
-be very well that the ESPN model is not taking home court advantage enough into account
-but I'm not sure all the variables be fed into the model.
+same story. Here, the dashboard model is giving a bigger advantage to the home team. It
+could be this is more accurate, but I'm not sure as I don't know all the variables be
+fed into the model.
 
 Taking another game at random that I just watched and was testing the dashboard against
 was the GSW @ HOU on April 21, 2025. Here's the comparison just using all available
@@ -130,6 +128,7 @@ And here again using recent years and home team advantage:
 .. raw:: html
 
     <div id="goto/espn_v_dashboard_modern_at_home_gsw_at_hou_401767823" class="nbacd-chart"></div>
+
 
 .. _supplementals:
 
