@@ -93,6 +93,7 @@ class EspnLine(PlotLine):
         json_data = {
             "legend": self.legend,
             "team_name": self.team_name,
+            "line_type": "live-data",
         }
         
         # Convert to native Python types for JSON serialization
@@ -190,6 +191,7 @@ class DashboardLine(PlotLine):
             "legend": self.legend,
             "team_name": self.team_name,
             "url": self.url,
+            "line_type": "dashboard",
         }
         
         if self.game_filter:
