@@ -724,9 +724,32 @@ function createHoverGuidancePlugin() {
                     
                     // For dashboard lines, show dashboard-specific guidance
                     if (lineType === "dashboard") {
-                        guidanceEl.textContent = 'Click for dashboard';
+                        // Get the data point
+                        const element = activeElements[0];
+                        const dataPoint = dataset.data[element.index];
+                        if (dataPoint) {
+                            const timeValue = dataPoint.x;
+                            const percent = dataPoint.y ? Math.round(dataPoint.y * 100) : 0;
+                            guidanceEl.textContent = `Dashboard @ ${timeValue}: ${percent}% (click for data)`;
+                        } else {
+                            guidanceEl.textContent = 'Dashboard (click for data)';
+                        }
                         guidanceEl.style.opacity = "1";
                     } 
+                    // For espn lines, show espn-specific guidance
+                    else if (lineType === "espn") {
+                        // Get the data point
+                        const element = activeElements[0];
+                        const dataPoint = dataset.data[element.index];
+                        if (dataPoint) {
+                            const timeValue = dataPoint.x;
+                            const percent = dataPoint.y ? Math.round(dataPoint.y * 100) : 0;
+                            guidanceEl.textContent = `ESPN @ ${timeValue}: ${percent}%`;
+                        } else {
+                            guidanceEl.textContent = 'ESPN Win Probability';
+                        }
+                        guidanceEl.style.opacity = "1";
+                    }
                     // For live-data lines, don't show any guidance
                     else if (lineType === "live-data") {
                         guidanceEl.style.opacity = "0";

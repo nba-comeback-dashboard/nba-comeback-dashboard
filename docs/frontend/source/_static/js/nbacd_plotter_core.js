@@ -287,7 +287,7 @@ const nbacd_plotter_core = (() => {
                 borderWidth: isMobile() ? 3 : 4, // Slightly thinner than standard
                 pointRadius: 0, // No points for live-data
                 pointHoverRadius: 0, // No hover effect
-                label: line.legend,
+                label: "REMOVE!", // Set to REMOVE to ensure it's filtered out
                 tension: 0, // Straight line
                 spanGaps: false,
                 fill: false,
@@ -320,7 +320,7 @@ const nbacd_plotter_core = (() => {
             pointBorderColor: color, // Same color as the point to remove white border
             pointBorderWidth: 0, // No border
             hoverBorderWidth: 2,
-            label: lineType === "dashboard" ? line.legend : "REMOVE!",
+            label: lineType === "espn" ? "ESPN Win Probability" : (lineType === "dashboard" ? "Dashboard Win Probability" : "REMOVE!"),
             // Make the line interactive but only on the points
             tension: 0, // Straight line
             spanGaps: false,
@@ -388,12 +388,11 @@ const nbacd_plotter_core = (() => {
                 borderColor: color,
                 backgroundColor: color.replace("0.5", "0.7"),
                 pointStyle: "circle", // Circular points for dashboard type
-                pointRadius: isMobile() ? 5 : 7, // Slightly smaller than standard
-                pointHoverRadius: isMobile() ? 10 : 13, // Slightly smaller hover radius
-                showLine: true, // Connect points with line for dashboard type
-                borderWidth: isMobile() ? 3 : 4, // Line thickness
+                pointRadius: isMobile() ? 5.6 : 8, // Same as standard scatter
+                pointHoverRadius: isMobile() ? 11 : 14, // Same as standard scatter
+                showLine: false, // No line for scatter points - we already have the trendline
                 fill: false, // No fill
-                label: legend,
+                label: "REMOVE!", // Hide from legend
                 // Hover behavior optimized for dashboard links
                 interaction: {
                     mode: "nearest",
@@ -413,6 +412,36 @@ const nbacd_plotter_core = (() => {
                 tooltipEnabled: true,
                 // DO NOT SET skipTooltip here - it will prevent URL redirection!
                 skipTooltip: false, // EXPLICITLY set to false to ensure tooltips are processed
+            };
+        }
+        
+        // For espn lines in ESPN charts, use settings similar to dashboard but no URL redirect
+        if (isEspnChart && lineType === "espn") {
+            return {
+                type: "scatter",
+                data: scatterPoints,
+                borderColor: color,
+                backgroundColor: color.replace("0.5", "0.7"),
+                pointStyle: "circle", // Circular points for ESPN type
+                pointRadius: isMobile() ? 3 : 4, // Smaller than dashboard points
+                pointHoverRadius: isMobile() ? 8 : 11, // Smaller hover radius
+                showLine: false, // No line for scatter points - we already have the trendline
+                fill: false, // No fill
+                label: "REMOVE!", // Hide from legend
+                // Hover behavior
+                interaction: {
+                    mode: "nearest",
+                    intersect: true,
+                    axis: "xy",
+                    hoverRadius: 6,
+                },
+                events: ['mousemove', 'click'],
+                hoverEvents: ['mousemove'],
+                hitRadius: 8, // Smaller hit area than dashboard
+                hoverBorderColor: color.replace("0.5", "0.7"),
+                hoverBackgroundColor: color.replace("0.5", "0.9"),
+                hoverBorderWidth: 0,
+                line_type: "espn", // Mark as espn type for tooltip handler
             };
         }
         
@@ -564,31 +593,34 @@ const nbacd_plotter_core = (() => {
     const coreZoomOptions = createZoomOptions(buttonPositionsCallback);
     const corePlotBackgroundPlugin = createPlotBackgroundPlugin();
     
+    // Note: We've moved the ESPN and Dashboard hover tooltip functionality
+    // to the existing createHoverGuidancePlugin in nbacd_plotter_plugins.js
+    
     // Track click events on charts to determine if tooltip should be shown
-document.addEventListener('click', function(event) {
-    // Check if the click was on a chart canvas
-    if (event.target.tagName.toLowerCase() === 'canvas') {
-        // Find the canvas that was clicked
-        const canvasElements = document.querySelectorAll('canvas.chartjs-render-monitor');
-        for (let i = 0; i < canvasElements.length; i++) {
-            const canvas = canvasElements[i];
-            if (canvas.contains(event.target)) {
-                const chartInstance = Chart.getChart(canvas);
-                if (chartInstance) {
-                    // Set last click timestamp
-                    chartInstance.lastClickEvent = new Date().getTime();
-                    
-                    // Special handling for dashboard chart clicks
-                    if (chartInstance.plotType === "espn_versus_dashboard") {
-                        // Let the normal tooltip handling proceed, but make sure
-                        // we set the lastClickEvent to ensure it's treated as a click
-                        // Dashboard chart click detected
+    document.addEventListener('click', function(event) {
+        // Check if the click was on a chart canvas
+        if (event.target.tagName.toLowerCase() === 'canvas') {
+            // Find the canvas that was clicked
+            const canvasElements = document.querySelectorAll('canvas.chartjs-render-monitor');
+            for (let i = 0; i < canvasElements.length; i++) {
+                const canvas = canvasElements[i];
+                if (canvas.contains(event.target)) {
+                    const chartInstance = Chart.getChart(canvas);
+                    if (chartInstance) {
+                        // Set last click timestamp
+                        chartInstance.lastClickEvent = new Date().getTime();
+                        
+                        // Special handling for dashboard chart clicks
+                        if (chartInstance.plotType === "espn_versus_dashboard") {
+                            // Let the normal tooltip handling proceed, but make sure
+                            // we set the lastClickEvent to ensure it's treated as a click
+                            // Dashboard chart click detected
+                        }
                     }
                 }
             }
         }
-    }
-});
+    });
 
 // Also keep global references for backward compatibility
     window.zoomOptions = coreZoomOptions;
@@ -599,6 +631,6 @@ document.addEventListener('click', function(event) {
         createChartJSChart,
         addDatasetsToChart,
         plotBackgroundPlugin: corePlotBackgroundPlugin,
-        zoomOptions: coreZoomOptions,
+        zoomOptions: coreZoomOptions
     };
 })();

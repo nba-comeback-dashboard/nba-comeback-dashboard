@@ -288,6 +288,7 @@ nbacd_plotter_data = (() => {
                     createHoverGuidancePlugin(),
                     // Add clickable title plugin for ESPN versus Dashboard charts
                     createClickableTitlePlugin(chartData),
+                    // Hover tooltips for ESPN and Dashboard are now handled by the hover guidance plugin
                 ], // Add all plugins
             };
         }
