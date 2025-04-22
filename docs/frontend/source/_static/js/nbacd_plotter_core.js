@@ -408,6 +408,10 @@ const nbacd_plotter_core = (() => {
                 hoverBackgroundColor: color.replace("0.5", "0.9"),
                 hoverBorderWidth: 0,
                 line_type: "dashboard", // Add line_type for tooltip handler to use
+                // Disable tooltips entirely for dashboard points
+                tooltipEnabled: false,
+                // Special flag to signal no tooltip should be shown
+                skipTooltip: true,
             };
         }
         

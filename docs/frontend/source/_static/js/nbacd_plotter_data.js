@@ -1029,46 +1029,50 @@ nbacd_plotter_data = (() => {
         const dataPoint = dataset.data[index];
         if (!dataPoint) return "";
         
+        // Check if this is a dataset that should skip tooltips
+        if (dataset.skipTooltip) {
+            // Don't even try to show a tooltip for this dataset type
+            return "";
+        }
+        
         // Check if this is an espn_versus_dashboard chart
         if (context.chart.plotType === "espn_versus_dashboard") {
             // Get the line type - defaults to standard if not set
             const lineType = dataset.line_type || "standard";
             
-            // For dashboard type lines, first check if the dataPoint has a URL
-            // If not, check if we have URL in pointMarginData
-            let url = dataPoint.url;
-            if (!url && context.chart.pointMarginData) {
-                const xValue = dataPoint.x.toString();
-                const legendKey = dataset.label;
-                
-                if (context.chart.pointMarginData[xValue] && 
-                    context.chart.pointMarginData[xValue][legendKey]) {
-                    url = context.chart.pointMarginData[xValue][legendKey].url;
+            // For dashboard type lines, immediately redirect without showing tooltip
+            if (lineType === "dashboard") {
+                // For dashboard type lines, first check if the dataPoint has a URL
+                // If not, check if we have URL in pointMarginData
+                let url = dataPoint.url;
+                if (!url && context.chart.pointMarginData) {
+                    const xValue = dataPoint.x.toString();
+                    const legendKey = dataset.label;
+                    
+                    if (context.chart.pointMarginData[xValue] && 
+                        context.chart.pointMarginData[xValue][legendKey]) {
+                        url = context.chart.pointMarginData[xValue][legendKey].url;
+                    }
                 }
-            }
-            
-            // If this is a dashboard line and we have a URL, handle dashboard link
-            if ((lineType === "dashboard" || lineType === "standard") && url) {
-                // For espn_versus_dashboard with dashboard points, redirect to the dashboard URL
                 
-                // Construct the correct dashboard URL at the site root level
-                // Get just the origin without any path components
-                const baseUrl = window.location.origin + '/dashboard/';
-                const fullUrl = baseUrl + "index.html?" + url;
-                
-                // Log the URL (but don't show to user)
-                console.log("Redirecting to dashboard:", fullUrl);
-                
-                // Navigate to the dashboard URL with a slight delay to ensure event processing is complete
-                setTimeout(() => {
-                    window.location.href = fullUrl;
-                }, 100);
-                
-                // Return empty string - there's no need to display tooltip content
-                // since we're redirecting the user to another page
-                return "";
-                
-                // Instead of actually showing a tooltip, we redirect to the dashboard URL
+                // If we have a URL, redirect immediately
+                if (url) {
+                    // Construct the correct dashboard URL at the site root level
+                    // Get just the origin without any path components
+                    const baseUrl = window.location.origin + '/dashboard/';
+                    const fullUrl = baseUrl + "index.html?" + url;
+                    
+                    // Log the URL (but don't show to user)
+                    console.log("Redirecting to dashboard:", fullUrl);
+                    
+                    // Navigate to the dashboard URL with a slight delay to ensure event processing is complete
+                    setTimeout(() => {
+                        window.location.href = fullUrl;
+                    }, 100);
+                    
+                    // Return empty string to ensure no tooltip is shown
+                    return "";
+                }
             }
             
             // For live-data lines, don't show any tooltip
@@ -1229,6 +1233,25 @@ nbacd_plotter_data = (() => {
 
     // Custom external tooltip handler that supports HTML and sticky behavior
     const externalTooltipHandler = function (context) {
+        // First check if we need to allow or block tooltips based on dataset type
+        if (context.tooltip && context.tooltip.dataPoints && context.tooltip.dataPoints.length > 0) {
+            const datasetIndex = context.tooltip.dataPoints[0].datasetIndex;
+            if (context.chart && context.chart.data && context.chart.data.datasets && 
+                datasetIndex < context.chart.data.datasets.length) {
+                
+                const dataset = context.chart.data.datasets[datasetIndex];
+                // Check for the skipTooltip flag - if present, don't show any tooltip
+                if (dataset && dataset.skipTooltip) {
+                    return; // Exit immediately without showing tooltip
+                }
+                
+                // Check for line_type = "dashboard" - also don't show tooltip for these
+                if (dataset && dataset.line_type === "dashboard") {
+                    return; // Exit immediately without showing tooltip
+                }
+            }
+        }
+        
         // Check if this is a click event
         const isClick =
             context.chart &&
