@@ -11,3 +11,5 @@ Plots: Auto-Generated Collection Of Plots
 .. toctree::
    :maxdepth: 1
 
+   all_time_v_modern
+   old_school_v_modern
