@@ -1089,9 +1089,25 @@ nbacd_plotter_data = (() => {
                 }
             }
             
-            // For ESPN and live-data lines, handle specially
+            // For live-data lines, show win percentage in a simple tooltip
             if (lineType === "live-data") {
-                return ""; // No tooltip for live-data
+                const xValue = dataPoint.x.toString();
+                const legendKey = dataset.label;
+                
+                // Get win percentage from pointMarginData if available
+                if (context.chart.pointMarginData && 
+                    context.chart.pointMarginData[xValue] && 
+                    context.chart.pointMarginData[xValue][legendKey]) {
+                    
+                    const liveData = context.chart.pointMarginData[xValue][legendKey];
+                    const winPercent = liveData.winPercent || "0.00";
+                    
+                    // Create a simple tooltip with time and win percentage
+                    return `<tr><td style="text-align: left;">Live data @ ${xValue}<br>Win %: ${winPercent}%</td></tr>`;
+                }
+                
+                // If no data found, return empty string
+                return "";
             }
             
             // For ESPN line, show the win percentage in a simple tooltip

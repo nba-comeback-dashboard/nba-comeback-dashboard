@@ -175,6 +175,46 @@ const nbacd_plotter_core = (() => {
                 // Add the combined dataset to the chart configuration
                 chartConfig.data.datasets.push(dashboardDataset);
             }
+            // For live-data lines in espn_versus_dashboard chart, create a single dataset with hover points
+            else if (isEspnChart && lineType === "live-data") {
+                // Create the data points
+                const trendlineData = createTrendlineData(line, chartData, plotType);
+                
+                // Create a single dataset for live-data with visible hover points
+                const liveDataset = {
+                    type: "line", // Use line type to connect points
+                    data: trendlineData,
+                    borderColor: color,
+                    backgroundColor: "transparent",
+                    pointStyle: "circle", // Circular points
+                    pointRadius: 0, // Hide points initially
+                    pointHoverRadius: isMobile() ? 8 : 11, // Show on hover
+                    borderWidth: isMobile() ? 3 : 4,
+                    tension: 0, // No curve
+                    fill: false,
+                    label: line.legend, // Show in legend
+                    interaction: {
+                        mode: "nearest",
+                        intersect: false, // Don't require direct intersection
+                        axis: "xy",
+                        hoverRadius: 10, // Larger hover detection
+                    },
+                    events: ['mousemove', 'click'],
+                    hoverEvents: ['mousemove'],
+                    hitRadius: 15, // Larger hit area
+                    pointBackgroundColor: color.replace("0.5", "0.7"),
+                    pointBorderColor: color.replace("0.5", "0.7"),
+                    pointBorderWidth: 0,
+                    hoverBorderColor: color.replace("0.5", "0.7"),
+                    hoverBackgroundColor: color.replace("0.5", "0.9"),
+                    hoverBorderWidth: 0,
+                    line_type: "live-data",
+                };
+                
+                // Add the combined dataset to the chart configuration
+                chartConfig.data.datasets.push(liveDataset);
+                return;
+            }
             // For ESPN lines in espn_versus_dashboard chart, also create a single dataset with line+points
             else if (isEspnChart && lineType === "espn") {
                 // Create the data points
@@ -187,21 +227,21 @@ const nbacd_plotter_core = (() => {
                     borderColor: color,
                     backgroundColor: color.replace("0.5", "0.7"),
                     pointStyle: "circle", // Circular points
-                    pointRadius: isMobile() ? 3 : 4, // Small points
-                    pointHoverRadius: isMobile() ? 8 : 11, // Medium hover radius
+                    pointRadius: 0, // Hide points initially
+                    pointHoverRadius: isMobile() ? 8 : 11, // Show points on hover
                     borderWidth: isMobile() ? 3 : 4,
                     tension: 0, // No curve
                     fill: false,
                     label: line.legend, // Show in legend
                     interaction: {
                         mode: "nearest",
-                        intersect: true,
+                        intersect: false, // Don't require direct intersection to show hover effect
                         axis: "xy",
-                        hoverRadius: 6,
+                        hoverRadius: 10, // Larger hover detection radius
                     },
                     events: ['mousemove', 'click'],
                     hoverEvents: ['mousemove'],
-                    hitRadius: 8, // Moderate hit area
+                    hitRadius: 20, // Larger hit area to make it easier to hover over points
                     pointBackgroundColor: color.replace("0.5", "0.7"),
                     pointBorderColor: color.replace("0.5", "0.7"),
                     pointBorderWidth: 0,
@@ -363,32 +403,16 @@ const nbacd_plotter_core = (() => {
         const isEspnChart = line && line.plot_type === "espn_versus_dashboard";
         const lineType = isEspnChart && line.line_type ? line.line_type : "standard";
 
-        // For live-data type in ESPN charts, create a simple line with no hover effects
+        // Skip live-data lines here since we now handle them in addDatasetsToChart
         if (isEspnChart && lineType === "live-data") {
             return {
-                data: trendlineData,
+                data: [],
                 type: "line",
-                borderColor: color,
-                backgroundColor: "transparent",
-                borderWidth: isMobile() ? 3 : 4, // Slightly thinner than standard
-                pointRadius: 0, // No points for live-data
-                pointHoverRadius: 0, // No hover effect
-                label: line.legend, // Use the legend from the line data
-                tension: 0, // Straight line
-                spanGaps: false,
-                fill: false,
-                // Disable all hover effects for live-data
-                hoverBorderWidth: 0,
-                interaction: {
-                    mode: "nearest",
-                    intersect: true,
-                    axis: "xy",
-                    hoverRadius: 0, // No hover radius
-                },
-                events: [], // No events
-                hitRadius: 0, // No hit area
-                hoverEnabled: false,
-                line_type: "live-data", // Mark as live-data type
+                borderWidth: 0,
+                pointRadius: 0,
+                label: null,
+                hidden: true,
+                events: [],
             };
         }
 
