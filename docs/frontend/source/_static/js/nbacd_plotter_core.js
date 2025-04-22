@@ -188,7 +188,7 @@ const nbacd_plotter_core = (() => {
                     backgroundColor: "transparent",
                     pointStyle: "circle", // Circular points
                     pointRadius: 0, // Hide points initially
-                    pointHoverRadius: isMobile() ? 8 : 11, // Show on hover
+                    pointHoverRadius: isMobile() ? 5 : 7, // Smaller hover points
                     borderWidth: isMobile() ? 3 : 4,
                     tension: 0, // No curve
                     fill: false,
