@@ -847,11 +847,11 @@ def plot_espn_versus_dashboard(
 ):
     """
     Generate plots and JSON data comparing ESPN win probability with NBA Dashboard calculations.
-    
+
     This function analyzes win probability data from ESPN for a specific game and compares
     it with probabilities calculated using the NBA Dashboard methodology. It produces a JSON
     file that can be used for visualization in the frontend.
-    
+
     Parameters:
     -----------
     json_name : str
@@ -868,7 +868,7 @@ def plot_espn_versus_dashboard(
         Which team's perspective to show ('home', 'away', or 'both')
     start_time : int
         Time in minutes to start the plot from (default: 18)
-    
+
     Returns:
     --------
     tuple
@@ -876,120 +876,134 @@ def plot_espn_versus_dashboard(
     """
     # Import here to avoid circular import
     from form_nba_chart_json_data_espn_v_dashboard import (
-        EspnLine, DashboardLine, get_team_abbreviation,
-        get_espn_game_data, extract_win_probability_data,
-        create_play_data_with_win_probability, get_dashboard_win_probability
+        EspnLine,
+        DashboardLine,
+        get_team_abbreviation,
+        get_team_nickname,
+        get_espn_game_data,
+        extract_win_probability_data,
+        create_play_data_with_win_probability,
+        get_dashboard_win_probability,
     )
-    
+
     # If game_filters is None, create a list with a single None element
     if game_filters is None:
         game_filters = [None]
     elif not isinstance(game_filters, list):
         game_filters = [game_filters]
-    
+
     # Fetch ESPN data
     game_data = get_espn_game_data(espn_game_id)
     win_prob_map = extract_win_probability_data(game_data)
     plays, home_team, away_team, game_date = create_play_data_with_win_probability(
         game_data, win_prob_map
     )
-    
+
     if not plays:
         raise ValueError(f"No play data found for ESPN game ID: {espn_game_id}")
-    
+
     # Filter data to only include times >= start_time
     plays = [play for play in plays if play["minutesElapsed"] >= start_time]
-    
+
     # Get team abbreviations
     home_abbr = get_team_abbreviation(home_team)
     away_abbr = get_team_abbreviation(away_team)
-    
+
     # Prepare data for lines
     lines = []
-    
+
     # Create metrics for title and eventual URL construction
     number_of_year_groups = len(year_groups)
     number_of_game_filters = len(game_filters)
     if number_of_game_filters == 1 and game_filters[0] is None:
         number_of_game_filters = 0
-    
+
     game_years_strings = []
     game_filter_strings = []
-    
+
     # Extract time and probability data for plotting
     minutes_elapsed = [play["minutesElapsed"] for play in plays]
     home_win_probability = [play["homeWinProbability"] for play in plays]
     away_win_probability = [100 - wp for wp in home_win_probability]
-    
+
     # Add ESPN win probability lines
     if show_team in ["both", "home"]:
+        home_nickname = get_team_nickname(home_team)
         espn_home_line = EspnLine(
-            legend=f"{home_team} ESPN Win Probability",
+            legend=f"{home_nickname} ESPN Win Probability",
             x_values=minutes_elapsed,
             y_values=home_win_probability,
             team_name=home_team,
         )
         lines.append(espn_home_line)
-    
+
     if show_team in ["both", "away"]:
+        away_nickname = get_team_nickname(away_team)
         espn_away_line = EspnLine(
-            legend=f"{away_team} ESPN Win Probability",
+            legend=f"{away_nickname} ESPN Win Probability",
             x_values=minutes_elapsed,
             y_values=away_win_probability,
             team_name=away_team,
         )
         lines.append(espn_away_line)
-    
+
     # Add Dashboard probability lines
     for start_year, stop_year in year_groups:
         for game_filter_index, game_filter in enumerate(game_filters):
             # Parse season type using the helper function
             start_year_numeric, season_type = parse_season_type(start_year)
             stop_year_numeric, _ = parse_season_type(stop_year)
-            
+
             # Build legend string
             years_string = f"{start_year_numeric}-{stop_year_numeric}"
             if game_filter_index == 0:
                 game_years_strings.append(years_string)
-            
+
             filter_string = ""
             if game_filter:
                 filter_string = game_filter.get_filter_string()
                 if game_filter_index == 0:
                     game_filter_strings.append(filter_string)
-            
+
             # Generate legend based on whether we have multiple year groups or filters
             if number_of_year_groups > 1 or number_of_game_filters < 2:
                 legend_prefix = years_string
             else:
                 legend_prefix = ""
-            
+
             if number_of_game_filters > 1:
                 if legend_prefix:
                     legend_prefix = f"{legend_prefix} | "
                 legend_prefix = f"{legend_prefix}{filter_string}"
-            
+
             # Calculate dashboard probabilities
             times, dashboard_probabilities = get_dashboard_win_probability(
                 plays=plays,
                 use_game_filter=(game_filter is not None),
-                modern_era=(start_year_numeric >= 2017)
+                modern_era=(start_year_numeric >= 2017),
             )
-            
+
             # Create Dashboard line
             if show_team == "home":
                 dashboard_probabilities = 100 - dashboard_probabilities
                 team_for_dashboard = home_team
             else:
                 team_for_dashboard = away_team
-            
+
+            # Get team nickname
+            team_nickname = get_team_nickname(team_for_dashboard)
+
             # Construct URL for linking in the frontend
             url_base = "../../_static/json/charts"
-            url_params = f"?years={years_string}&filter={filter_string}" if filter_string else f"?years={years_string}"
+            url_params = (
+                f"?years={years_string}&filter={filter_string}"
+                if filter_string
+                else f"?years={years_string}"
+            )
             dashboard_url = f"{url_base}{url_params}"
-            
+
             dashboard_line = DashboardLine(
-                legend=f"{team_for_dashboard} Dashboard Win Probability {legend_prefix}",
+                legend=f"{team_nickname} Dashboard Win Probability {legend_prefix}",
                 x_values=list(times),
                 y_values=list(dashboard_probabilities),
                 team_name=team_for_dashboard,
@@ -997,14 +1011,14 @@ def plot_espn_versus_dashboard(
                 game_filter=game_filter,
             )
             lines.append(dashboard_line)
-    
+
     # Create title
-    title = f"Win Probability Comparison - {away_team} @ {home_team} ({game_date})"
+    title = f"{away_team} @ {home_team} ({game_date})"
     if number_of_year_groups == 1 and number_of_game_filters > 1:
         title = f"{title} | {game_years_strings[0]}"
     elif number_of_game_filters == 1:
         title = f"{title} | {game_filters[0].get_filter_string()}"
-    
+
     # Convert probabilities to Gaussian sigma values using norm.ppf
     for line in lines:
         new_y_values = []
@@ -1021,41 +1035,42 @@ def plot_espn_versus_dashboard(
             # Update value
             new_y_values.append(sigma)
         line.y_values = new_y_values
-    
-    # Instead of using get_points_down_normally_spaced_y_ticks, use the static values from the example
-    # These are the specific y_ticks and y_tick_labels requested
+
+    # For ESPN charts, use fixed min_y=0.0001 and max_y=0.9999 to ensure consistent scale
+    # These values can be adjusted later if needed
+    min_y = 0.0001
+    max_y = 0.9999
+
+    # For ESPN charts, use a simplified y_ticks scale with limits at 1/10000 and 99.9%
+    # Removed 20%, 40%, 60%, 80% points as requested
     y_ticks = [
-        -2.575829303548901,
-        -2.3263478740408408,
-        -1.9599639845400545,
-        -1.6448536269514729,
-        -1.2815515655446004,
-        -0.8416212335729142,
-        -0.5244005127080409,
-        -0.2533471031357997,
-        0.0,
-        0.2533471031357997,
-        0.5244005127080407,
-        0.8416212335729143,
-        1.2815515655446004
+        -3.719016485156023,  # 0.0001 (norm.ppf(0.0001))
+        -3.0902323061678132, # 0.001 (1/1000)
+        -2.3263478740408408, # 0.01
+        -1.2815515655446004, # 0.10
+        -0.6744897501960817, # 0.25
+        0.0,                 # 0.50
+        0.6744897501960817,  # 0.75
+        1.2815515655446004,  # 0.90
+        2.3263478740408408,  # 0.99
+        3.0902323061678132,  # 0.999
+        3.719016485156023    # 0.9999
     ]
     
     y_tick_labels = [
-        "Never",
-        "1%",
-        "2.5%",
-        "5%",
-        "10%",
-        "20%",
-        "30%",
-        "40%",
-        "50%",
-        "60%",
-        "70%",
-        "80%",
-        "90%"
+        "0%",      # Actually 0.0001 (1/10000)
+        "1/1000",  # 0.001
+        "1%",      # 0.01
+        "10%",     # 0.10
+        "25%",     # 0.25
+        "50%",     # 0.50
+        "75%",     # 0.75
+        "90%",     # 0.90
+        "99%",     # 0.99
+        "99.9%",   # 0.999
+        "100%"     # Actually 0.9999
     ]
-    
+
     # Create final plot
     final_plot = FinalPlot(
         plot_type="espn_versus_dashboard",
@@ -1070,7 +1085,7 @@ def plot_espn_versus_dashboard(
         json_name=json_name,
         espn_game_id=espn_game_id,  # Include ESPN game ID in the top level
     )
-    
+
     final_plot.to_json()
-    
+
     return title, game_years_strings, game_filter_strings, final_plot

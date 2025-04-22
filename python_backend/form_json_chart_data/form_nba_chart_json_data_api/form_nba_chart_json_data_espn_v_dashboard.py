@@ -425,6 +425,33 @@ def create_play_data_with_win_probability(game_data: dict, win_prob_map: dict) -
     return plays, home_team, away_team, game_date
 
 
+def get_team_nickname(team_name: str) -> str:
+    """
+    Extract team nickname from full team name.
+    
+    Parameters:
+    -----------
+    team_name : str
+        Full team name
+        
+    Returns:
+    --------
+    str
+        Team nickname (e.g., "Timberwolves" from "Minnesota Timberwolves")
+    """
+    # Special case for Trail Blazers
+    if "Trail Blazers" in team_name:
+        return "Trail Blazers"
+    # Special case for 76ers
+    if "76ers" in team_name:
+        return "76ers"
+    
+    # For most teams, the nickname is the last word
+    parts = team_name.split()
+    if len(parts) > 1:
+        return parts[-1]
+    return team_name  # Return original if can't extract
+
 def get_team_abbreviation(team_name: str) -> str:
     """
     Convert team name to abbreviation.
