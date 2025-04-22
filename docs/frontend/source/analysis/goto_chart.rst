@@ -95,7 +95,7 @@ closed so it's not clear what the input conditions are being fed into the model.
 
 In this dashboard model, :doc:`the underlying methodology is meant to be simple and
 transparent </analysis/methodology_forming_the_plot_trend_lines>` and you can click on
-the data to see exact historical game data used to fit the probit regression line.
+the data to see exact historical game data used to fit the regression line.
 
 
 Adding Conditionals
