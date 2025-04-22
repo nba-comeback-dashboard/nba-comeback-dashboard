@@ -320,7 +320,7 @@ const nbacd_plotter_core = (() => {
             pointBorderColor: color, // Same color as the point to remove white border
             pointBorderWidth: 0, // No border
             hoverBorderWidth: 2,
-            label: lineType === "espn" ? "ESPN Win Probability" : (lineType === "dashboard" ? "Dashboard Win Probability" : "REMOVE!"),
+            label: lineType === "espn" ? line.legend : (lineType === "dashboard" ? line.legend : "REMOVE!"),
             // Make the line interactive but only on the points
             tension: 0, // Straight line
             spanGaps: false,

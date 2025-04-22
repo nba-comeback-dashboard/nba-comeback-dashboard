@@ -735,11 +735,14 @@ function createHoverGuidancePlugin() {
                             let percent = 0;
                             
                             // Try to get from chart's pointMarginData
+                            // Get the legend text from the dataset
+                            const legendText = dataset.label || "Dashboard";
+                            
                             if (chart.pointMarginData && 
                                 chart.pointMarginData[dataPoint.x] && 
-                                chart.pointMarginData[dataPoint.x]["Dashboard Win Probability"]) {
+                                chart.pointMarginData[dataPoint.x][legendText]) {
                                 
-                                const pointData = chart.pointMarginData[dataPoint.x]["Dashboard Win Probability"];
+                                const pointData = chart.pointMarginData[dataPoint.x][legendText];
                                 percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
                             } 
                             // Fallback to direct CDF calculation if available
@@ -757,9 +760,11 @@ function createHoverGuidancePlugin() {
                                 }
                             }
                             
-                            guidanceEl.textContent = `Dashboard @ ${timeValue}: ${percent}% (click for data)`;
+                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
+                            guidanceEl.textContent = `${shortLegend} @ ${timeValue}: ${percent}% (click for data)`;
                         } else {
-                            guidanceEl.textContent = 'Dashboard (click for data)';
+                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
+                            guidanceEl.textContent = `${shortLegend} (click for data)`;
                         }
                         guidanceEl.style.opacity = "1";
                     } 
@@ -776,11 +781,14 @@ function createHoverGuidancePlugin() {
                             let percent = 0;
                             
                             // Try to get from chart's pointMarginData
+                            // Get the legend text from the dataset
+                            const legendText = dataset.label || "ESPN";
+                            
                             if (chart.pointMarginData && 
                                 chart.pointMarginData[dataPoint.x] && 
-                                chart.pointMarginData[dataPoint.x]["ESPN Win Probability"]) {
+                                chart.pointMarginData[dataPoint.x][legendText]) {
                                 
-                                const pointData = chart.pointMarginData[dataPoint.x]["ESPN Win Probability"];
+                                const pointData = chart.pointMarginData[dataPoint.x][legendText];
                                 percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
                             } 
                             // Fallback to direct CDF calculation if available
@@ -798,9 +806,11 @@ function createHoverGuidancePlugin() {
                                 }
                             }
                             
-                            guidanceEl.textContent = `ESPN @ ${timeValue}: ${percent}%`;
+                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
+                            guidanceEl.textContent = `${shortLegend} @ ${timeValue}: ${percent}%`;
                         } else {
-                            guidanceEl.textContent = 'ESPN Win Probability';
+                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
+                            guidanceEl.textContent = `${shortLegend}`;
                         }
                         guidanceEl.style.opacity = "1";
                     }
