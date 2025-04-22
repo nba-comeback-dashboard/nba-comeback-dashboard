@@ -58,6 +58,13 @@ plot_espn_versus_dashboard(
     game_filters=None,
 )
 
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_gsw_at_hou_401767823.json.gz",
+    espn_game_id="401767823",
+    year_groups=eras,
+    game_filters=None,
+)
+
 eras = [
     # ERA ONE
     (2017, 2024),
@@ -66,6 +73,13 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718.json.gz",
     espn_game_id="401705718",
+    year_groups=eras,
+    game_filters=[GameFilter(for_at_home=True)],
+)
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_gsw_at_hou_401767823.json.gz",
+    espn_game_id="401767823",
     year_groups=eras,
     game_filters=[GameFilter(for_at_home=True)],
 )

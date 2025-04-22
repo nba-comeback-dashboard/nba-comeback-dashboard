@@ -73,6 +73,18 @@ How This Compares Versus ESPN's Live Win Probability
     <div id="goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718" class="nbacd-chart"></div>
 
 
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_all_time_gsw_at_hou_401767823" class="nbacd-chart"></div>
+
+
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_modern_at_home_gsw_at_hou_401767823" class="nbacd-chart"></div>
+
+
+
+
 .. 
     .. image:: goto_MIN_MIL_2025_04_09_live_prob.png
     :scale: 20%
