@@ -111,6 +111,33 @@ plot_percent_versus_time(
 #     start_time=36,
 #     percents=["33%", "20%", "15%", "10%", "5%", "1%", "Record"],
 # )
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_401705718.json.gz",
+    espn_game_id="401705718"
+    year_groups=eras,
+    game_filters=game_filters,
+)
+
+
+eras = [
+    # ERA ONE
+    (2017, 2024),
+]
+
+game_filters = [
+    GameFilter(for_at_home=True),
+]
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/goto/at_10_at_home_modern_era.json.gz",
+    year_groups=eras,
+    start_time=10,
+    down_mode="at",
+    game_filters=game_filters,
+    cumulate=False,
+    max_point_margin=-4,
+    fit_max_points=-1,
+)
 
 
 eras = [

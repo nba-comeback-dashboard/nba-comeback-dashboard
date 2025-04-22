@@ -58,6 +58,32 @@ match to the probability given by an in-game probability calculator for example:
     <div id="goto/nbacd_points_versus_36_for_away_modern_era" class="nbacd-chart"></div>
 
 
+.. _how-this-compares-versus-espns-live-win-probability:
+
+How This Compares Versus ESPN's Live Win Probability
+====================================================
+
+
+.. image:: goto_MIN_MIL_2025_04_09_live_prob.png
+   :scale: 20%
+   :align: center
+
+
+.. raw:: html
+
+    <div id="goto/at_10_at_home_modern_era" class="nbacd-chart"></div>
+
+
+.. image:: goto_GSW_HOU_2025_04_21_live_prob.png
+   :scale: 20%
+   :align: center
+
+
+
+
+
+
+
 .. _supplementals:
 
 Supplementals
