@@ -1102,8 +1102,8 @@ nbacd_plotter_data = (() => {
                     const liveData = context.chart.pointMarginData[xValue][legendKey];
                     const winPercent = liveData.winPercent || "0.00";
                     
-                    // Create a simple tooltip with time and win percentage
-                    return `<tr><td style="text-align: left;">Live data @ ${xValue}<br>Win %: ${winPercent}%</td></tr>`;
+                    // Create a simple tooltip with ESPN and time and win percentage
+                    return `<tr><td style="text-align: left;">ESPN @ ${xValue}<br>Win %: ${winPercent}%</td></tr>`;
                 }
                 
                 // If no data found, return empty string
