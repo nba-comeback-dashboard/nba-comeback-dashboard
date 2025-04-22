@@ -814,9 +814,39 @@ function createHoverGuidancePlugin() {
                         }
                         guidanceEl.style.opacity = "1";
                     }
-                    // For live-data lines, don't show any guidance
+                    // For live-data lines, show ESPN data guidance
                     else if (lineType === "live-data") {
-                        guidanceEl.style.opacity = "0";
+                        // Get the data point
+                        const element = activeElements[0];
+                        const dataPoint = dataset.data[element.index];
+                        if (dataPoint) {
+                            const timeValue = dataPoint.x;
+                            
+                            // For live data points, get percent from pointMarginData
+                            let percent = 0;
+                            
+                            // Use "ESPN Live Data" as the key since that's what we set in the label
+                            const legendText = dataset.label || "ESPN Live Data";
+                            
+                            if (chart.pointMarginData && 
+                                chart.pointMarginData[dataPoint.x] && 
+                                chart.pointMarginData[dataPoint.x][legendText]) {
+                                
+                                const pointData = chart.pointMarginData[dataPoint.x][legendText];
+                                percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
+                            } 
+                            // Fallback to direct value if available
+                            else if (dataPoint.y !== undefined) {
+                                percent = (dataPoint.y * 100).toFixed(2);
+                            }
+                            
+                            // Format the time value to 1 decimal place
+                            const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
+                            guidanceEl.textContent = `ESPN @ ${formattedTime}: ${percent}%`;
+                        } else {
+                            guidanceEl.textContent = "ESPN live data";
+                        }
+                        guidanceEl.style.opacity = "1";
                     }
                     // For standard lines, show default guidance
                     else {

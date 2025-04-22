@@ -192,7 +192,7 @@ const nbacd_plotter_core = (() => {
                     borderWidth: isMobile() ? 3 : 4,
                     tension: 0, // No curve
                     fill: false,
-                    label: line.legend, // Show in legend
+                    label: line.legend, // Use the original label from line data
                     interaction: {
                         mode: "nearest",
                         intersect: false, // Don't require direct intersection
