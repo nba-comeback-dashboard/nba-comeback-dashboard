@@ -146,8 +146,8 @@ const nbacd_plotter_core = (() => {
                     borderColor: color,
                     backgroundColor: color.replace("0.5", "0.7"),
                     pointStyle: "circle", // Circular points
-                    pointRadius: isMobile() ? 5.6 : 8,
-                    pointHoverRadius: isMobile() ? 11 : 14,
+                    pointRadius: isMobile() ? 3 : 4, // Smaller points
+                    pointHoverRadius: isMobile() ? 8 : 11, // Smaller hover points
                     borderWidth: isMobile() ? 3 : 4,
                     tension: 0, // No curve
                     fill: false,
@@ -175,7 +175,49 @@ const nbacd_plotter_core = (() => {
                 // Add the combined dataset to the chart configuration
                 chartConfig.data.datasets.push(dashboardDataset);
             }
-            // For other types, continue with the normal logic
+            // For ESPN lines in espn_versus_dashboard chart, also create a single dataset with line+points
+            else if (isEspnChart && lineType === "espn") {
+                // Create the data points
+                const trendlineData = createTrendlineData(line, chartData, plotType);
+                
+                // Create a single dataset for ESPN with line connecting points
+                const espnDataset = {
+                    type: "line", // Use line type to connect points
+                    data: trendlineData,
+                    borderColor: color,
+                    backgroundColor: color.replace("0.5", "0.7"),
+                    pointStyle: "circle", // Circular points
+                    pointRadius: isMobile() ? 3 : 4, // Small points
+                    pointHoverRadius: isMobile() ? 8 : 11, // Medium hover radius
+                    borderWidth: isMobile() ? 3 : 4,
+                    tension: 0, // No curve
+                    fill: false,
+                    label: line.legend, // Show in legend
+                    interaction: {
+                        mode: "nearest",
+                        intersect: true,
+                        axis: "xy",
+                        hoverRadius: 6,
+                    },
+                    events: ['mousemove', 'click'],
+                    hoverEvents: ['mousemove'],
+                    hitRadius: 8, // Moderate hit area
+                    pointBackgroundColor: color.replace("0.5", "0.7"),
+                    pointBorderColor: color.replace("0.5", "0.7"),
+                    pointBorderWidth: 0,
+                    hoverBorderColor: color.replace("0.5", "0.7"),
+                    hoverBackgroundColor: color.replace("0.5", "0.9"),
+                    hoverBorderWidth: 0,
+                    line_type: "espn",
+                };
+                
+                // Add the combined dataset to the chart configuration
+                chartConfig.data.datasets.push(espnDataset);
+                
+                // Don't create the separate scatter and trendline datasets for ESPN lines
+                return;
+            }
+            // For all other types, continue with the normal logic
             else {
                 // Create datasets appropriate for this line type
                 if (!chartData.calculate_occurrences) {
