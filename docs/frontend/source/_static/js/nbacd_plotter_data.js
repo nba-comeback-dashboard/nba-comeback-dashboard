@@ -1051,13 +1051,9 @@ nbacd_plotter_data = (() => {
             if ((lineType === "dashboard" || lineType === "standard") && url) {
                 // For espn_versus_dashboard with dashboard points, redirect to the dashboard URL
                 
-                // Construct the base URL - use the current URL's path up to the last segment
-                // and then append /dashboard/
-                const pathParts = window.location.pathname.split('/');
-                // Remove the last part of the path (the current file)
-                pathParts.pop();
-                // Get the base URL including the protocol, hostname, and modified path
-                const baseUrl = window.location.origin + pathParts.join('/') + '/dashboard/';
+                // Construct the correct dashboard URL at the site root level
+                // Get just the origin without any path components
+                const baseUrl = window.location.origin + '/dashboard/';
                 const fullUrl = baseUrl + "index.html?" + url;
                 
                 // Log the URL (but don't show to user)
