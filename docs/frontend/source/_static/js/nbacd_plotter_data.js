@@ -162,6 +162,10 @@ nbacd_plotter_data = (() => {
                 return;
             }
 
+            // Get line_type - only applies to espn_versus_dashboard plot type
+            // Default to "standard" if not specified
+            const lineType = line.line_type || "standard";
+
             line.y_values.forEach((point) => {
                 const x = point.x_value;
 
@@ -178,6 +182,7 @@ nbacd_plotter_data = (() => {
                     winPercent: winPercentage,
                     pointValue: point.y_value, // Store direct y_value for display
                     url: point.url, // Store URL for redirection if this is a dashboard point
+                    line_type: lineType, // Store line type
                 };
             });
         }
@@ -1024,30 +1029,56 @@ nbacd_plotter_data = (() => {
         const dataPoint = dataset.data[index];
         if (!dataPoint) return "";
         
-        // Check if this is an espn_versus_dashboard chart and we have a URL
-        if (context.chart.plotType === "espn_versus_dashboard" && dataPoint.url) {
-            // For espn_versus_dashboard with dashboard points, redirect to the dashboard URL
+        // Check if this is an espn_versus_dashboard chart
+        if (context.chart.plotType === "espn_versus_dashboard") {
+            // Get the line type - defaults to standard if not set
+            const lineType = dataset.line_type || "standard";
             
-            // Construct the base URL - use the current URL's path up to the last segment
-            // and then append /dashboard/
-            const pathParts = window.location.pathname.split('/');
-            // Remove the last part of the path (the current file)
-            pathParts.pop();
-            // Get the base URL including the protocol, hostname, and modified path
-            const baseUrl = window.location.origin + pathParts.join('/') + '/dashboard/';
-            const fullUrl = baseUrl + "index.html?" + dataPoint.url;
+            // For dashboard type lines, first check if the dataPoint has a URL
+            // If not, check if we have URL in pointMarginData
+            let url = dataPoint.url;
+            if (!url && context.chart.pointMarginData) {
+                const xValue = dataPoint.x.toString();
+                const legendKey = dataset.label;
+                
+                if (context.chart.pointMarginData[xValue] && 
+                    context.chart.pointMarginData[xValue][legendKey]) {
+                    url = context.chart.pointMarginData[xValue][legendKey].url;
+                }
+            }
             
-            // Log the URL (but don't show to user)
-            console.log("Redirecting to dashboard:", fullUrl);
+            // If this is a dashboard line and we have a URL, handle dashboard link
+            if ((lineType === "dashboard" || lineType === "standard") && url) {
+                // For espn_versus_dashboard with dashboard points, redirect to the dashboard URL
+                
+                // Construct the base URL - use the current URL's path up to the last segment
+                // and then append /dashboard/
+                const pathParts = window.location.pathname.split('/');
+                // Remove the last part of the path (the current file)
+                pathParts.pop();
+                // Get the base URL including the protocol, hostname, and modified path
+                const baseUrl = window.location.origin + pathParts.join('/') + '/dashboard/';
+                const fullUrl = baseUrl + "index.html?" + url;
+                
+                // Log the URL (but don't show to user)
+                console.log("Redirecting to dashboard:", fullUrl);
+                
+                // Navigate to the dashboard URL with a slight delay to ensure event processing is complete
+                setTimeout(() => {
+                    window.location.href = fullUrl;
+                }, 100);
+                
+                // Return empty string - there's no need to display tooltip content
+                // since we're redirecting the user to another page
+                return "";
+                
+                // Instead of actually showing a tooltip, we redirect to the dashboard URL
+            }
             
-            // Navigate to the dashboard URL with a slight delay to ensure event processing is complete
-            setTimeout(() => {
-                window.location.href = fullUrl;
-            }, 100);
-            
-            // Return empty string - there's no need to display tooltip content
-            // since we're redirecting the user to another page
-            return "";
+            // For live-data lines, don't show any tooltip
+            if (lineType === "live-data") {
+                return "";
+            }
         }
 
         // Get chart data in order of preference

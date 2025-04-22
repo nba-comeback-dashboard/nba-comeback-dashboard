@@ -124,26 +124,39 @@ const nbacd_plotter_core = (() => {
     function addDatasetsToChart(chartConfig, chartData, colors, plotType) {
         chartData.lines.forEach((line, index) => {
             const color = colors[index % colors.length];
+            
+            // Set the plot_type on the line object to ensure it's available in all functions
+            if (!line.plot_type) {
+                line.plot_type = plotType;
+            }
+            
+            // Check if this is an ESPN chart with specific line type
+            const isEspnChart = plotType === "espn_versus_dashboard";
+            const lineType = isEspnChart && line.line_type ? line.line_type : "standard";
 
-            // Create two datasets for each line:
-            // 1. A trend line dataset (unless calculating occurrences)
+            // Create datasets appropriate for this line type
             if (!chartData.calculate_occurrences) {
+                // Create trend line data
                 const trendlineData = createTrendlineData(line, chartData, plotType);
-                chartConfig.data.datasets.push(
-                    createTrendlineDataset(
-                        trendlineData,
-                        color,
-                        line,
-                        chartData.calculate_occurrences
-                    )
+                
+                // Create dataset based on data
+                const trendlineDataset = createTrendlineDataset(
+                    trendlineData,
+                    color,
+                    line,
+                    chartData.calculate_occurrences
                 );
+                
+                // Add the dataset to the chart configuration
+                chartConfig.data.datasets.push(trendlineDataset);
             }
 
-            // 2. A scatter dataset for individual points
-            const scatterPoints = createScatterPointsData(line, plotType);
-            chartConfig.data.datasets.push(
-                createScatterDataset(scatterPoints, color, line.legend)
-            );
+            // Only add scatter points for non-live-data lines
+            if (!(isEspnChart && lineType === "live-data")) {
+                const scatterPoints = createScatterPointsData(line, plotType);
+                const scatterDataset = createScatterDataset(scatterPoints, color, line.legend, line);
+                chartConfig.data.datasets.push(scatterDataset);
+            }
         });
     }
 
@@ -159,9 +172,33 @@ const nbacd_plotter_core = (() => {
 
         if (plotType === "time_v_point_margin") {
             return createTimeVsPointMarginTrendData(line);
+        } else if (plotType === "espn_versus_dashboard") {
+            // For ESPN vs Dashboard charts, create data directly from y_values
+            return createEspnVsDashboardTrendData(line);
         } else {
             return createPointMarginVsWinPercentTrendData(line, chartData);
         }
+    }
+    
+    /**
+     * Creates trend line data points for espn_versus_dashboard plot type
+     * @param {Object} line - The line data containing y_values
+     * @returns {Array} Array of {x, y} points for the trend line
+     */
+    function createEspnVsDashboardTrendData(line) {
+        // Sort the y_values by x_value to ensure the trend line is drawn correctly
+        if (!line.y_values || !Array.isArray(line.y_values)) {
+            return [];
+        }
+        
+        const sortedYValues = [...line.y_values].sort((a, b) => a.x_value - b.x_value);
+        
+        // Create trendline points from the sorted y_values
+        return sortedYValues.map((point) => ({
+            x: point.x_value,
+            y: point.y_value,
+            url: point.url, // Pass along URL for dashboard links
+        }));
     }
 
     /**
@@ -236,6 +273,40 @@ const nbacd_plotter_core = (() => {
      * @returns {Object} Chart.js dataset configuration
      */
     function createTrendlineDataset(trendlineData, color, line, calculateOccurrences) {
+        // Check if this is an ESPN chart with specific line type
+        const isEspnChart = line && line.plot_type === "espn_versus_dashboard";
+        const lineType = isEspnChart && line.line_type ? line.line_type : "standard";
+
+        // For live-data type in ESPN charts, create a simple line with no hover effects
+        if (isEspnChart && lineType === "live-data") {
+            return {
+                data: trendlineData,
+                type: "line",
+                borderColor: color,
+                backgroundColor: "transparent",
+                borderWidth: isMobile() ? 3 : 4, // Slightly thinner than standard
+                pointRadius: 0, // No points for live-data
+                pointHoverRadius: 0, // No hover effect
+                label: line.legend,
+                tension: 0, // Straight line
+                spanGaps: false,
+                fill: false,
+                // Disable all hover effects for live-data
+                hoverBorderWidth: 0,
+                interaction: {
+                    mode: "nearest",
+                    intersect: true,
+                    axis: "xy",
+                    hoverRadius: 0, // No hover radius
+                },
+                events: [], // No events
+                hitRadius: 0, // No hit area
+                hoverEnabled: false,
+                line_type: "live-data", // Mark as live-data type
+            };
+        }
+
+        // Standard behavior for all other line types
         return {
             data: trendlineData,
             type: "line", // Explicitly set type
@@ -249,7 +320,7 @@ const nbacd_plotter_core = (() => {
             pointBorderColor: color, // Same color as the point to remove white border
             pointBorderWidth: 0, // No border
             hoverBorderWidth: 2,
-            label: "REMOVE!",
+            label: lineType === "dashboard" ? line.legend : "REMOVE!",
             // Make the line interactive but only on the points
             tension: 0, // Straight line
             spanGaps: false,
@@ -269,6 +340,8 @@ const nbacd_plotter_core = (() => {
             hitRadius: 5, // Smaller hit area for trend lines to prioritize scatter points
             // For occurrence plots we want to disable hover/tooltip on trend lines
             hoverEnabled: !calculateOccurrences,
+            // Add additional metadata for dashboard links to access in tooltips
+            line_type: lineType,
         };
     }
 
@@ -299,9 +372,46 @@ const nbacd_plotter_core = (() => {
      * @param {Array} scatterPoints - Array of {x, y} points for the scatter plot
      * @param {string} color - Color to use for the scatter points
      * @param {string} legend - Legend text for the dataset
+     * @param {Object} line - The original line data (optional)
      * @returns {Object} Chart.js dataset configuration
      */
-    function createScatterDataset(scatterPoints, color, legend) {
+    function createScatterDataset(scatterPoints, color, legend, line) {
+        // Check if this is an ESPN chart with a specific line type
+        const isEspnChart = line && line.plot_type === "espn_versus_dashboard";
+        const lineType = isEspnChart && line.line_type ? line.line_type : "standard";
+        
+        // For dashboard lines in ESPN charts, use different settings
+        if (isEspnChart && lineType === "dashboard") {
+            return {
+                type: "scatter",
+                data: scatterPoints,
+                borderColor: color,
+                backgroundColor: color.replace("0.5", "0.7"),
+                pointStyle: "circle", // Circular points for dashboard type
+                pointRadius: isMobile() ? 5 : 7, // Slightly smaller than standard
+                pointHoverRadius: isMobile() ? 10 : 13, // Slightly smaller hover radius
+                showLine: true, // Connect points with line for dashboard type
+                borderWidth: isMobile() ? 3 : 4, // Line thickness
+                fill: false, // No fill
+                label: legend,
+                // Hover behavior optimized for dashboard links
+                interaction: {
+                    mode: "nearest",
+                    intersect: true,
+                    axis: "xy",
+                    hoverRadius: 10,
+                },
+                events: ['mousemove', 'click'],
+                hoverEvents: ['mousemove'],
+                hitRadius: 20, // Larger hit area for easier clicking
+                hoverBorderColor: color.replace("0.5", "0.7"),
+                hoverBackgroundColor: color.replace("0.5", "0.9"),
+                hoverBorderWidth: 0,
+                line_type: "dashboard", // Add line_type for tooltip handler to use
+            };
+        }
+        
+        // Standard scatter dataset for all other cases
         return {
             type: "scatter",
             data: scatterPoints,
@@ -327,6 +437,7 @@ const nbacd_plotter_core = (() => {
             hoverBorderColor: color.replace("0.5", "0.7"), // Same color as background
             hoverBackgroundColor: color.replace("0.5", "0.9"), // Slightly more opaque on hover
             hoverBorderWidth: 0, // No border on hover
+            line_type: lineType, // Add line_type for tooltip handler to use
         };
     }
 

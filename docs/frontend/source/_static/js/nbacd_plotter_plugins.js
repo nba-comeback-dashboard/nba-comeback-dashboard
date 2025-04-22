@@ -717,13 +717,40 @@ function createHoverGuidancePlugin() {
                 const datasetIndex = element.datasetIndex;
                 const dataset = chart.data.datasets[datasetIndex];
                 
-                // Determine what kind of point this is (scatter or trend line)
-                if (dataset.type === 'scatter') {
-                    guidanceEl.textContent = 'Click for Game Info';
-                    guidanceEl.style.opacity = "1";
-                } else if (dataset.type === 'line') {
-                    guidanceEl.textContent = 'Click for Trend Info';
-                    guidanceEl.style.opacity = "1";
+                // Check if this is an ESPN chart
+                if (chart.plotType === "espn_versus_dashboard" && dataset) {
+                    // Get the line type from the dataset
+                    const lineType = dataset.line_type || "standard";
+                    
+                    // For dashboard lines, show dashboard-specific guidance
+                    if (lineType === "dashboard") {
+                        guidanceEl.textContent = 'Click for dashboard';
+                        guidanceEl.style.opacity = "1";
+                    } 
+                    // For live-data lines, don't show any guidance
+                    else if (lineType === "live-data") {
+                        guidanceEl.style.opacity = "0";
+                    }
+                    // For standard lines, show default guidance
+                    else {
+                        // Use standard guidance for other dataset types
+                        if (dataset.type === 'scatter') {
+                            guidanceEl.textContent = 'Click for Game Info';
+                            guidanceEl.style.opacity = "1";
+                        } else if (dataset.type === 'line') {
+                            guidanceEl.textContent = 'Click for Trend Info';
+                            guidanceEl.style.opacity = "1";
+                        }
+                    }
+                } else {
+                    // Standard guidance for non-ESPN charts
+                    if (dataset.type === 'scatter') {
+                        guidanceEl.textContent = 'Click for Game Info';
+                        guidanceEl.style.opacity = "1";
+                    } else if (dataset.type === 'line') {
+                        guidanceEl.textContent = 'Click for Trend Info';
+                        guidanceEl.style.opacity = "1";
+                    }
                 }
             } else {
                 // Not hovering over a point
