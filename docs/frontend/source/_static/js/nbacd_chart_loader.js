@@ -473,12 +473,12 @@ function validateChartData(chartData) {
     // Check plot_type is valid if provided (default is "point_margin_v_win_percent" if not provided)
     if (
         chartData.plot_type &&
-        !["point_margin_v_win_percent", "time_v_point_margin"].includes(
+        !["point_margin_v_win_percent", "time_v_point_margin", "espn_versus_dashboard"].includes(
             chartData.plot_type
         )
     ) {
         throw new Error(
-            `Invalid plot_type: ${chartData.plot_type}. Must be "point_margin_v_win_percent" or "time_v_point_margin"`
+            `Invalid plot_type: ${chartData.plot_type}. Must be "point_margin_v_win_percent", "time_v_point_margin", or "espn_versus_dashboard"`
         );
     }
 

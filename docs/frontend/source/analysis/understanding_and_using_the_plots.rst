@@ -2,6 +2,10 @@
 Understanding and Using The Comeback Charts
 *******************************************
 
+.. green-box::
+    
+    Last updated 4/22/2025
+
 What do we mean by "comeback" and what's the best way to view the "chances" of a
 comeback? It seems like a simple question, but there's some nuance to it as there are
 slightly different ways of defining it. Let's explore the four plot types used in this
@@ -109,8 +113,8 @@ and determine the chance of winning, leading to plots like this:
     <div id="understand/nbacd_down_at_24_eras_1" class="nbacd-chart"></div>
 
 So that chart shows: if your team is down 20 points at halftime, they have a 5% chance
-of winning on average. You can use the :doc:`dashboard <../dashboard/index>` to try
-as many different game times as you want.
+of winning on average. You can use the :doc:`dashboard <../dashboard/index>` to try as
+many different game times as you want.
 
 
 
@@ -158,9 +162,9 @@ For the plots, you can hover over and then click on either:
 You can also zoom in or even go full screen to make it easier to hover over a point of
 interest and if you want, save your current plot as an image.
 
-On the :doc:`dashboard page</dashboard/index>`, once you form a chart for the
-specific conditions you're after, you'll notice that a unique URL is formed which you
-can copy and paste and share it how you see fit.
+On the :doc:`dashboard page</dashboard/index>`, once you form a chart for the specific
+conditions you're after, you'll notice that a unique URL is formed which you can copy
+and paste and share it how you see fit.
 
 .. _how-win-is-calculated:
 

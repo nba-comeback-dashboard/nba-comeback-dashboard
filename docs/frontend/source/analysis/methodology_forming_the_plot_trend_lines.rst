@@ -2,6 +2,10 @@
 Methodology and Forming the Plot Trend Lines
 ********************************************
 
+.. green-box::
+    
+    Last updated 4/22/2025
+
 .. _methodology:
 
 Methodology

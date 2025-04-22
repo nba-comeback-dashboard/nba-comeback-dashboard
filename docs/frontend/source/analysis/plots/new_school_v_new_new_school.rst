@@ -134,7 +134,7 @@ Percent Chance of Winning: Time Remaining Versus Points Down
 
     <div id="plots/new_school_v_new_new_school/percent_plot_group_0" class="nbacd-chart"></div>
 
-% Chance of Coming Back: Points Down v. Time | 2021-22 to 2024-25 (5,199 Games)
+% Chance of Coming Back: Points Down v. Time | 2021-22 to 2024-25 (5,207 Games)
 -------------------------------------------------------------------------------
 
 .. _new_school_v_new_new_school_percent_plot_group_1:

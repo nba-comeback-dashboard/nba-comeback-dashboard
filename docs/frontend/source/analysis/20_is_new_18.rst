@@ -2,6 +2,10 @@
 20 is the New 18
 ****************
 
+.. green-box::
+    
+    Last updated 4/22/2025
+
 .. _are-big-leads-no-longer-safe:
 
 Are Big Leads No Longer Safe?

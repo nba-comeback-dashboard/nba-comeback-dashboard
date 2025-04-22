@@ -2,6 +2,11 @@
 Do the Timberwolves Actually Give Up Big Leads?
 ***********************************************
 
+.. green-box::
+    
+    Last updated 4/22/2025
+
+
 There's a feeling among fans that the Timberwolves of the last few years don't put
 teams away and frequently surrender big leads. I was personally at the `04/21/2022 MEM
 @ MIN playoff game where the Wolves blew a 26-point lead
@@ -101,13 +106,14 @@ comebacks ever at 4 minutes remaining from when play by play was recorded:
 
     <div id="twolves_leads/max_4min_all_time" class="nbacd-chart"></div>
 
-Another one for the record books is a 17-point comeback given up by our 2020 Timberwolves.
+Another one for the record books is a 17-point comeback given up by our 2020
+Timberwolves.
 
 But to bolster what I said before, if you look at the next dot over at 16 points, it's
-the Timberwolves who came back against OKC on 2/24/2025. Not to mention the recent comeback
-from 13 points down with 4 minutes left against Houston on 12/27/2024 (hover over the
-dots to get the game details and links to nba.com).  So once again the recent Timberwolves
-come back more than they let the lead slip away.
+the Timberwolves who came back against OKC on 2/24/2025. Not to mention the recent
+comeback from 13 points down with 4 minutes left against Houston on 12/27/2024 (hover
+over the dots to get the game details and links to nba.com).  So once again the recent
+Timberwolves come back more than they let the lead slip away.
 
 In the end, there's probably some other statistically significant stat (maybe size of
 their runs versus runs they let opponents go on) that explains the frequency of these

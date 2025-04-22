@@ -125,7 +125,7 @@ Occurrences of Win % v. Max Points Down Or More During 4th Quarter | 2017-18 to 
 Percent Chance of Winning: Time Remaining Versus Points Down
 ============================================================
 
-% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (10,136 Games) | For @ Home
+% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (10,144 Games) | For @ Home
 ---------------------------------------------------------------------------------------------
 
 .. _modern_home_v_away_percent_plot_group_0:
@@ -134,7 +134,7 @@ Percent Chance of Winning: Time Remaining Versus Points Down
 
     <div id="plots/modern_home_v_away/percent_plot_group_0" class="nbacd-chart"></div>
 
-% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (10,136 Games) | For @ Away
+% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (10,144 Games) | For @ Away
 ---------------------------------------------------------------------------------------------
 
 .. _modern_home_v_away_percent_plot_group_1:

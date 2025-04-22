@@ -134,7 +134,7 @@ Percent Chance of Winning: Time Remaining Versus Points Down
 
     <div id="plots/old_school_v_modern/percent_plot_group_0" class="nbacd-chart"></div>
 
-% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (10,136 Games)
+% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (10,144 Games)
 --------------------------------------------------------------------------------
 
 .. _old_school_v_modern_percent_plot_group_1:

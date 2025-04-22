@@ -303,6 +303,8 @@ canvas {
     /* No text transform */
 }
 
+/* Removed hover text - now using existing hover guidance */
+
 #chartjs-tooltip.visible {
     opacity: 1;
 }

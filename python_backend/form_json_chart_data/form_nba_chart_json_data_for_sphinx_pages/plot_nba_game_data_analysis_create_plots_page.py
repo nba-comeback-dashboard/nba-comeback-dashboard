@@ -128,7 +128,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # max_down_or_more_48
     json_name = f"{page_dir}/max_down_or_more_48.json"
-    title, years_str, filters_str = plot_biggest_deficit(
+    title, years_str, filters_str, final_plot = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -144,7 +144,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # max_down_or_more_24
     json_name = f"{page_dir}/max_down_or_more_24.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -157,7 +157,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # max_down_or_more_12
     json_name = f"{page_dir}/max_down_or_more_12.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -170,7 +170,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # max_down_48
     json_name = f"{page_dir}/max_down_48.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -183,7 +183,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # max_down_24
     json_name = f"{page_dir}/max_down_24.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -196,7 +196,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # max_down_12
     json_name = f"{page_dir}/max_down_12.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -209,7 +209,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # down_at_24
     json_name = f"{page_dir}/down_at_24.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -222,7 +222,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # down_at_12
     json_name = f"{page_dir}/down_at_12.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -235,7 +235,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # down_at_6
     json_name = f"{page_dir}/down_at_6.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -248,7 +248,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # occurs_down_or_more_48
     json_name = f"{page_dir}/occurs_down_or_more_48.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -262,7 +262,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # occurs_down_or_more_24
     json_name = f"{page_dir}/occurs_down_or_more_24.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,
@@ -276,7 +276,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
     # occurs_down_or_more_12
     json_name = f"{page_dir}/occurs_down_or_more_12.json"
-    title, _, _ = plot_biggest_deficit(
+    title, _, _, _ = plot_biggest_deficit(
         json_name=json_name,
         year_groups=years_groups,
         game_filters=game_filters,

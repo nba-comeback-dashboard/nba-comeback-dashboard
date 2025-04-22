@@ -832,13 +832,21 @@ class FinalPlot:
         use_normal_labels=False,
         cumulate=False,
         calculate_occurrences=False,
+        espn_game_id=None,
     ):
         self.plot_type = plot_type
         self.title = title
         self.min_x = min_x
         self.max_x = max_x
         self.x_label = x_label
-        self.y_label = ("Win " + "\u03c3") if use_normal_labels else y_label
+        
+        # For ESPN vs Dashboard plots, always use Win Probability (%)
+        if plot_type == "espn_versus_dashboard":
+            self.y_label = "Win Probability (%)"
+            # Store ESPN game ID for ESPN plots
+            self.espn_game_id = espn_game_id
+        else:
+            self.y_label = ("Win " + "\u03c3") if use_normal_labels else y_label
         # self.x_ticks = x_ticks
         if use_normal_labels == "max_or_more":
             y_ticks = list(Num.arange(-4.0, 2.0, 0.5))
@@ -874,6 +882,8 @@ class FinalPlot:
             json_lines.append(line.to_json(self.calculate_occurrences))
 
         # Make sure the directory exists
+        if self.json_name is None:
+            return
         os.makedirs(os.path.dirname(self.json_name), exist_ok=True)
         if not self.json_name.endswith(".gz"):
             self.json_name = self.json_name + ".gz"

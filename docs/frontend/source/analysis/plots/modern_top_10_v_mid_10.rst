@@ -125,7 +125,7 @@ Occurrences of Win % v. Max Points Down Or More During 4th Quarter | 2017-18 to 
 Percent Chance of Winning: Time Remaining Versus Points Down
 ============================================================
 
-% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (2,408 Games) | For Top 10 Plays Mid 10
+% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (2,414 Games) | For Top 10 Plays Mid 10
 ---------------------------------------------------------------------------------------------------------
 
 .. _modern_top_10_v_mid_10_percent_plot_group_0:
@@ -134,7 +134,7 @@ Percent Chance of Winning: Time Remaining Versus Points Down
 
     <div id="plots/modern_top_10_v_mid_10/percent_plot_group_0" class="nbacd-chart"></div>
 
-% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (2,408 Games) | For Mid 10 Plays Top 10
+% Chance of Coming Back: Points Down v. Time | 2017-18 to 2024-25 (2,414 Games) | For Mid 10 Plays Top 10
 ---------------------------------------------------------------------------------------------------------
 
 .. _modern_top_10_v_mid_10_percent_plot_group_1:

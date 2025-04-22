@@ -109,6 +109,8 @@ nbacd_plotter_data = (() => {
             chartData.lines.forEach((line) => {
                 if (plotType === "time_v_point_margin") {
                     processTimeVsPointMarginLine(line, pointMarginData);
+                } else if (plotType === "espn_versus_dashboard") {
+                    processEspnVersusDashboardLine(line, pointMarginData);
                 } else {
                     processPointMarginVsWinPercentLine(
                         line,
@@ -149,6 +151,41 @@ nbacd_plotter_data = (() => {
                 };
             });
         }
+        
+        /**
+         * Processes a line for espn_versus_dashboard plot type
+         * @param {Object} line - The line data
+         * @param {Object} pointMarginData - The point margin data dictionary to update
+         */
+        function processEspnVersusDashboardLine(line, pointMarginData) {
+            if (!line.y_values || !Array.isArray(line.y_values)) {
+                return;
+            }
+
+            // Get line_type - only applies to espn_versus_dashboard plot type
+            // Default to "standard" if not specified
+            const lineType = line.line_type || "standard";
+
+            line.y_values.forEach((point) => {
+                const x = point.x_value;
+
+                // Initialize the entry for this x value if it doesn't exist
+                if (!pointMarginData[x]) {
+                    pointMarginData[x] = {};
+                }
+
+                // Calculate win percentage from the percent field if available, otherwise use 0
+                const winPercentage = point.percent ? (point.percent * 100).toFixed(2) : "0.00";
+
+                // Store data for this line at this x value
+                pointMarginData[x][line.legend] = {
+                    winPercent: winPercentage,
+                    pointValue: point.y_value, // Store direct y_value for display
+                    url: point.url, // Store URL for redirection if this is a dashboard point
+                    line_type: lineType, // Store line type
+                };
+            });
+        }
 
         /**
          * Processes a line for point_margin_v_win_percent plot type
@@ -172,10 +209,6 @@ nbacd_plotter_data = (() => {
                 const y = line.m * x + line.b;
 
                 // Calculate win percentage using normalCDF
-                // Where the trend line Win % number is coming from.
-                // if (x == -20) {
-                //     console.log(line.legend, x, y, Num.CDF(y));
-                // }
                 const winPercentage = (100.0 * Num.CDF(y)).toFixed(2);
 
                 // Store the data using legend as key
@@ -253,6 +286,9 @@ nbacd_plotter_data = (() => {
                     createWinCountPlugin(chartData),
                     // Add hover guidance plugin for desktop users
                     createHoverGuidancePlugin(),
+                    // Add clickable title plugin for ESPN versus Dashboard charts
+                    createClickableTitlePlugin(chartData),
+                    // Hover tooltips for ESPN and Dashboard are now handled by the hover guidance plugin
                 ], // Add all plugins
             };
         }
@@ -290,7 +326,21 @@ nbacd_plotter_data = (() => {
                 const parts = titleText.split("|");
                 titleText = [parts[0].trim(), parts.slice(1).join("|").trim()];
             }
-
+            
+            // For espn_versus_dashboard charts, create a clickable title that links to ESPN
+            if (chartData.plot_type === "espn_versus_dashboard" && chartData.espn_game_id) {
+                // We'll use a custom title element via the afterDraw plugin
+                return {
+                    display: false, // Hide the default title (we'll create a custom one)
+                    text: titleText, // Still include the text for reference
+                    font: {
+                        size: nbacd_utils.isMobile() ? 12 : 18, // Smaller title on mobile
+                        weight: "bold",
+                    },
+                };
+            }
+            
+            // Regular title for other chart types
             return {
                 display: true,
                 text: titleText,
@@ -315,7 +365,7 @@ nbacd_plotter_data = (() => {
                         size: nbacd_utils.isMobile() ? 11 : 15, // Smaller on mobile
                     },
                     filter: function (item, chart) {
-                        return !item.text.includes("REMOVE!");
+                        return item.text !== null && item.text !== undefined && !item.text.includes("REMOVE!");
                     },
                 },
             };
@@ -607,8 +657,8 @@ nbacd_plotter_data = (() => {
                 // Use the min/max from the chart data, but with some padding
                 min: chartData.min_x - 1,
                 max: chartData.max_x + 1,
-                // For time_v_point_margin plot type, reverse the axis
-                reverse: plotType === "time_v_point_margin",
+                // For time_v_point_margin and espn_versus_dashboard plot types, reverse the axis
+                reverse: plotType === "time_v_point_margin" || plotType === "espn_versus_dashboard",
                 title: {
                     display: true,
                     text: chartData.x_label,
@@ -644,10 +694,19 @@ nbacd_plotter_data = (() => {
          * @returns {Object} Y-axis configuration object
          */
         function createYAxisConfig(chartData, findYLabel) {
+            // Add extra padding for espn_versus_dashboard plot type
+            const isEspnVsDashboard = chartData.plot_type === "espn_versus_dashboard";
+            const minTickValue = Math.min(...chartData.y_ticks);
+            const maxTickValue = Math.max(...chartData.y_ticks);
+            
+            // For espn_versus_dashboard, add 10% padding at the bottom and 15% at the top
+            const bottomPadding = isEspnVsDashboard ? 0.5 : 0.2;
+            const topPadding = isEspnVsDashboard ? 0.75 : 0.2;
+            
             return {
                 type: "linear",
-                min: Math.min(...chartData.y_ticks) - 0.2,
-                max: Math.max(...chartData.y_ticks) + 0.2,
+                min: minTickValue - bottomPadding,
+                max: maxTickValue + topPadding,
                 title: {
                     display: !isMobile(), // Don't display y axis label on mobile
                     text: chartData.y_label,
@@ -690,11 +749,15 @@ nbacd_plotter_data = (() => {
          * @returns {Object} Secondary Y-axis configuration object
          */
         function createSecondaryYAxisConfig(chartData, findYLabel) {
+            // For espn_versus_dashboard plots, we might want to show the right axis even on mobile
+            const isEspnVsDashboard = chartData.plot_type === "espn_versus_dashboard";
+            const showOnMobile = isEspnVsDashboard; // Show right axis on mobile for espn_versus_dashboard
+            
             return {
                 position: "right",
-                display: !isMobile(), // Don't display right y axis on mobile
+                display: showOnMobile || !isMobile(), // Consider showing on mobile for espn_versus_dashboard
                 title: {
-                    display: !isMobile(), // Don't display y axis label on mobile
+                    display: showOnMobile || !isMobile(), // Consider showing on mobile for espn_versus_dashboard
                     font: {
                         size: isMobile() ? 12 : 16,
                         weight: "bold",
@@ -853,17 +916,11 @@ nbacd_plotter_data = (() => {
         else if (context.chart.plotType === "time_v_point_margin") {
             // Already defined chartPointMarginData for consistency across code paths
 
-            // This console logging is no longer needed because features are working fine
-            // console.debug(`Chart tooltip for time ${xValue}, using chart-specific data:`,
-            //              !!context.chart.pointMarginData,
-            //              `Chart ID: ${context.chart.id}`);
 
             // Check if we have pre-calculated point margin data
             if (!chartPointMarginData[xValue]) {
                 // Instead of throwing an error, just return the existing body HTML
                 // This handles the case where we have incomplete data in the JSON
-                // This console logging is no longer needed because features are working fine
-                // console.warn(`No pre-calculated data available for time ${xValue} in chart ${context.chart.id}`);
                 return bodyHtml;
             }
 
@@ -872,8 +929,6 @@ nbacd_plotter_data = (() => {
                 ([legend, data], i) => {
                     // Skip if pointValue is missing
                     if (data.pointValue === undefined) {
-                        // This console logging is no longer needed because features are working fine
-                        // console.warn(`Missing pointValue for line ${legend} at time ${xValue}`);
                         return; // Skip this entry instead of throwing error
                     }
 
@@ -902,6 +957,10 @@ nbacd_plotter_data = (() => {
             </td></tr>`;
                 }
             );
+        } else if (context.chart.plotType === "espn_versus_dashboard") {
+            // For espn_versus_dashboard plot type, we should never reach here
+            // because live-data line clicks should be blocked earlier
+            return ""; // Return empty bodyHtml to prevent tooltip display
         } else {
             console.warn(`Unknown plot type: ${context.chart.plotType}`);
             return bodyHtml; // Return existing body HTML instead of throwing
@@ -945,7 +1004,7 @@ nbacd_plotter_data = (() => {
             !context.tooltip.dataPoints ||
             !context.tooltip.dataPoints[0]
         ) {
-            console.log("Missing required context for generateScatterPointTooltipBody");
+            // Missing required context for tooltip
             return "";
         }
 
@@ -956,12 +1015,111 @@ nbacd_plotter_data = (() => {
 
         // Ensure we have a valid dataset and index
         if (!dataset || !dataset.data || index >= dataset.data.length) {
-            console.log("Invalid dataset or index in generateScatterPointTooltipBody");
+            // Invalid dataset or index
             return "";
         }
 
         const dataPoint = dataset.data[index];
         if (!dataPoint) return "";
+        
+        // No console logging needed here
+                   
+        // Check if this is a dataset that should skip tooltips
+        // BUT NEVER skip for dashboard line types - we need the URL redirection to work
+        if (dataset.skipTooltip && (!dataset.line_type || dataset.line_type !== "dashboard")) {
+            // Skip tooltip but allow dashboard points to continue for URL redirection
+            return "";
+        }
+        
+        // Check if this is an espn_versus_dashboard chart
+        if (context.chart.plotType === "espn_versus_dashboard") {
+            // Get the line type - defaults to standard if not set
+            const lineType = dataset.line_type || "standard";
+            
+            // Process dashboard chart point
+            
+            // For dashboard type lines, immediately redirect without showing tooltip
+            if (lineType === "dashboard") {
+                // Process dashboard point for URL redirection
+                // For dashboard type lines, first check if the dataPoint has a URL
+                // If not, check if we have URL in pointMarginData
+                let url = dataPoint.url;
+                if (!url && context.chart.pointMarginData) {
+                    const xValue = dataPoint.x.toString();
+                    const legendKey = dataset.label;
+                    
+                    if (context.chart.pointMarginData[xValue] && 
+                        context.chart.pointMarginData[xValue][legendKey]) {
+                        url = context.chart.pointMarginData[xValue][legendKey].url;
+                    }
+                }
+                
+                // If we have a URL, redirect immediately
+                if (url) {
+                    // Construct the correct dashboard URL that works with the site structure
+                    // Calculate base path by getting pathname up to the last directory
+                    const currentPath = window.location.pathname;
+                    // Remove the current page and get the base directory path
+                    const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+                    // Create the dashboard URL by replacing the current path with dashboard path
+                    const baseUrl = window.location.origin + basePath.replace(/\/[^\/]*\/$/, '/dashboard/');
+                    const fullUrl = baseUrl + "index.html?" + url;
+                    
+                    // Redirect to dashboard URL
+                    
+                    // Hide any visible tooltip immediately
+                    const tooltipEl = document.getElementById("chartjs-tooltip");
+                    if (tooltipEl) {
+                        tooltipEl.style.opacity = "0";
+                        tooltipEl.setAttribute("data-sticky", "false");
+                        const tableRoot = tooltipEl.querySelector("table");
+                        if (tableRoot) {
+                            tableRoot.innerHTML = "";
+                        }
+                    }
+                    
+                    // Also force any Chart.js tooltips to hide
+                    if (context.chart && context.chart.tooltip) {
+                        context.chart.tooltip.setActiveElements([], {});
+                    }
+                    
+                    // Open dashboard URL in a new tab instead of navigating the current page
+                    setTimeout(() => {
+                        window.open(fullUrl, '_blank');
+                    }, 100);
+                    
+                    // Return empty string to ensure no tooltip is shown
+                    return "";
+                }
+            }
+            
+            // For live-data lines, no tooltip on click
+            if (lineType === "live-data") {
+                // Return empty string to prevent any tooltip from showing
+                return "";
+            }
+            
+            // For ESPN line, show the win percentage in a simple tooltip
+            if (lineType === "espn") {
+                const xValue = dataPoint.x.toString();
+                const legendKey = dataset.label;
+                
+                // Get win percentage from pointMarginData if available
+                if (context.chart.pointMarginData && 
+                    context.chart.pointMarginData[xValue] && 
+                    context.chart.pointMarginData[xValue][legendKey]) {
+                    
+                    const espnData = context.chart.pointMarginData[xValue][legendKey];
+                    const winPercent = espnData.winPercent || "0.00";
+                    
+                    // Create a simple tooltip with time and win percentage
+                    return `<tr><td style="text-align: left;">ESPN @ ${xValue}<br>Win %: ${winPercent}%</td></tr>`;
+                }
+                
+                // If no data found, return empty string
+                return "";
+            }
+        }
 
         // Get chart data in order of preference
         let chartData = null;
@@ -1115,6 +1273,45 @@ nbacd_plotter_data = (() => {
 
     // Custom external tooltip handler that supports HTML and sticky behavior
     const externalTooltipHandler = function (context) {
+        // First check if we need to allow or block tooltips based on dataset type
+        if (context.tooltip && context.tooltip.dataPoints && context.tooltip.dataPoints.length > 0) {
+            const datasetIndex = context.tooltip.dataPoints[0].datasetIndex;
+            if (context.chart && context.chart.data && context.chart.data.datasets && 
+                datasetIndex < context.chart.data.datasets.length) {
+                
+                const dataset = context.chart.data.datasets[datasetIndex];
+                
+                // Handle dashboard points specially - don't show tooltip but allow URL redirection
+                if (dataset && dataset.line_type === "dashboard") {
+                    // For dashboard points, we need to allow the click handler to process through generateScatterPointTooltipBody
+                    // so the URL redirection can occur, but we don't want to show an actual tooltip
+                    
+                    // Hide any existing tooltips
+                    const tooltipEl = document.getElementById("chartjs-tooltip");
+                    if (tooltipEl) {
+                        tooltipEl.style.opacity = "0";
+                        tooltipEl.style.display = "none"; // Completely hide it
+                    }
+                    
+                    // Mark this as being handled specially, but DO NOT RETURN
+                    // We need to continue execution to allow the tooltip handler to run
+                    context.chart.isDashboardClick = true;
+                    
+                    // Critical: DO NOT return here, or URL redirection won't work
+                }
+                
+                // Check for the skipTooltip flag - if present, don't show any tooltip
+                if (dataset && dataset.skipTooltip) {
+                    return; // Exit immediately without showing tooltip
+                }
+                
+                // For live-data line type, never show a tooltip on click
+                if (dataset && dataset.line_type === "live-data") {
+                    return; // Exit immediately without showing tooltip
+                }
+            }
+        }
+        
         // Check if this is a click event
         const isClick =
             context.chart &&
@@ -1468,6 +1665,86 @@ nbacd_plotter_data = (() => {
                 // Draw win counts for each point
                 drawWinCountsOnPoints(chart, chartData);
             },
+        };
+    }
+    
+    // Create a plugin for clickable title on ESPN versus Dashboard charts
+    function createClickableTitlePlugin(chartData) {
+        // Only create the plugin if we have espn_game_id
+        if (chartData.plot_type !== "espn_versus_dashboard" || !chartData.espn_game_id) {
+            return { id: "clickableTitlePlugin" }; // Return empty plugin
+        }
+        
+        return {
+            id: "clickableTitlePlugin",
+            afterRender: (chart) => {
+                // Get the chart container
+                const canvas = chart.canvas;
+                if (!canvas) return;
+                
+                // Find the parent container - go up two levels
+                // Chart structure: chart-container-parent > chart-container > canvas
+                let chartContainer = canvas.parentElement;
+                if (!chartContainer) return;
+                
+                // Try to get the parent of chart-container
+                const chartContainerParent = chartContainer.parentElement;
+                if (!chartContainerParent) return;
+                
+                // Check if title already exists
+                const existingTitle = chartContainerParent.querySelector('.clickable-chart-title');
+                if (existingTitle) return; // Title already exists
+                
+                // Create title container div (positioned as a normal block element)
+                const titleContainer = document.createElement('div');
+                titleContainer.className = 'clickable-chart-title';
+                titleContainer.style.margin = '0 0 5px 0'; // Reduced bottom margin
+                titleContainer.style.textAlign = 'center';
+                titleContainer.style.padding = '2px';
+                
+                // Create link element
+                const titleLink = document.createElement('a');
+                titleLink.href = `https://www.espn.com/nba/game/_/gameId/${chartData.espn_game_id}`;
+                titleLink.target = '_blank'; // Open in new tab
+                titleLink.rel = 'noopener noreferrer'; // Security best practice
+                
+                // Set the title text
+                let titleText = chartData.title;
+                
+                // Handle multi-line titles
+                if (Array.isArray(titleText)) {
+                    titleText = titleText.join('<br>');
+                } else if (titleText && titleText.includes('|')) {
+                    const parts = titleText.split('|');
+                    titleText = parts[0].trim() + '<br>' + parts.slice(1).join('|').trim();
+                }
+                
+                titleLink.innerHTML = titleText;
+                
+                // Style the link - use an even more subtle, lighter blue with no underline
+                titleLink.style.color = '#6fa4ff'; // Even lighter, more subtle blue
+                titleLink.style.textDecoration = 'none';
+                titleLink.style.fontWeight = 'bold';
+                titleLink.style.fontSize = nbacd_utils.isMobile() ? '12px' : '18px';
+                
+                // No hover underline effect
+                titleLink.addEventListener('mouseover', () => {
+                    titleLink.style.color = '#4a86e8'; // Slightly darker on hover for feedback
+                });
+                titleLink.addEventListener('mouseout', () => {
+                    titleLink.style.color = '#6fa4ff'; // Back to normal lighter color
+                });
+                
+                // Add link to container
+                titleContainer.appendChild(titleLink);
+                
+                // Insert the title at the beginning of the container
+                if (chartContainerParent.firstChild) {
+                    chartContainerParent.insertBefore(titleContainer, chartContainerParent.firstChild);
+                } else {
+                    chartContainerParent.appendChild(titleContainer);
+                }
+            }
         };
     }
 

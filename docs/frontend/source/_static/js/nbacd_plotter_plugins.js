@@ -717,13 +717,218 @@ function createHoverGuidancePlugin() {
                 const datasetIndex = element.datasetIndex;
                 const dataset = chart.data.datasets[datasetIndex];
                 
-                // Determine what kind of point this is (scatter or trend line)
-                if (dataset.type === 'scatter') {
-                    guidanceEl.textContent = 'Click for Game Info';
-                    guidanceEl.style.opacity = "1";
-                } else if (dataset.type === 'line') {
-                    guidanceEl.textContent = 'Click for Trend Info';
-                    guidanceEl.style.opacity = "1";
+                // Check if this is an ESPN chart
+                if (chart.plotType === "espn_versus_dashboard" && dataset) {
+                    // Get the line type from the dataset
+                    const lineType = dataset.line_type || "standard";
+                    
+                    // For dashboard lines, show dashboard-specific guidance
+                    if (lineType === "dashboard") {
+                        // Get the data point
+                        const element = activeElements[0];
+                        const dataPoint = dataset.data[element.index];
+                        if (dataPoint) {
+                            const timeValue = dataPoint.x;
+                            
+                            // For dashboard points, we need to look up the percent in pointMarginData
+                            // since the y_value is in sigma units, not percentage
+                            let percent = 0;
+                            
+                            // Try to get from chart's pointMarginData
+                            // Get the legend text from the dataset
+                            const legendText = dataset.label || "Dashboard";
+                            
+                            if (chart.pointMarginData && 
+                                chart.pointMarginData[dataPoint.x] && 
+                                chart.pointMarginData[dataPoint.x][legendText]) {
+                                
+                                const pointData = chart.pointMarginData[dataPoint.x][legendText];
+                                percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
+                            } 
+                            // Fallback to direct CDF calculation if available
+                            else if (typeof Num !== 'undefined' && Num.CDF) {
+                                percent = (Num.CDF(dataPoint.y) * 100).toFixed(2);
+                            }
+                            // Fallback to placeholder
+                            else {
+                                // Just use a reasonable value based on sigma
+                                // 0 sigma = 50%
+                                if (dataPoint.y > 0) {
+                                    percent = Math.min(99.99, (50 + dataPoint.y * 25)).toFixed(2);
+                                } else {
+                                    percent = Math.max(0.01, (50 + dataPoint.y * 25)).toFixed(2);
+                                }
+                            }
+                            
+                            // Format the time value to 1 decimal place
+                            const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
+                            
+                            // Find the matching y_values entry with point_margin
+                            let pointMargin = null;
+                            
+                            // Access the raw y_values from the chartData
+                            const lineData = chart.chartData.lines.find(line => line.line_type === "dashboard");
+                            if (lineData && lineData.y_values) {
+                                const yValueEntry = lineData.y_values.find(entry => 
+                                    Math.abs(entry.x_value - dataPoint.x) < 0.001); // Use small epsilon for float comparison
+                                if (yValueEntry && yValueEntry.point_margin !== undefined) {
+                                    pointMargin = yValueEntry.point_margin;
+                                }
+                            }
+                            
+                            // Format with the new requested format
+                            guidanceEl.textContent = `Dashboard | Time=${formattedTime} | Lead=${pointMargin} | Prob=${percent}% | Click for Data Points`;
+                        } else {
+                            guidanceEl.textContent = `Dashboard (click for data)`;
+                        }
+                        guidanceEl.style.opacity = "1";
+                    } 
+                    // For espn lines, show espn-specific guidance
+                    else if (lineType === "espn" || (dataset.type === "line" && !lineType && dataset.label && dataset.label.toLowerCase().includes("espn"))) {
+                        // Get the data point
+                        const element = activeElements[0];
+                        const dataPoint = dataset.data[element.index];
+                        if (dataPoint) {
+                            const timeValue = dataPoint.x;
+                            
+                            // For ESPN points, we need to look up the percent in pointMarginData
+                            // since the y_value is in sigma units, not percentage
+                            let percent = 0;
+                            
+                            // Try to get from chart's pointMarginData
+                            // Get the legend text from the dataset
+                            const legendText = dataset.label || "ESPN";
+                            
+                            if (chart.pointMarginData && 
+                                chart.pointMarginData[dataPoint.x] && 
+                                chart.pointMarginData[dataPoint.x][legendText]) {
+                                
+                                const pointData = chart.pointMarginData[dataPoint.x][legendText];
+                                percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
+                            } 
+                            // Fallback to direct CDF calculation if available
+                            else if (typeof Num !== 'undefined' && Num.CDF) {
+                                percent = (Num.CDF(dataPoint.y) * 100).toFixed(2);
+                            }
+                            // Fallback to placeholder
+                            else {
+                                // Just use a reasonable value based on sigma
+                                // 0 sigma = 50%
+                                if (dataPoint.y > 0) {
+                                    percent = Math.min(99.99, (50 + dataPoint.y * 25)).toFixed(2);
+                                } else {
+                                    percent = Math.max(0.01, (50 + dataPoint.y * 25)).toFixed(2);
+                                }
+                            }
+                            
+                            // Format time to 1 decimal place
+                            const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
+                            
+                            // Find the matching y_values entry with point_margin
+                            let pointMargin = null;
+                            
+                            // Try to get y_values from any ESPN line
+                            const espnLines = chart.chartData.lines.filter(line => 
+                                line.line_type === "espn" || 
+                                (line.legend && line.legend.toLowerCase().includes("espn")));
+                                
+                            // Search through all ESPN lines for matching x_value
+                            for (const lineData of espnLines) {
+                                if (lineData && lineData.y_values) {
+                                    const yValueEntry = lineData.y_values.find(entry => 
+                                        Math.abs(entry.x_value - dataPoint.x) < 0.001); // Use small epsilon for float comparison
+                                    if (yValueEntry && yValueEntry.point_margin !== undefined) {
+                                        pointMargin = yValueEntry.point_margin;
+                                        break; // Stop searching once found
+                                    }
+                                }
+                            }
+                            
+                            // Format with the new requested format
+                            guidanceEl.textContent = `ESPN | Time=${formattedTime} | Lead=${pointMargin} | Prob=${percent}%`;
+                        } else {
+                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
+                            guidanceEl.textContent = `${shortLegend}`;
+                        }
+                        guidanceEl.style.opacity = "1";
+                    }
+                    // For live-data lines, show ESPN data guidance but no click indication
+                    else if (lineType === "live-data") {
+                        // Get the data point
+                        const element = activeElements[0];
+                        const dataPoint = dataset.data[element.index];
+                        if (dataPoint) {
+                            const timeValue = dataPoint.x;
+                            
+                            // For live data points, get percent from pointMarginData
+                            let percent = 0;
+                            
+                            // Use "ESPN Live Data" as the key since that's what we set in the label
+                            const legendText = dataset.label || "ESPN Live Data";
+                            
+                            if (chart.pointMarginData && 
+                                chart.pointMarginData[dataPoint.x] && 
+                                chart.pointMarginData[dataPoint.x][legendText]) {
+                                
+                                const pointData = chart.pointMarginData[dataPoint.x][legendText];
+                                percent = pointData.winPercent ? parseFloat(pointData.winPercent).toFixed(2) : "0.00";
+                            } 
+                            // Fallback to direct value if available
+                            else if (dataPoint.y !== undefined) {
+                                percent = (dataPoint.y * 100).toFixed(2);
+                            }
+                            
+                            // Format the time value to 1 decimal place
+                            const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
+                            
+                            // Find the matching y_values entry with point_margin
+                            let pointMargin = null;
+                            
+                            // Try to get y_values from any ESPN or live-data line
+                            const possibleLines = chart.chartData.lines.filter(line => 
+                                line.line_type === "live-data" || 
+                                line.line_type === "espn" || 
+                                (line.legend && (line.legend.toLowerCase().includes("espn") || 
+                                                line.legend.toLowerCase().includes("live"))));
+                                
+                            // Search through all possible lines for matching x_value
+                            for (const lineData of possibleLines) {
+                                if (lineData && lineData.y_values) {
+                                    const yValueEntry = lineData.y_values.find(entry => 
+                                        Math.abs(entry.x_value - dataPoint.x) < 0.001); // Use small epsilon for float comparison
+                                    if (yValueEntry && yValueEntry.point_margin !== undefined) {
+                                        pointMargin = yValueEntry.point_margin;
+                                        break; // Stop searching once found
+                                    }
+                                }
+                            }
+                            
+                            guidanceEl.textContent = `ESPN | Time=${formattedTime} | Lead=${pointMargin} | Prob=${percent}%`;
+                        } else {
+                            guidanceEl.textContent = "ESPN live data";
+                        }
+                        guidanceEl.style.opacity = "1";
+                    }
+                    // For standard lines, show default guidance
+                    else {
+                        // Use standard guidance for other dataset types
+                        if (dataset.type === 'scatter') {
+                            guidanceEl.textContent = 'Click for Game Info';
+                            guidanceEl.style.opacity = "1";
+                        } else if (dataset.type === 'line') {
+                            guidanceEl.textContent = 'Click for Trend Info';
+                            guidanceEl.style.opacity = "1";
+                        }
+                    }
+                } else {
+                    // Standard guidance for non-ESPN charts
+                    if (dataset.type === 'scatter') {
+                        guidanceEl.textContent = 'Click for Game Info';
+                        guidanceEl.style.opacity = "1";
+                    } else if (dataset.type === 'line') {
+                        guidanceEl.textContent = 'Click for Trend Info';
+                        guidanceEl.style.opacity = "1";
+                    }
                 }
             } else {
                 // Not hovering over a point
