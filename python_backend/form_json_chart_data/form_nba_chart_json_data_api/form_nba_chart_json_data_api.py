@@ -927,12 +927,14 @@ def plot_espn_versus_dashboard(
     away_win_probability = [100 - wp for wp in home_win_probability]
 
     # Add ESPN win probability lines
+    point_margins = [play["pointMargin"] for play in plays]
     if show_team in ["both", "home"]:
         home_nickname = get_team_nickname(home_team)
         espn_home_line = EspnLine(
             legend=f"{home_nickname} ESPN Win Probability",
             x_values=minutes_elapsed,
             y_values=home_win_probability,
+            point_margins=point_margins,
             team_name=home_team,
         )
         lines.append(espn_home_line)
@@ -943,6 +945,7 @@ def plot_espn_versus_dashboard(
             legend=f"{away_nickname} ESPN Win Probability",
             x_values=minutes_elapsed,
             y_values=away_win_probability,
+            point_margins=point_margins,
             team_name=away_team,
         )
         lines.append(espn_away_line)

@@ -762,14 +762,29 @@ function createHoverGuidancePlugin() {
                             
                             // Format the time value to 1 decimal place
                             const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
-                            guidanceEl.textContent = `Dashboard @ ${formattedTime}: ${percent}%`;
+                            
+                            // Find the matching y_values entry with point_margin
+                            let pointMargin = null;
+                            
+                            // Access the raw y_values from the chartData
+                            const lineData = chart.chartData.lines.find(line => line.line_type === "dashboard");
+                            if (lineData && lineData.y_values) {
+                                const yValueEntry = lineData.y_values.find(entry => 
+                                    Math.abs(entry.x_value - dataPoint.x) < 0.001); // Use small epsilon for float comparison
+                                if (yValueEntry && yValueEntry.point_margin !== undefined) {
+                                    pointMargin = yValueEntry.point_margin;
+                                }
+                            }
+                            
+                            // Format with the new requested format
+                            guidanceEl.textContent = `Dashboard | Time=${formattedTime} | Lead=${pointMargin} | Prob=${percent}% | Click for Data Points`;
                         } else {
                             guidanceEl.textContent = `Dashboard (click for data)`;
                         }
                         guidanceEl.style.opacity = "1";
                     } 
                     // For espn lines, show espn-specific guidance
-                    else if (lineType === "espn") {
+                    else if (lineType === "espn" || (dataset.type === "line" && !lineType && dataset.label && dataset.label.toLowerCase().includes("espn"))) {
                         // Get the data point
                         const element = activeElements[0];
                         const dataPoint = dataset.data[element.index];
@@ -806,8 +821,31 @@ function createHoverGuidancePlugin() {
                                 }
                             }
                             
-                            const shortLegend = legendText.split(' (')[0]; // Remove the game count part
-                            guidanceEl.textContent = `${shortLegend} @ ${timeValue}: ${percent}%`;
+                            // Format time to 1 decimal place
+                            const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
+                            
+                            // Find the matching y_values entry with point_margin
+                            let pointMargin = null;
+                            
+                            // Try to get y_values from any ESPN line
+                            const espnLines = chart.chartData.lines.filter(line => 
+                                line.line_type === "espn" || 
+                                (line.legend && line.legend.toLowerCase().includes("espn")));
+                                
+                            // Search through all ESPN lines for matching x_value
+                            for (const lineData of espnLines) {
+                                if (lineData && lineData.y_values) {
+                                    const yValueEntry = lineData.y_values.find(entry => 
+                                        Math.abs(entry.x_value - dataPoint.x) < 0.001); // Use small epsilon for float comparison
+                                    if (yValueEntry && yValueEntry.point_margin !== undefined) {
+                                        pointMargin = yValueEntry.point_margin;
+                                        break; // Stop searching once found
+                                    }
+                                }
+                            }
+                            
+                            // Format with the new requested format
+                            guidanceEl.textContent = `ESPN | Time=${formattedTime} | Lead=${pointMargin} | Prob=${percent}%`;
                         } else {
                             const shortLegend = legendText.split(' (')[0]; // Remove the game count part
                             guidanceEl.textContent = `${shortLegend}`;
@@ -842,7 +880,30 @@ function createHoverGuidancePlugin() {
                             
                             // Format the time value to 1 decimal place
                             const formattedTime = (typeof timeValue === 'number') ? timeValue.toFixed(1) : timeValue;
-                            guidanceEl.textContent = `ESPN @ ${formattedTime}: ${percent}%`;
+                            
+                            // Find the matching y_values entry with point_margin
+                            let pointMargin = null;
+                            
+                            // Try to get y_values from any ESPN or live-data line
+                            const possibleLines = chart.chartData.lines.filter(line => 
+                                line.line_type === "live-data" || 
+                                line.line_type === "espn" || 
+                                (line.legend && (line.legend.toLowerCase().includes("espn") || 
+                                                line.legend.toLowerCase().includes("live"))));
+                                
+                            // Search through all possible lines for matching x_value
+                            for (const lineData of possibleLines) {
+                                if (lineData && lineData.y_values) {
+                                    const yValueEntry = lineData.y_values.find(entry => 
+                                        Math.abs(entry.x_value - dataPoint.x) < 0.001); // Use small epsilon for float comparison
+                                    if (yValueEntry && yValueEntry.point_margin !== undefined) {
+                                        pointMargin = yValueEntry.point_margin;
+                                        break; // Stop searching once found
+                                    }
+                                }
+                            }
+                            
+                            guidanceEl.textContent = `ESPN | Time=${formattedTime} | Lead=${pointMargin} | Prob=${percent}%`;
                         } else {
                             guidanceEl.textContent = "ESPN live data";
                         }

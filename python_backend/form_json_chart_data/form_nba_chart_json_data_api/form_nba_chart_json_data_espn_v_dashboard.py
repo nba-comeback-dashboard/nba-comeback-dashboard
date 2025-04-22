@@ -42,7 +42,12 @@ class EspnLine(PlotLine):
     """
 
     def __init__(
-        self, legend: str, x_values: List[float], y_values: List[float], team_name: str
+        self,
+        legend: str,
+        x_values: List[float],
+        y_values: List[float],
+        point_margins: List[float],
+        team_name: str,
     ):
         """
         Initialize a line for ESPN win probability.
@@ -61,6 +66,7 @@ class EspnLine(PlotLine):
         self.legend = legend
         self.x_values = x_values
         self.y_values = y_values
+        self.point_margins = point_margins
         self.team_name = team_name
         self.number_of_games = 1  # Always 1 for ESPN data
 
@@ -106,6 +112,7 @@ class EspnLine(PlotLine):
         json_data["x_values"] = [float(x) for x in self.x_values]
         json_data["y_values"] = y_values = []
 
+        sign = -1  # Hard coded right now for looking at away team.
         for index, y_value in enumerate(self.y_values):
             # y_value is already in sigma space after the transformation in plot_espn_versus_dashboard
             # Convert sigma back to probability for percent field
@@ -114,6 +121,7 @@ class EspnLine(PlotLine):
             point_json = {
                 "x_value": float(self.x_values[index]),
                 "y_value": float(y_value),
+                "point_margin": int(sign * self.point_margins[index]),
                 "percent": percent,  # Already in 0-1 decimal format
             }
             y_values.append(point_json)
@@ -453,8 +461,17 @@ def create_play_data_with_win_probability(
             }
         )
 
-    # Sort by time
-    plays.sort(key=lambda x: x["minutesElapsed"])
+        # Filter plays to keep only the last entry for each unique minutesElapsed.
+        # This ensures we get the final score and probability for a given time point,
+        # which is important for situations like free throws where multiple plays
+        # can occur at the same time but we want the final state after all plays.
+        plays_by_time = {}
+        for play in plays:
+            plays_by_time[play["minutesElapsed"]] = play
+        plays = list(plays_by_time.values())
+
+        # Sort by time
+        plays.sort(key=lambda x: x["minutesElapsed"])
 
     return plays, home_team, away_team, game_date
 
