@@ -22,7 +22,11 @@ from scipy.interpolate import interp1d
 from scipy.stats import norm
 
 # Local imports
-from form_nba_chart_json_data_season_game_loader import TIME_TO_INDEX_MAP, GAME_MINUTES, Games
+from form_nba_chart_json_data_season_game_loader import (
+    TIME_TO_INDEX_MAP,
+    GAME_MINUTES,
+    Games,
+)
 from form_nba_chart_json_data_plot_primitives import PlotLine, FinalPlot
 from form_nba_chart_json_data_num import Num
 
@@ -33,14 +37,16 @@ import form_nba_chart_json_data_season_game_loader as loader
 class EspnLine(PlotLine):
     """
     Represents a line plotting ESPN win probability versus time.
-    
+
     This class handles ESPN win probability data and formats it for visualization.
     """
-    
-    def __init__(self, legend: str, x_values: List[float], y_values: List[float], team_name: str):
+
+    def __init__(
+        self, legend: str, x_values: List[float], y_values: List[float], team_name: str
+    ):
         """
         Initialize a line for ESPN win probability.
-        
+
         Parameters:
         -----------
         legend : str
@@ -57,11 +63,11 @@ class EspnLine(PlotLine):
         self.y_values = y_values
         self.team_name = team_name
         self.number_of_games = 1  # Always 1 for ESPN data
-        
+
     def get_xy(self):
         """
         Get x and y values for plotting.
-        
+
         Returns:
         --------
         tuple
@@ -69,37 +75,37 @@ class EspnLine(PlotLine):
             y_values are win probabilities
         """
         return self.x_values, self.y_values
-    
+
     def to_json(self, calculate_occurrences=False):
         """
         Convert line data to JSON format.
-        
+
         Creates a structured JSON representation of the line data
         suitable for rendering in the frontend.
-        
+
         Parameters:
         -----------
         calculate_occurrences : bool
             Parameter for compatibility with PointsDownLine.to_json()
             (not used in this class)
-            
+
         Returns:
         --------
         dict
             JSON-serializable dictionary of line data
         """
         from scipy.stats import norm
-        
+
         json_data = {
             "legend": self.legend,
             "team_name": self.team_name,
             "line_type": "live-data",
         }
-        
+
         # Convert to native Python types for JSON serialization
         json_data["x_values"] = [float(x) for x in self.x_values]
         json_data["y_values"] = y_values = []
-        
+
         for index, y_value in enumerate(self.y_values):
             # y_value is already in sigma space after the transformation in plot_espn_versus_dashboard
             # Convert sigma back to probability for percent field
@@ -108,30 +114,37 @@ class EspnLine(PlotLine):
             except:
                 # Handle any errors by providing a default
                 percent = 0.5
-            
+
             point_json = {
                 "x_value": float(self.x_values[index]),
                 "y_value": float(y_value),
                 "percent": percent,  # Already in 0-1 decimal format
             }
             y_values.append(point_json)
-            
+
         return json_data
 
 
 class DashboardLine(PlotLine):
     """
     Represents a line plotting Dashboard win probability versus time.
-    
+
     This class calculates win probability based on NBA Dashboard data and
     formats it for visualization.
     """
-    
-    def __init__(self, legend: str, x_values: List[float], y_values: List[float], 
-                 team_name: str, url: str, game_filter=None):
+
+    def __init__(
+        self,
+        legend: str,
+        x_values: List[float],
+        y_values: List[float],
+        team_name: str,
+        url: str,
+        game_filter=None,
+    ):
         """
         Initialize a line for Dashboard win probability.
-        
+
         Parameters:
         -----------
         legend : str
@@ -154,11 +167,11 @@ class DashboardLine(PlotLine):
         self.url = url
         self.game_filter = game_filter
         self.number_of_games = 0  # Will be set based on data
-        
+
     def get_xy(self):
         """
         Get x and y values for plotting.
-        
+
         Returns:
         --------
         tuple
@@ -166,46 +179,46 @@ class DashboardLine(PlotLine):
             y_values are win probabilities
         """
         return self.x_values, self.y_values
-    
+
     def to_json(self, calculate_occurrences=False):
         """
         Convert line data to JSON format.
-        
+
         Creates a structured JSON representation of the line data
         suitable for rendering in the frontend.
-        
+
         Parameters:
         -----------
         calculate_occurrences : bool
             Parameter for compatibility with PointsDownLine.to_json()
             (not used in this class)
-            
+
         Returns:
         --------
         dict
             JSON-serializable dictionary of line data
         """
         from scipy.stats import norm
-        
+
         json_data = {
             "legend": self.legend,
             "team_name": self.team_name,
             "line_type": "dashboard",
         }
-        
+
         if self.game_filter:
             json_data["filter_string"] = self.game_filter.get_filter_string()
-            
+
         # Convert to native Python types for JSON serialization
         json_data["x_values"] = [float(x) for x in self.x_values]
         json_data["y_values"] = y_values = []
-        
+
         # Base URL parameters
         plot_type = "2"  # Default: Points Down At Time plot
         seasons = "2017-2024-B"  # Modern era, both regular and playoffs
         game_filter = "ANY-h-ANY"  # Default: Any team, home games, vs any team
         mode = "auto"  # Auto mode
-        
+
         for index, y_value in enumerate(self.y_values):
             # y_value is already in sigma space after the transformation in plot_espn_versus_dashboard
             # Convert sigma back to probability for percent field
@@ -214,36 +227,37 @@ class DashboardLine(PlotLine):
             except:
                 # Handle any errors by providing a default
                 percent = 0.5
-            
+
             # Get the time value for this point and format it for URL
             x_value = float(self.x_values[index])
             time_param = self._format_time_for_url(x_value)
-            
+
             # Create the URL for this data point
             url = f"p={plot_type}&t={time_param}&s={seasons}&g={game_filter}&m={mode}"
-            
+
+            breakpoint()
             point_json = {
                 "x_value": x_value,
                 "y_value": float(y_value),
                 "percent": percent,  # Already in 0-1 decimal format
-                "url": url
+                "url": url,
             }
             y_values.append(point_json)
-            
+
         return json_data
-        
+
     def _format_time_for_url(self, time_elapsed):
         """
         Format time elapsed for URL parameter.
-        
+
         Converts the elapsed time into the appropriate URL parameter format.
         For sub-minute times in the final minute, uses special second formats.
-        
+
         Parameters:
         -----------
         time_elapsed : float
             Time elapsed in minutes
-            
+
         Returns:
         --------
         str
@@ -253,7 +267,7 @@ class DashboardLine(PlotLine):
         if 47 <= time_elapsed < 48:
             # Calculate seconds remaining
             seconds_remaining = int((48 - time_elapsed) * 60)
-            
+
             # Special handling for specific second intervals
             if 44 <= seconds_remaining <= 46:
                 return "45s"
@@ -274,7 +288,7 @@ class DashboardLine(PlotLine):
             # Overtime handling
             ot_period = 1 + int((time_elapsed - 48) / 5)
             minutes_in_ot = (time_elapsed - 48) % 5
-            
+
             if minutes_in_ot > 4.9:  # Very end of OT
                 return f"{ot_period}OT-0"
             else:
@@ -289,17 +303,17 @@ class DashboardLine(PlotLine):
 def get_espn_game_data(espn_game_id: str) -> dict:
     """
     Fetch game data from ESPN API.
-    
+
     Parameters:
     -----------
     espn_game_id : str
         ESPN game ID to fetch data for
-        
+
     Returns:
     --------
     dict
         JSON response from ESPN API containing game data
-        
+
     Raises:
     -------
     Exception
@@ -315,42 +329,44 @@ def get_espn_game_data(espn_game_id: str) -> dict:
 def extract_win_probability_data(game_data: dict) -> dict:
     """
     Extract win probability data and create a mapping of playId to win probability.
-    
+
     Parameters:
     -----------
     game_data : dict
         Game data from ESPN API
-        
+
     Returns:
     --------
     dict
         Mapping of play IDs to home win percentages
     """
     win_prob_map = {}
-    
+
     if "winprobability" not in game_data:
         return win_prob_map
-    
+
     for entry in game_data["winprobability"]:
         play_id = entry.get("playId")
         home_win_pct = entry.get("homeWinPercentage")
         if play_id is not None and home_win_pct is not None:
             win_prob_map[play_id] = home_win_pct
-    
+
     return win_prob_map
 
 
-def create_play_data_with_win_probability(game_data: dict, win_prob_map: dict) -> Tuple[List[Dict[str, Any]], str, str, str]:
+def create_play_data_with_win_probability(
+    game_data: dict, win_prob_map: dict
+) -> Tuple[List[Dict[str, Any]], str, str, str]:
     """
     Create structured play data with win probability from ESPN game data.
-    
+
     Parameters:
     -----------
     game_data : dict
         Game data from ESPN API
     win_prob_map : dict
         Mapping of play IDs to win percentages
-        
+
     Returns:
     --------
     tuple
@@ -361,16 +377,24 @@ def create_play_data_with_win_probability(game_data: dict, win_prob_map: dict) -
         - game_date is the formatted game date
     """
     plays = []
-    
+
     if "plays" not in game_data:
         return plays, "", "", ""
-    
+
     header = game_data.get("header", {})
     competitions = header.get("competitions", [{}])[0]
-    
-    home_team = competitions.get("competitors", [{}])[0].get("team", {}).get("displayName", "Home")
-    away_team = competitions.get("competitors", [{}])[1].get("team", {}).get("displayName", "Away")
-    
+
+    home_team = (
+        competitions.get("competitors", [{}])[0]
+        .get("team", {})
+        .get("displayName", "Home")
+    )
+    away_team = (
+        competitions.get("competitors", [{}])[1]
+        .get("team", {})
+        .get("displayName", "Away")
+    )
+
     # Extract game date
     game_date = ""
     if "date" in competitions:
@@ -382,58 +406,61 @@ def create_play_data_with_win_probability(game_data: dict, win_prob_map: dict) -
             ).strftime("%B %d, %Y")
         except ValueError:
             game_date = "Unknown Date"
-    
+
     for play in game_data["plays"]:
         play_id = play.get("id")
         if play_id not in win_prob_map:
             continue
-        
+
         period = play.get("period", {}).get("number", 0)
         clock_minutes = play.get("clock", {}).get("displayValue", "0:00")
-        
+
         # Convert clock time (MM:SS) to minutes
         if ":" in clock_minutes:
             mins, secs = clock_minutes.split(":")
             clock_in_mins = int(mins) + (int(secs) / 60)
         else:
             clock_in_mins = 0
-        
+
         # Calculate game time in minutes (each period is 12 minutes in NBA, OT is 5 min)
         if period <= 4:  # Regular periods
             minutes_elapsed = ((period - 1) * 12) + (12 - clock_in_mins)
         else:  # Overtime periods
             minutes_elapsed = 48 + ((period - 5) * 5) + (5 - clock_in_mins)
-        
+
         home_score = play.get("homeScore", 0)
         away_score = play.get("awayScore", 0)
         point_margin = home_score - away_score
-        
-        plays.append({
-            "playId": play_id,
-            "period": period,
-            "clockTime": clock_minutes,
-            "minutesElapsed": minutes_elapsed,
-            "homeScore": home_score,
-            "awayScore": away_score,
-            "pointMargin": point_margin,
-            "homeWinProbability": win_prob_map[play_id] * 100,  # Convert to percentage
-        })
-    
+
+        plays.append(
+            {
+                "playId": play_id,
+                "period": period,
+                "clockTime": clock_minutes,
+                "minutesElapsed": minutes_elapsed,
+                "homeScore": home_score,
+                "awayScore": away_score,
+                "pointMargin": point_margin,
+                "homeWinProbability": win_prob_map[play_id]
+                * 100,  # Convert to percentage
+            }
+        )
+
     # Sort by time
     plays.sort(key=lambda x: x["minutesElapsed"])
-    
+
     return plays, home_team, away_team, game_date
 
 
 def get_team_nickname(team_name: str) -> str:
     """
     Extract team nickname from full team name.
-    
+
     Parameters:
     -----------
     team_name : str
         Full team name
-        
+
     Returns:
     --------
     str
@@ -445,22 +472,23 @@ def get_team_nickname(team_name: str) -> str:
     # Special case for 76ers
     if "76ers" in team_name:
         return "76ers"
-    
+
     # For most teams, the nickname is the last word
     parts = team_name.split()
     if len(parts) > 1:
         return parts[-1]
     return team_name  # Return original if can't extract
 
+
 def get_team_abbreviation(team_name: str) -> str:
     """
     Convert team name to abbreviation.
-    
+
     Parameters:
     -----------
     team_name : str
         Full team name
-        
+
     Returns:
     --------
     str
@@ -504,7 +532,7 @@ def get_team_abbreviation(team_name: str) -> str:
 def create_dashboard_time_vector() -> List:
     """
     Create a time vector for dashboard data that matches API time points.
-    
+
     Returns:
     --------
     list
@@ -513,31 +541,31 @@ def create_dashboard_time_vector() -> List:
     """
     # Start with regular time points from 36 minutes to 1 minute
     time_vector = list(range(36, 0, -1))
-    
+
     # Add sub-minute time points for final minute
     time_vector.extend(["45s", "30s", "15s", "10s", "5s", 0])
-    
+
     return time_vector
 
 
 def extend_time_vector_for_overtime(time_vector: List, max_period: int) -> List:
     """
     Extend the time vector to include overtime periods if needed.
-    
+
     Parameters:
     -----------
     time_vector : list
         Base time vector
     max_period : int
         Maximum period number in the game data
-        
+
     Returns:
     --------
     list
         Extended time vector including overtime periods if needed
     """
     extended_vector = time_vector.copy()
-    
+
     # Add overtime periods if needed (each OT is 5 minutes)
     if max_period > 4:
         num_ots = max_period - 4
@@ -548,19 +576,24 @@ def extend_time_vector_for_overtime(time_vector: List, max_period: int) -> List:
             # Map these to the correct elapsed time
             ot_base = 48 + (ot - 1) * 5
             extended_vector.extend([f"{ot}OT-{t}" for t in ot_times])
-    
+
     return extended_vector
 
 
-def calculate_dashboard_probability(game_filter, time_point: int, point_margin: float, 
-                                 start_year: int = 1996, stop_year: int = 2024) -> float:
+def calculate_dashboard_probability(
+    game_filter,
+    time_point: int,
+    point_margin: float,
+    start_year: int = 1996,
+    stop_year: int = 2024,
+) -> float:
     """
     Calculate win probability using NBA Dashboard methodology.
-    
+
     Uses PointsDownLine to get the linear regression coefficients for the
     specified time point and game filter, then calculates the win probability
     for the given point margin.
-    
+
     Parameters:
     -----------
     game_filter : GameFilter
@@ -573,7 +606,7 @@ def calculate_dashboard_probability(game_filter, time_point: int, point_margin: 
         Start year for data analysis
     stop_year : int
         End year for data analysis
-        
+
     Returns:
     --------
     float
@@ -581,13 +614,13 @@ def calculate_dashboard_probability(game_filter, time_point: int, point_margin: 
     """
     # Import here to avoid circular import
     from form_nba_chart_json_data_api import PointsDownLine
-    
+
     # Load games with appropriate filter
     games = Games(
         start_year=start_year,
         stop_year=stop_year,
     )
-    
+
     # Create PointsDownLine for this time point
     points_down_line = PointsDownLine(
         games=games,
@@ -597,23 +630,24 @@ def calculate_dashboard_probability(game_filter, time_point: int, point_margin: 
         max_point_margin=-1,
         fit_max_points=-1,
     )
-    
+
     # Calculate win probability using regression coefficients
     sigma = points_down_line.m * -1.0 * abs(point_margin) + points_down_line.b
     percent = norm.cdf(sigma)
-    
+
     # Adjust based on which team is leading
     if point_margin < 0:
         percent = 1.0 - percent
-    
+
     return percent * 100.0  # Convert to percentage
 
 
-def get_dashboard_win_probability(plays: List[Dict[str, Any]], use_game_filter: bool = False, 
-                                  modern_era: bool = False) -> Tuple[List[float], List[float]]:
+def get_dashboard_win_probability(
+    plays: List[Dict[str, Any]], use_game_filter: bool = False, modern_era: bool = False
+) -> Tuple[List[float], List[float]]:
     """
     Calculate Dashboard win probability for the game plays.
-    
+
     Parameters:
     -----------
     plays : list
@@ -622,7 +656,7 @@ def get_dashboard_win_probability(plays: List[Dict[str, Any]], use_game_filter: 
         Whether to apply home/away game filter based on point margin
     modern_era : bool
         Whether to use only modern era games (2017-2024) for analysis
-        
+
     Returns:
     --------
     tuple
@@ -630,11 +664,11 @@ def get_dashboard_win_probability(plays: List[Dict[str, Any]], use_game_filter: 
     """
     # Import here to avoid circular import
     from form_nba_chart_json_data_api import GameFilter
-    
+
     # Extract time and point margin data
     time_minutes = np.array([play["minutesElapsed"] for play in plays])
     point_margin = np.array([play["pointMargin"] for play in plays])
-    
+
     # Create interpolation function for point margin
     point_fn = interp1d(
         time_minutes,
@@ -643,19 +677,21 @@ def get_dashboard_win_probability(plays: List[Dict[str, Any]], use_game_filter: 
         kind="previous",
         fill_value=(point_margin[0], point_margin[-1]),
     )
-    
+
     probabilities = []
     times = []
-    
+
     # Start year for analysis
     start_year = 2017 if modern_era else 1996
     stop_year = 2024  # Current year
-    
+
     # Calculate probability at each minute
-    for t in range(18, 48):  # 18 to 47 minutes elapsed (excluding the final minute for now)
+    for t in range(
+        18, 48
+    ):  # 18 to 47 minutes elapsed (excluding the final minute for now)
         current_time = 48.0 - t  # Convert to minutes remaining
         current_margin = point_fn(t)
-        
+
         # Create appropriate game filter
         if use_game_filter:
             if current_margin <= 0:  # Away team leading
@@ -664,49 +700,49 @@ def get_dashboard_win_probability(plays: List[Dict[str, Any]], use_game_filter: 
                 game_filter = GameFilter(for_at_home=False)  # For away team trailing
         else:
             game_filter = None
-        
+
         # Calculate probability using Dashboard method
         probability = calculate_dashboard_probability(
             game_filter=game_filter,
             time_point=current_time,
             point_margin=current_margin,
             start_year=start_year,
-            stop_year=stop_year
+            stop_year=stop_year,
         )
-        
+
         probabilities.append(float(probability))  # Convert numpy types to Python float
         times.append(int(t))  # Convert numpy types to Python int
-    
+
     # Special handling for the final minute with sub-minute intervals
     sub_minute_times = {
         "45s": 47.25,  # 45 seconds remaining in final minute (47 + 0.25)
-        "30s": 47.5,   # 30 seconds remaining in final minute (47 + 0.5)
+        "30s": 47.5,  # 30 seconds remaining in final minute (47 + 0.5)
         "15s": 47.75,  # 15 seconds remaining in final minute (47 + 0.75)
-        "10s": 47.833, # 10 seconds remaining in final minute (47 + 0.833)
+        "10s": 47.833,  # 10 seconds remaining in final minute (47 + 0.833)
         "5s": 47.917,  # 5 seconds remaining in final minute (47 + 0.917)
-        "0s": 48.0     # End of game
+        "0s": 48.0,  # End of game
     }
-    
+
     # Get the point margin at minute 47 (one minute before the end)
     base_margin = point_fn(47)
-    
+
     # For the final interpolation to end of game
     final_margin = point_fn(min(48, max(time_minutes)))
-    
+
     # Create a simple linear interpolation between the point margins at minute 47 and the final margin
     for time_str, x_value in sub_minute_times.items():
         # Calculate interpolation factor (0 at minute 47, 1 at minute 48)
         factor = (x_value - 47) / 1.0
-        
+
         # Interpolate the point margin
         interp_margin = base_margin + factor * (final_margin - base_margin)
-        
+
         # Calculate the time_point parameter (as string for the sub-minute case)
         if time_str == "0s":
             time_point = 0
         else:
             time_point = time_str
-        
+
         # Create appropriate game filter
         if use_game_filter:
             if interp_margin <= 0:  # Away team leading
@@ -715,22 +751,22 @@ def get_dashboard_win_probability(plays: List[Dict[str, Any]], use_game_filter: 
                 game_filter = GameFilter(for_at_home=False)  # For away team trailing
         else:
             game_filter = None
-        
+
         # Calculate probability
         probability = calculate_dashboard_probability(
             game_filter=game_filter,
             time_point=time_point,
             point_margin=interp_margin,
             start_year=start_year,
-            stop_year=stop_year
+            stop_year=stop_year,
         )
-        
+
         probabilities.append(float(probability))
         times.append(float(x_value))  # Use the exact x_value for plotting
-    
+
     # Sort by time
     paired_data = sorted(zip(times, probabilities), key=lambda x: x[0])
     times = [t for t, _ in paired_data]
     probabilities = [p for _, p in paired_data]
-    
+
     return times, probabilities

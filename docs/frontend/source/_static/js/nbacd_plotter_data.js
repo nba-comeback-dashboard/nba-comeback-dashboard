@@ -365,7 +365,7 @@ nbacd_plotter_data = (() => {
                         size: nbacd_utils.isMobile() ? 11 : 15, // Smaller on mobile
                     },
                     filter: function (item, chart) {
-                        return !item.text.includes("REMOVE!");
+                        return item.text !== null && item.text !== undefined && !item.text.includes("REMOVE!");
                     },
                 },
             };
