@@ -63,20 +63,24 @@ match to the probability given by an in-game probability calculator for example:
 How This Compares Versus ESPN's Live Win Probability
 ====================================================
 
-
-.. image:: goto_MIN_MIL_2025_04_09_live_prob.png
-   :scale: 20%
-   :align: center
-
-
 .. raw:: html
 
-    <div id="goto/at_10_at_home_modern_era" class="nbacd-chart"></div>
+    <div id="goto/espn_v_dashboard_all_time_401705718" class="nbacd-chart"></div>
+
+.. 
+    .. image:: goto_MIN_MIL_2025_04_09_live_prob.png
+    :scale: 20%
+    :align: center
 
 
-.. image:: goto_GSW_HOU_2025_04_21_live_prob.png
-   :scale: 20%
-   :align: center
+    .. raw:: html
+
+        <div id="goto/at_10_at_home_modern_era" class="nbacd-chart"></div>
+
+
+    .. image:: goto_GSW_HOU_2025_04_21_live_prob.png
+    :scale: 20%
+    :align: center
 
 
 

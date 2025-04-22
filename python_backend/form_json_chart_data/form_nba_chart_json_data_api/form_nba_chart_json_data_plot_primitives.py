@@ -666,6 +666,7 @@ class FinalPlot:
         use_normal_labels=False,
         cumulate=False,
         calculate_occurrences=False,
+        espn_game_id=None,
     ):
         self.plot_type = plot_type
         self.title = title
@@ -676,6 +677,8 @@ class FinalPlot:
         # For ESPN vs Dashboard plots, always use Win Probability (%)
         if plot_type == "espn_versus_dashboard":
             self.y_label = "Win Probability (%)"
+            # Store ESPN game ID for ESPN plots
+            self.espn_game_id = espn_game_id
         else:
             self.y_label = ("Win " + "\u03c3") if use_normal_labels else y_label
         # self.x_ticks = x_ticks

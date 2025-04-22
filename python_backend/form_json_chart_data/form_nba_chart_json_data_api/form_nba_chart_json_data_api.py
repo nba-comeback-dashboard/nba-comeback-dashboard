@@ -1068,6 +1068,7 @@ def plot_espn_versus_dashboard(
         max_x=48,  # End at regulation time
         lines=lines,
         json_name=json_name,
+        espn_game_id=espn_game_id,  # Include ESPN game ID in the top level
     )
     
     final_plot.to_json()
