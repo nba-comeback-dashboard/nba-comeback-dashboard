@@ -473,12 +473,12 @@ function validateChartData(chartData) {
     // Check plot_type is valid if provided (default is "point_margin_v_win_percent" if not provided)
     if (
         chartData.plot_type &&
-        !["point_margin_v_win_percent", "time_v_point_margin"].includes(
+        !["point_margin_v_win_percent", "time_v_point_margin", "espn_versus_dashboard"].includes(
             chartData.plot_type
         )
     ) {
         throw new Error(
-            `Invalid plot_type: ${chartData.plot_type}. Must be "point_margin_v_win_percent" or "time_v_point_margin"`
+            `Invalid plot_type: ${chartData.plot_type}. Must be "point_margin_v_win_percent", "time_v_point_margin", or "espn_versus_dashboard"`
         );
     }
 
@@ -491,16 +491,28 @@ function validateChartData(chartData) {
     }
 
     chartData.lines.forEach((line, index) => {
+        // Check for y_values array which is always required
         if (
-            !line.x_values ||
-            !Array.isArray(line.x_values) ||
-            line.x_values.length === 0
+            !line.y_values ||
+            !Array.isArray(line.y_values) ||
+            line.y_values.length === 0
         ) {
-            throw new Error(`Line ${index}: Missing or invalid 'x_values' array`);
+            throw new Error(`Line ${index}: Missing or invalid 'y_values' array`);
+        }
+
+        // For espn_versus_dashboard plot type, no need to check for x_values as they're inside y_values
+        // For other plot types, check for x_values array
+        if (chartData.plot_type !== "espn_versus_dashboard") {
+            if (
+                !line.x_values ||
+                !Array.isArray(line.x_values) ||
+                line.x_values.length === 0
+            ) {
+                throw new Error(`Line ${index}: Missing or invalid 'x_values' array`);
+            }
         }
 
         // Only check for slope (m) and y-intercept (b) for point_margin_v_win_percent plot type
-        // For time_v_point_margin plot type, we use y_fit_value in each data point instead
         if (
             chartData.plot_type === "point_margin_v_win_percent" &&
             (line.m === undefined || line.b === undefined)
@@ -508,14 +520,6 @@ function validateChartData(chartData) {
             throw new Error(
                 `Line ${index}: Missing slope (m) or y-intercept (b) for trend line`
             );
-        }
-
-        if (
-            !line.y_values ||
-            !Array.isArray(line.y_values) ||
-            line.y_values.length === 0
-        ) {
-            throw new Error(`Line ${index}: Missing or invalid 'y_values' array`);
         }
 
         // For time_v_point_margin plot type, ensure each point has y_fit_value for the trend line
@@ -526,6 +530,13 @@ function validateChartData(chartData) {
                     `Line ${index}: Missing 'y_fit_value' in data points for time_v_point_margin plot type`
                 );
             }
+        }
+        
+        // For espn_versus_dashboard plot type, ensure line_type is defined
+        if (chartData.plot_type === "espn_versus_dashboard" && !line.line_type) {
+            throw new Error(
+                `Line ${index}: Missing 'line_type' for espn_versus_dashboard plot type. Must be 'live-data' or 'dashboard'`
+            );
         }
     });
 }

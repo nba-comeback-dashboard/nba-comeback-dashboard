@@ -119,15 +119,15 @@ const nbacd_plotter_core = (() => {
      * @param {Object} chartConfig - The Chart.js configuration object
      * @param {Object} chartData - The chart data containing lines and plot options
      * @param {Array} colors - Array of colors to use for datasets
-     * @param {string} plotType - The plot type (time_v_point_margin or point_margin_v_win_percent)
+     * @param {string} plotType - The plot type (time_v_point_margin, point_margin_v_win_percent, or espn_versus_dashboard)
      */
     function addDatasetsToChart(chartConfig, chartData, colors, plotType) {
         chartData.lines.forEach((line, index) => {
             const color = colors[index % colors.length];
 
-            // Create two datasets for each line:
-            // 1. A trend line dataset (unless calculating occurrences)
+            // Create datasets based on plot type and line type:
             if (!chartData.calculate_occurrences) {
+                // 1. A trend line dataset for all lines (unless calculating occurrences)
                 const trendlineData = createTrendlineData(line, chartData, plotType);
                 chartConfig.data.datasets.push(
                     createTrendlineDataset(
@@ -139,11 +139,20 @@ const nbacd_plotter_core = (() => {
                 );
             }
 
-            // 2. A scatter dataset for individual points
-            const scatterPoints = createScatterPointsData(line, plotType);
-            chartConfig.data.datasets.push(
-                createScatterDataset(scatterPoints, color, line.legend)
-            );
+            // 2. A scatter dataset for individual points, but only for specific cases:
+            // - Normal points for point_margin_v_win_percent
+            // - Record points for time_v_point_margin
+            // - Dashboard points for espn_versus_dashboard
+            if (plotType !== "espn_versus_dashboard" || line.line_type === "dashboard") {
+                const scatterPoints = createScatterPointsData(line, plotType);
+                
+                // Only add scatter dataset if there are points to show
+                if (scatterPoints.length > 0) {
+                    chartConfig.data.datasets.push(
+                        createScatterDataset(scatterPoints, color, line.legend, line)
+                    );
+                }
+            }
         });
     }
 
@@ -151,7 +160,7 @@ const nbacd_plotter_core = (() => {
      * Creates trend line data points for a line
      * @param {Object} line - The line data
      * @param {Object} chartData - The chart data containing min_x, max_x, and y_ticks
-     * @param {string} plotType - The plot type (time_v_point_margin or point_margin_v_win_percent)
+     * @param {string} plotType - The plot type (time_v_point_margin, point_margin_v_win_percent, or espn_versus_dashboard)
      * @returns {Array} Array of {x, y} points for the trend line
      */
     function createTrendlineData(line, chartData, plotType) {
@@ -159,6 +168,8 @@ const nbacd_plotter_core = (() => {
 
         if (plotType === "time_v_point_margin") {
             return createTimeVsPointMarginTrendData(line);
+        } else if (plotType === "espn_versus_dashboard") {
+            return createEspnVersusDashboardTrendData(line);
         } else {
             return createPointMarginVsWinPercentTrendData(line, chartData);
         }
@@ -178,6 +189,22 @@ const nbacd_plotter_core = (() => {
         return sortedYValues.map((point) => ({
             x: point.x_value,
             y: point.y_fit_value,
+        }));
+    }
+    
+    /**
+     * Creates trend line data points for espn_versus_dashboard plot type
+     * @param {Object} line - The line data containing y_values
+     * @returns {Array} Array of {x, y} points for the trend line
+     */
+    function createEspnVersusDashboardTrendData(line) {
+        // Sort the y_values by x_value to ensure the line is drawn correctly (from lowest to highest)
+        const sortedYValues = [...line.y_values].sort((a, b) => a.x_value - b.x_value);
+        
+        // Create trendline points from the sorted y_values
+        return sortedYValues.map((point) => ({
+            x: point.x_value,
+            y: point.y_value, // For espn_versus_dashboard, we use the y_value directly
         }));
     }
 
@@ -236,21 +263,24 @@ const nbacd_plotter_core = (() => {
      * @returns {Object} Chart.js dataset configuration
      */
     function createTrendlineDataset(trendlineData, color, line, calculateOccurrences) {
+        // For espn_versus_dashboard plot type with line_type "live-data", use a different style
+        const isEspnLiveLine = line.line_type === "live-data";
+        
         return {
             data: trendlineData,
             type: "line", // Explicitly set type
             borderColor: color,
             backgroundColor: "transparent",
-            borderWidth: isMobile() ? 4 : 5, // Thinner line on mobile
-            pointRadius: isMobile() ? 3 : 4, // Smaller points on mobile
-            pointHoverRadius: isMobile() ? 8 : 11, // Larger hover radius for trend line points
+            borderWidth: isEspnLiveLine ? 3 : (isMobile() ? 4 : 5), // Thinner line for live-data
+            pointRadius: isEspnLiveLine ? 0 : (isMobile() ? 3 : 4), // No points for live-data line
+            pointHoverRadius: isEspnLiveLine ? 0 : (isMobile() ? 8 : 11), // No hover effects for live-data line
             pointStyle: "circle", // Round points
             pointBackgroundColor: color,
             pointBorderColor: color, // Same color as the point to remove white border
             pointBorderWidth: 0, // No border
             hoverBorderWidth: 2,
-            label: "REMOVE!",
-            // Make the line interactive but only on the points
+            label: isEspnLiveLine ? line.legend : "REMOVE!", // Show legend for live-data lines, hide for others
+            // Make the line interactive but only on the points (except for live-data lines)
             tension: 0, // Straight line
             spanGaps: false,
             // Additional interactive options
@@ -258,38 +288,47 @@ const nbacd_plotter_core = (() => {
             hoverBorderColor: color, // Match the line color for border
             // Hover behavior for regression lines
             interaction: {
-                mode: "nearest",
+                mode: "nearest", 
                 intersect: true, // Require direct intersection
                 axis: "xy",
-                hoverRadius: 6, // Increased hover detection radius for trend line points
+                hoverRadius: isEspnLiveLine ? 0 : 6, // No hover detection for live-data lines
             },
-            // Allow hover effects but show tooltips only on click
-            events: ['mousemove', 'click'],
-            hoverEvents: ['mousemove'], // Enable hover events for point growth
-            hitRadius: 5, // Smaller hit area for trend lines to prioritize scatter points
+            // Allow hover effects but show tooltips only on click (except for live-data lines)
+            events: isEspnLiveLine ? [] : ['mousemove', 'click'], // No events for live-data lines
+            hoverEvents: isEspnLiveLine ? [] : ['mousemove'], // No hover events for live-data lines
+            hitRadius: isEspnLiveLine ? 0 : 5, // No hit area for live-data lines
             // For occurrence plots we want to disable hover/tooltip on trend lines
-            hoverEnabled: !calculateOccurrences,
+            hoverEnabled: !calculateOccurrences && !isEspnLiveLine,
         };
     }
 
     /**
      * Creates scatter points data for a line
      * @param {Object} line - The line data containing y_values
-     * @param {string} plotType - The plot type (time_v_point_margin or point_margin_v_win_percent)
+     * @param {string} plotType - The plot type (time_v_point_margin, point_margin_v_win_percent, or espn_versus_dashboard)
      * @returns {Array} Array of {x, y} points for the scatter plot
      */
     function createScatterPointsData(line, plotType) {
         const scatterPoints = [];
 
         // For time_v_point_margin plot type, only add scatter points for the "Record" legend
-        if (!(plotType === "time_v_point_margin" && line.legend !== "Record")) {
-            line.y_values.forEach((scatterPoint) => {
-                scatterPoints.push({
-                    x: scatterPoint.x_value,
-                    y: scatterPoint.y_value,
-                });
-            });
+        if (plotType === "time_v_point_margin" && line.legend !== "Record") {
+            return scatterPoints; // Return empty array for non-Record lines in time_v_point_margin
         }
+
+        // For espn_versus_dashboard plot type, only add scatter points for lines with line_type === "dashboard"
+        if (plotType === "espn_versus_dashboard" && line.line_type !== "dashboard") {
+            return scatterPoints; // Return empty array for non-dashboard lines
+        }
+        
+        // Add scatter points for all other cases
+        line.y_values.forEach((scatterPoint) => {
+            scatterPoints.push({
+                x: scatterPoint.x_value,
+                y: scatterPoint.y_value,
+                url: scatterPoint.url // For dashboard points that need URL redirection
+            });
+        });
 
         return scatterPoints;
     }
@@ -299,34 +338,40 @@ const nbacd_plotter_core = (() => {
      * @param {Array} scatterPoints - Array of {x, y} points for the scatter plot
      * @param {string} color - Color to use for the scatter points
      * @param {string} legend - Legend text for the dataset
+     * @param {Object} line - The original line object with additional properties
      * @returns {Object} Chart.js dataset configuration
      */
-    function createScatterDataset(scatterPoints, color, legend) {
+    function createScatterDataset(scatterPoints, color, legend, line) {
+        // Special handling for dashboard points in espn_versus_dashboard plot type
+        const isDashboardPoint = line && line.line_type === "dashboard";
+        
         return {
             type: "scatter",
             data: scatterPoints,
             borderColor: color,
             backgroundColor: color.replace("0.5", "0.7"),
-            pointStyle: "rectRounded",
-            pointRadius: isMobile() ? 5.6 : 8, // Reduced size by ~30% on mobile
-            pointHoverRadius: isMobile() ? 11 : 14, // Medium increased hover radius for scatter points
+            pointStyle: isDashboardPoint ? "rect" : "rectRounded", // Square points for dashboard
+            pointRadius: isDashboardPoint ? (isMobile() ? 6 : 9) : (isMobile() ? 5.6 : 8), // Slightly larger for dashboard points
+            pointHoverRadius: isDashboardPoint ? (isMobile() ? 12 : 16) : (isMobile() ? 11 : 14), // Larger hover radius for dashboard points
             showLine: false, // Ensure no line is drawn
-            label: legend,
+            label: isDashboardPoint ? line.legend : legend, // Use line legend for dashboard points
             // Hover behavior for scatter points
             interaction: {
                 mode: "nearest",
                 intersect: true, // Require direct intersection
                 axis: "xy",
-                hoverRadius: 8, // Moderate hover detection radius for scatter points
+                hoverRadius: isDashboardPoint ? 10 : 8, // Larger hover detection radius for dashboard points
             },
             // Allow hover effects but show tooltips only on click
             events: ['mousemove', 'click'],
             hoverEvents: ['mousemove'], // Enable hover events for point growth
-            hitRadius: 15, // Larger hit area for scatter points
+            hitRadius: isDashboardPoint ? 20 : 15, // Larger hit area for dashboard points
             // Ensure hover styles don't have white borders
             hoverBorderColor: color.replace("0.5", "0.7"), // Same color as background
             hoverBackgroundColor: color.replace("0.5", "0.9"), // Slightly more opaque on hover
             hoverBorderWidth: 0, // No border on hover
+            // Cursor for dashboard points
+            cursor: isDashboardPoint ? 'pointer' : 'default', // Show pointer cursor for dashboard points
         };
     }
 
