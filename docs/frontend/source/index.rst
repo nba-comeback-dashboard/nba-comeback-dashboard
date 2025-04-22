@@ -12,7 +12,7 @@ NBA Comeback Dashboard
 
 .. green-box::
 
-   Game data last updated: 04/18/2025.
+   Game data last updated: 04/21/2025.
 
 The NBA Comeback Dashboard is a plotting tool that lets you :doc:`analyze and compare
 </analysis/methodology_forming_the_plot_trend_lines>` NBA comeback probability data
