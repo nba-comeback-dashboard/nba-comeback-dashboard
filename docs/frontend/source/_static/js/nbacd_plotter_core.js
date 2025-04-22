@@ -145,7 +145,7 @@ const nbacd_plotter_core = (() => {
                     data: trendlineData,
                     borderColor: color,
                     backgroundColor: color.replace("0.5", "0.7"),
-                    pointStyle: "circle", // Circular points
+                    pointStyle: "rectRounded", // Rounded square points to match other charts
                     pointRadius: isMobile() ? 3 : 4, // Smaller points
                     pointHoverRadius: isMobile() ? 8 : 11, // Smaller hover points
                     borderWidth: isMobile() ? 3 : 4,
