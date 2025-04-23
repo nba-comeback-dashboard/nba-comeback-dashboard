@@ -13,7 +13,7 @@ Home v. Away All Time
 
 Looking at all the available data since 1996, the shift between the home team versus
 the road team is roughly 4 points. This number depends :doc:`on our comeback condition
-</analysis/understanding_and_using_the_plots>`.  Looking at max points down or more for
+</analysis/understanding_and_using_the_plots>`. Looking at max points down or more for
 the entire game, we see about a 3.5 point shift:
 
 .. raw:: html
@@ -21,8 +21,8 @@ the entire game, we see about a 3.5 point shift:
     <div id="home_v_away/max_down_or_more_48_home_v_away_all_time" class="nbacd-chart"></div>
 
 But looking at the odds of coming back from a point deficit at the half, the chances of
-coming back from a 20 point deficit for the home team is about the same as the road
-team coming back from down 16, a four point shift:
+coming back from a 20-point deficit for the home team is about the same as the road
+team coming back from down 16, a four-point shift:
 
 .. raw:: html
 
@@ -42,8 +42,8 @@ Home v. Away Modern Era
 =======================
 
 In recent years, this shift has lessened, showing greater parity between the home and
-the road team. Here, the shift is about 3 points or less rather than 4 (e.g. a home
-team down 20 points has about the same odds as a road team being down 17).  And the
+the road team. Here, the shift is about 3 points or less rather than 4 (e.g., a home
+team down 20 points has about the same odds as a road team being down 17). And the
 shift is not as stable, with the home team advantage lessening for big comebacks.
 
 .. raw:: html

@@ -18,16 +18,16 @@ Overall, I feel the most useful dashboard chart is this one:
     <div id="goto/nbacd_points_versus_36_time_all_eras" class="nbacd-chart"></div>
 
 
-This includes all games from 1996 (which is about ~36,000 games). If your team is down,
+This includes all games from 1996 (which is about 36,000 games). If your team is down,
 this gives you a pretty good sense of how steep of a mountain your team has to climb
 (and of course on the flip side how safe your lead is). Plus, I like being able to see
 the current record for a given time knowing that if you are beyond the record it would
 be, well, a record if you came back. (And, ahem, our :doc:`Minnesota Timberwolves
 </analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for allowing the
-biggest comebacks at the 3, 6, 7, and 10 minute marks).
+biggest comebacks at the 3, 6, 7, and 10 minute marks.)
 
 You can click on data points and see which game(s) hold the record. Going full screen
-makes it easier and on mobile, you have to go full screen first. Once you go full
+makes it easier, and on mobile, you have to go full screen first. Once you go full
 screen, then you can click on any point to get the summary for that minute.
 
 Please note, the 'Record' is calculated by getting the point margin exactly at that
@@ -79,14 +79,14 @@ the Bucks on 04/09/2025
 Here, we are again plotting on a normal probability plot instead of a linear y axis so
 we can better examine the extreme probabilities. The dashboard probabilities are taken
 from the same ones shown in the 'goto' chart at the top of this page: for any dashboard
-point you can click on it and it will bring you to the interactive dashboard page and
+point, you can click on it and it will bring you to the interactive dashboard page and
 show the exact regression fit line used to calculate the probability for that point.
 
 Why there are differences between this model and ESPN's model should come as no
 surprise: as stated elsewhere, the algorithms used to come up with live game
-probability calculator employ `involved formulas
+probability calculations employ `involved formulas
 <https://fivethirtyeight.com/methodology/how-our-nba-predictions-work/>`_ that are also
-closed so it's not clear what the input conditions are being fed into the model.
+closed, so it's not clear what input conditions are being fed into the model.
 
 In this dashboard model, :doc:`the underlying methodology is just to use the available
 NBA play by play game data </analysis/methodology_forming_the_plot_trend_lines>` and
@@ -107,13 +107,13 @@ We can add the same conditions to match the :ref:`second and third plots
     <div id="goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718" class="nbacd-chart"></div>
 
 This now is further away from the ESPN model, but for all practical purposes tells the
-same story. Here, the dashboard model is giving a bigger advantage to the home team.  I
+same story. Here, the dashboard model is giving a bigger advantage to the home team. I
 would have thought the charts limited to recent years and considering home court
 advantage would have been closer to the ESPN algorithm, but not knowing what's in the
-ESPN model I don't have much on which to speculate.
+ESPN model, I don't have much on which to speculate.
 
-Taking another game at random that I just watched and was testing the dashboard against
-was the GSW @ HOU on April 21, 2025. Here's the comparison just using all available
+Taking another game at random that I just watched and was testing the dashboard against -
+GSW @ HOU on April 21, 2025. Here's the comparison just using all available
 game data since 1996:
 
 .. raw:: html
