@@ -73,6 +73,14 @@ plot_espn_versus_dashboard(
 )
 
 
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_grizz_at_okc_401767903.json.gz",
+    espn_game_id="401767903",
+    year_groups=eras,
+    use_home_away_game_filters=False,
+)
+
+
 eras = [
     # ERA ONE
     (2017, 2024),
@@ -98,6 +106,14 @@ plot_espn_versus_dashboard(
     year_groups=eras,
     use_home_away_game_filters=True,
 )
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_grizz_at_okc_401767903.json.gz",
+    espn_game_id="401767903",
+    year_groups=eras,
+    use_home_away_game_filters=True,
+)
+
 
 # eras = [
 #     # ERA ONE

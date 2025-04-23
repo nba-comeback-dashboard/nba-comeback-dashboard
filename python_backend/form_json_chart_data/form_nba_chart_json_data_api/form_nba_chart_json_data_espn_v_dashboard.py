@@ -725,12 +725,22 @@ def get_dashboard_win_probability(
         current_time = 48.0 - t  # Convert to minutes remaining
         current_margin = point_fn(t)
 
+        # home_rank = "top_5"
+        # away_rank = "mid_10"
         # Create appropriate game filter
         if use_home_away_game_filter:
             if current_margin <= 0:  # Away team leading
-                game_filter = GameFilter(for_at_home=True)  # For home team trailing
+                game_filter = GameFilter(
+                    for_at_home=True,
+                    # for_rank=home_rank,
+                    # vs_rank=away_rank,
+                )  # For home team trailing
             else:  # Home team leading
-                game_filter = GameFilter(for_at_home=False)  # For away team trailing
+                game_filter = GameFilter(
+                    for_at_home=False,
+                    # for_rank=away_rank,
+                    # vs_rank=home_rank,
+                )  # For away team trailing
         else:
             game_filter = None
 

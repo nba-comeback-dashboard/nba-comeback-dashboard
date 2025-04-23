@@ -42,8 +42,8 @@ To be clear, there has been a marked shift in the data: there are about 1.8 time
 many 20-points-or-more comebacks comparing the eras.  However, the *chance* of coming
 back from 20 points-or-more down (``~5.3%``) is about the same as coming back from 18
 points-or-more down (``~4.9%``) in the earlier era.  To put this in perspective, this
-overall ~2 point shift is on par to :doc:`the advantage a home team has over a road
-team </analysis/home_v_away>` when attempting a comeback.
+overall ~2 point shift is on par with but not as pronounced as :doc:`the advantage a
+home team has over a road team </analysis/home_v_away>` when attempting a comeback.
 
 This means leads are *roughly* as safe as they have been, perhaps needing an extra
 bucket to maintain the same level of security.

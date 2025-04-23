@@ -700,8 +700,8 @@ nbacd_plotter_data = (() => {
             const maxTickValue = Math.max(...chartData.y_ticks);
             
             // For espn_versus_dashboard, add 10% padding at the bottom and 15% at the top
-            const bottomPadding = isEspnVsDashboard ? 0.5 : 0.2;
-            const topPadding = isEspnVsDashboard ? 0.75 : 0.2;
+            const bottomPadding = isEspnVsDashboard ? 0.35 : 0.2;
+            const topPadding = isEspnVsDashboard ? 0.35 : 0.2;
             
             return {
                 type: "linear",

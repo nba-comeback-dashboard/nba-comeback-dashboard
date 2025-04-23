@@ -9,6 +9,7 @@ Analysis
 
    20_is_new_18
    home_v_away
+   regular_v_playoffs
    goto_chart
    rule_of_thumb_that_actually_works
    close_making_it_a_game

@@ -1045,9 +1045,11 @@ def plot_espn_versus_dashboard(
     # For ESPN charts, use fixed min_y=0.0001 and max_y=0.9999 to ensure consistent scale
     # These values can be adjusted later if needed
 
+    min_prob = min(min(away_win_probability), min(dashboard_probabilities))
+    max_prob = max(max(away_win_probability), max(dashboard_probabilities))
     # Match the y_ticks structure from get_points_down_normally_spaced_y_ticks function
-    min_y = norm().ppf(max(0.01 * min(dashboard_probabilities), 1e-6)) * 0.99
-    max_y = norm().ppf(min(0.01 * max(dashboard_probabilities), 1.0 - 1e-6)) * 1.01
+    min_y = norm().ppf(max(0.01 * min_prob, 1e-6)) * 0.99
+    max_y = norm().ppf(min(0.01 * max_prob, 1.0 - 1e-6)) * 1.01
     y_ticks = [
         -3.719016485156023,  # 0.0001 (norm.ppf(0.0001))
         -3.2905267314418994,  # 0.001 (1/1000)
@@ -1084,8 +1086,6 @@ def plot_espn_versus_dashboard(
         if y_tick > max_y:
             break
 
-    print(first_index, last_index)
-
     y_tick_labels = [
         "1/10000",  # 0.0001
         "1/1000",  # 0.001
@@ -1114,7 +1114,6 @@ def plot_espn_versus_dashboard(
     ]
 
     # Create final plot
-    print(first_index, last_index)
     final_plot = FinalPlot(
         plot_type="espn_versus_dashboard",
         title=title,
