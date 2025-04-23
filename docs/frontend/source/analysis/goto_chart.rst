@@ -48,8 +48,7 @@ The conditional providing the greatest value is probably adding whether :doc:`th
 coming back is at home or away </analysis/home_v_away>`. Then, :doc:`limiting the
 seasons to the modern era </analysis/20_is_new_18>`.
 
-Adding those two conditions gives you these two plots, which will give you a closer
-match to the probability given by an in-game probability calculator for example:
+Adding those two conditions gives you these two plots:
 
 .. raw:: html
 
@@ -59,7 +58,6 @@ match to the probability given by an in-game probability calculator for example:
 
     <div id="goto/nbacd_points_versus_36_for_away_modern_era" class="nbacd-chart"></div>
 
-
 .. _how-this-compares-versus-espns-live-win-probability:
 
 How This Compares Versus ESPN's Live Win Probability
@@ -68,12 +66,11 @@ How This Compares Versus ESPN's Live Win Probability
 Using All Game Data
 -------------------
 
-To get a sense of how well the :ref:`first chart (which just looks at all available
-data) works <all-the-available-data>`, I plotted what probabilities it came up with
-versus what ESPN's live game probability page spits out. And, not because :doc:`I'm
-obsessed with this game or anything </analysis/do_the_twolves_give_up_big_leads>`,
-let's look at a recent run of the mill Timberwolves game `against the Bucks on
-04/09/2025 <https://www.nba.com/news/bucks-stun-timberwolves-4th-quarter-comeback>`_:
+To get a sense of how well the :ref:`first chart works <all-the-available-data>`, I
+plotted what probabilities it came up with versus what ESPN's live game probability
+page spits out. So let's look at a recent run-of-the-mill Timberwolves game `against
+the Bucks on 04/09/2025
+<https://www.nba.com/news/bucks-stun-timberwolves-4th-quarter-comeback>`_:
 
 .. raw:: html
 
@@ -81,11 +78,9 @@ let's look at a recent run of the mill Timberwolves game `against the Bucks on
 
 Here, we are again plotting on a normal probability plot instead of a linear y axis so
 we can better examine the extreme probabilities. The dashboard probabilities are taken
-from the same ones shown in the goto chart at the top of this page. In fact, for any
-dashboard point you can click on it and it will bring you to the interactive dashboard
-page and show the exact regression fit line used to calculate the probability for that
-point.  And if you click on the 10 minutes remaining point you will see that the
-Twolves hold the record for losing a game when up 24 points with 10 minutes to go.
+from the same ones shown in the 'goto' chart at the top of this page: for any dashboard
+point you can click on it and it will bring you to the interactive dashboard page and
+show the exact regression fit line used to calculate the probability for that point.
 
 Why there are differences between this model and ESPN's model should come as no
 surprise: as stated elsewhere, the algorithms used to come up with live game
@@ -102,8 +97,8 @@ regression line.
 Adding Conditionals
 -------------------
 
-You can add conditions to help discriminate on the current game. For example, we can
-plot this same game again but :doc:`limit to seasons to the last 8 years
+We can add the same conditions to match the :ref:`second and third plots
+<home-versus-away-for-the-modern-era>` and :doc:`limit to seasons to the last 8 years
 </analysis/20_is_new_18>` and take the :doc:`home team advantage
 </analysis/home_v_away>` into account:
 
@@ -112,13 +107,11 @@ plot this same game again but :doc:`limit to seasons to the last 8 years
     <div id="goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718" class="nbacd-chart"></div>
 
 This now is further away from the ESPN model, but for all practical purposes tells the
-same story. Here, the dashboard model is giving a bigger advantage to the home team. It
-could be this is more accurate, but I'm not sure as I don't know all the variables be
-fed into the model.
-
-Taking another game at random that I just watched and was testing the dashboard against
-was the GSW @ HOU on April 21, 2025. Here's the comparison just using all available
-game data since 1996:
+same story. Here, the dashboard model is giving a bigger advantage to the home team.  I
+would have thought the charts limited to recent years and considering home court
+advantage would have been closer to the ESPN algorithm. Taking another game at random
+that I just watched and was testing the dashboard against was the GSW @ HOU on April
+21, 2025. Here's the comparison just using all available game data since 1996:
 
 .. raw:: html
 
