@@ -109,9 +109,12 @@ We can add the same conditions to match the :ref:`second and third plots
 This now is further away from the ESPN model, but for all practical purposes tells the
 same story. Here, the dashboard model is giving a bigger advantage to the home team.  I
 would have thought the charts limited to recent years and considering home court
-advantage would have been closer to the ESPN algorithm. Taking another game at random
-that I just watched and was testing the dashboard against was the GSW @ HOU on April
-21, 2025. Here's the comparison just using all available game data since 1996:
+advantage would have been closer to the ESPN algorithm, but not knowing what's in the
+ESPN model I don't have much on which to speculate.
+
+Taking another game at random that I just watched and was testing the dashboard against
+was the GSW @ HOU on April 21, 2025. Here's the comparison just using all available
+game data since 1996:
 
 .. raw:: html
 
