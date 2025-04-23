@@ -117,6 +117,9 @@ model (nor would I attempt to understand it even if I had the source code).  It 
 be very well that the ESPN model is not taking home court advantage enough into account
 but I'm not sure all the variables be fed into the model.
 
+Game 1 GSW @ HOU on April 20, 2025
+-----------------------------------
+
 Taking another game at random that I just watched and was testing the dashboard against
 was the GSW @ HOU on April 21, 2025. Here's the comparison just using all available
 game data since 1996:
@@ -130,6 +133,22 @@ And here again using recent years and home team advantage:
 .. raw:: html
 
     <div id="goto/espn_v_dashboard_modern_at_home_gsw_at_hou_401767823" class="nbacd-chart"></div>
+
+Game 2 MIN @ LAL on April 22, 2025
+----------------------------------
+
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_all_time_min_at_lal_401767915" class="nbacd-chart"></div>
+
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_modern_at_home_min_at_lal_401767915" class="nbacd-chart"></div>
+
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_modern_at_home_min_at_lal_401767915_playoffs" class="nbacd-chart"></div>
+
 
 .. _supplementals:
 

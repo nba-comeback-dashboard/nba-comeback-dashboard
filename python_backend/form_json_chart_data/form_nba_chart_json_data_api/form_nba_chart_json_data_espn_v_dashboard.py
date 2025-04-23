@@ -139,13 +139,14 @@ class DashboardLine(PlotLine):
 
     def __init__(
         self,
-        legend: str,
-        x_values: List[float],
-        y_values: List[float],
-        point_margins: List[float],
-        team_name: str,
-        url: str,
-        game_filter=None,
+        legend,
+        x_values,
+        y_values,
+        point_margins,
+        team_name,
+        start_year,
+        stop_year,
+        use_home_away_game_filter,
     ):
         """
         Initialize a line for Dashboard win probability.
@@ -170,8 +171,9 @@ class DashboardLine(PlotLine):
         self.y_values = y_values
         self.point_margins = point_margins
         self.team_name = team_name
-        self.url = url
-        self.game_filter = game_filter
+        self.start_year = start_year
+        self.stop_year = stop_year
+        self.use_home_away_game_filter = use_home_away_game_filter
         self.number_of_games = 0  # Will be set based on data
 
     def get_xy(self):
@@ -221,8 +223,13 @@ class DashboardLine(PlotLine):
 
         # Base URL parameters
         plot_type = "2"  # Default: Points Down At Time plot
-        seasons = "2017-2024-B"  # Modern era, both regular and playoffs
-        game_filter = "ANY-h-ANY"  # Default: Any team, home games, vs any team
+        if str(self.start_year).startswith("R"):
+            seasons = f"{self.start_year[1:]}-{self.stop_year}-R"
+        elif str(self.start_year).startswith("P"):
+            seasons = f"{self.start_year[1:]}-{self.stop_year}-P"
+        else:
+            seasons = f"{self.start_year}-{self.stop_year}-B"
+
         mode = "auto"  # Auto mode
 
         # Hard coded right now for looking at away team.
@@ -239,7 +246,7 @@ class DashboardLine(PlotLine):
 
             point_margin = self.point_margins[index] * sign
 
-            if self.game_filter is None:
+            if self.use_home_away_game_filter is False:
                 url = f"p={plot_type}&t={time_param}&s={seasons}"
             else:
                 if point_margin <= 0:
@@ -604,12 +611,13 @@ def extend_time_vector_for_overtime(time_vector: List, max_period: int) -> List:
 
 
 def calculate_dashboard_probability(
+    time_point,
+    point_margin,
+    start_year,
+    stop_year,
     game_filter,
-    time_point: int,
-    point_margin: float,
-    start_year: int = 1996,
-    stop_year: int = 2024,
-) -> float:
+    season_type,
+):
     """
     Calculate win probability using NBA Dashboard methodology.
 
@@ -642,6 +650,7 @@ def calculate_dashboard_probability(
     games = Games(
         start_year=start_year,
         stop_year=stop_year,
+        season_type=season_type,
     )
 
     # Create PointsDownLine for this time point
@@ -666,8 +675,12 @@ def calculate_dashboard_probability(
 
 
 def get_dashboard_win_probability(
-    plays: List[Dict[str, Any]], use_game_filter: bool = False, modern_era: bool = False
-) -> Tuple[List[float], List[float]]:
+    plays,
+    start_year,
+    stop_year,
+    season_type,
+    use_home_away_game_filter,
+):
     """
     Calculate Dashboard win probability for the game plays.
 
@@ -675,7 +688,7 @@ def get_dashboard_win_probability(
     -----------
     plays : list
         List of play dictionaries with time and point margin data
-    use_game_filter : bool
+    use_home_away_game_filter : bool
         Whether to apply home/away game filter based on point margin
     modern_era : bool
         Whether to use only modern era games (2017-2024) for analysis
@@ -704,10 +717,6 @@ def get_dashboard_win_probability(
     probabilities = []
     times = []
 
-    # Start year for analysis
-    start_year = 2017 if modern_era else 1996
-    stop_year = 2024  # Current year
-
     # Calculate probability at each minute
     point_margin_used = []
     for t in range(
@@ -717,7 +726,7 @@ def get_dashboard_win_probability(
         current_margin = point_fn(t)
 
         # Create appropriate game filter
-        if use_game_filter:
+        if use_home_away_game_filter:
             if current_margin <= 0:  # Away team leading
                 game_filter = GameFilter(for_at_home=True)  # For home team trailing
             else:  # Home team leading
@@ -727,11 +736,12 @@ def get_dashboard_win_probability(
 
         # Calculate probability using Dashboard method
         probability = calculate_dashboard_probability(
-            game_filter=game_filter,
             time_point=current_time,
             point_margin=current_margin,
             start_year=start_year,
             stop_year=stop_year,
+            season_type=season_type,
+            game_filter=game_filter,
         )
 
         probabilities.append(float(probability))  # Convert numpy types to Python float
@@ -754,7 +764,7 @@ def get_dashboard_win_probability(
         point_margin_used.append(point_margin)
 
         # Create appropriate game filter
-        if use_game_filter:
+        if use_home_away_game_filter:
             if point_margin <= 0:  # Away team leading
                 game_filter = GameFilter(for_at_home=True)  # For home team trailing
             else:  # Home team leading
@@ -764,11 +774,12 @@ def get_dashboard_win_probability(
 
         # Calculate probability
         probability = calculate_dashboard_probability(
-            game_filter=game_filter,
             time_point=time_point,
             point_margin=point_margin,
             start_year=start_year,
             stop_year=stop_year,
+            season_type=season_type,
+            game_filter=game_filter,
         )
 
         probabilities.append(float(probability))

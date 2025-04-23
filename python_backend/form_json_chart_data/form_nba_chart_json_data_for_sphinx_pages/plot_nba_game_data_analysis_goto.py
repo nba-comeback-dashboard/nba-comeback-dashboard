@@ -55,15 +55,23 @@ plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_min_at_bucks_401705718.json.gz",
     espn_game_id="401705718",
     year_groups=eras,
-    game_filters=None,
+    use_home_away_game_filters=False,
 )
 
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_gsw_at_hou_401767823.json.gz",
     espn_game_id="401767823",
     year_groups=eras,
-    game_filters=None,
+    use_home_away_game_filters=False,
 )
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_min_at_lal_401767915.json.gz",
+    espn_game_id="401767915",
+    year_groups=eras,
+    use_home_away_game_filters=False,
+)
+
 
 eras = [
     # ERA ONE
@@ -74,15 +82,35 @@ plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_min_at_bucks_401705718.json.gz",
     espn_game_id="401705718",
     year_groups=eras,
-    game_filters=[GameFilter(for_at_home=True)],
+    use_home_away_game_filters=True,
 )
 
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_gsw_at_hou_401767823.json.gz",
     espn_game_id="401767823",
     year_groups=eras,
-    game_filters=[GameFilter(for_at_home=True)],
+    use_home_away_game_filters=True,
 )
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_min_at_lal_401767915.json.gz",
+    espn_game_id="401767915",
+    year_groups=eras,
+    use_home_away_game_filters=True,
+)
+
+# eras = [
+#     # ERA ONE
+#     ("P2017", 2024),
+# ]
+
+
+# plot_espn_versus_dashboard(
+#     json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_min_at_lal_401767915_playoffs.json.gz",
+#     espn_game_id="401767915",
+#     year_groups=eras,
+#     use_home_away_game_filters=True,
+# )
 
 
 eras = [
@@ -136,7 +164,6 @@ eras = [
 game_filters = [
     GameFilter(vs_team_abbr="MIN"),
 ]
-
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/goto/twolves_leads_12_recent.json.gz",

@@ -617,6 +617,20 @@ def get_points_down_normally_spaced_y_ticks(plot_lines, bound_x=float("inf")):
     if max_y > next_max_y:
         y_tick_labels[-1] = "100%"
 
+    # Find first index <= min_y and last index >= max_y
+    first_index = 0
+    last_index = len(y_tick_values) - 1
+
+    for i, tick in enumerate(y_tick_values):
+        if tick <= min_y:
+            first_index = i
+            break
+
+    for i in range(len(y_tick_values) - 1, -1, -1):
+        if y_tick_values[i] >= max_y:
+            last_index = i
+            break
+
     return min_x, max_x, y_tick_values, y_tick_labels
 
 
@@ -840,8 +854,7 @@ def plot_espn_versus_dashboard(
     json_name,
     espn_game_id,
     year_groups,
-    game_filters=None,
-    show_modern_only=False,
+    use_home_away_game_filters=False,
     show_team="away",
     start_time=18,
 ):
@@ -860,8 +873,8 @@ def plot_espn_versus_dashboard(
         ESPN game ID to fetch data for
     year_groups : list of tuples
         List of (start_year, end_year) ranges to use for Dashboard calculations
-    game_filters : list of GameFilter or None
-        List of filters to apply to games for Dashboard calculations
+    use_home_away_game_filters : bool
+        Whether to apply home/away game filters based on point margin
     show_modern_only : bool
         Whether to only show modern era calculations (2017-2024)
     show_team : str
@@ -886,12 +899,6 @@ def plot_espn_versus_dashboard(
         get_dashboard_win_probability,
     )
 
-    # If game_filters is None, create a list with a single None element
-    if game_filters is None:
-        game_filters = [None]
-    elif not isinstance(game_filters, list):
-        game_filters = [game_filters]
-
     # Fetch ESPN data
     game_data = get_espn_game_data(espn_game_id)
     win_prob_map = extract_win_probability_data(game_data)
@@ -906,17 +913,14 @@ def plot_espn_versus_dashboard(
     plays = [play for play in plays if play["minutesElapsed"] >= start_time]
 
     # Get team abbreviations
-    home_abbr = get_team_abbreviation(home_team)
-    away_abbr = get_team_abbreviation(away_team)
+    # home_abbr = get_team_abbreviation(home_team)
+    # away_abbr = get_team_abbreviation(away_team)
 
     # Prepare data for lines
     lines = []
 
     # Create metrics for title and eventual URL construction
-    number_of_year_groups = len(year_groups)
-    number_of_game_filters = len(game_filters)
-    if number_of_game_filters == 1 and game_filters[0] is None:
-        number_of_game_filters = 0
+    # number_of_year_groups = len(year_groups)
 
     game_years_strings = []
     game_filter_strings = []
@@ -952,78 +956,68 @@ def plot_espn_versus_dashboard(
 
     # Add Dashboard probability lines
     for start_year, stop_year in year_groups:
-        for game_filter_index, game_filter in enumerate(game_filters):
-            # Parse season type using the helper function
-            start_year_numeric, season_type = parse_season_type(start_year)
-            stop_year_numeric, _ = parse_season_type(stop_year)
+        # Parse season type using the helper function
+        start_year_numeric, season_type = parse_season_type(start_year)
+        stop_year_numeric, _ = parse_season_type(stop_year)
 
-            # Build legend string
-            years_string = f"{start_year_numeric}-{stop_year_numeric}"
-            if game_filter_index == 0:
-                game_years_strings.append(years_string)
+        # Build legend string
+        years_string = f"{start_year_numeric}-{stop_year_numeric}"
+        if len(game_years_strings) == 0:
+            game_years_strings.append(years_string)
 
-            filter_string = ""
-            if game_filter:
-                filter_string = game_filter.get_filter_string()
-                if game_filter_index == 0:
-                    game_filter_strings.append(filter_string)
-
-            # Get rid of this for now.
-            # Generate legend based on whether we have multiple year groups or filters
-            # if number_of_year_groups > 1 or number_of_game_filters < 2:
-            #    legend_prefix = years_string
-            # else:
-            legend_prefix = ""
-
-            # Changing this to put this in the title.
-            # if number_of_game_filters > 1:
-            #    if legend_prefix:
-            #        legend_prefix = f"{legend_prefix} | "
-            #    legend_prefix = f"{legend_prefix}{filter_string}"
-
-            # Calculate dashboard probabilities
-            times, dashboard_probabilities, dashboard_point_margins = (
-                get_dashboard_win_probability(
-                    plays=plays,
-                    use_game_filter=(game_filter is not None),
-                    modern_era=(start_year_numeric >= 2017),
-                )
+        # Calculate dashboard probabilities
+        times, dashboard_probabilities, dashboard_point_margins = (
+            get_dashboard_win_probability(
+                plays=plays,
+                start_year=start_year_numeric,
+                stop_year=stop_year_numeric,
+                season_type=season_type,
+                use_home_away_game_filter=use_home_away_game_filters,
             )
+        )
 
-            # Create Dashboard line
-            if show_team == "home":
-                dashboard_probabilities = 100 - dashboard_probabilities
-                team_for_dashboard = home_team
-            else:
-                team_for_dashboard = away_team
+        # Create Dashboard line
+        if show_team == "home":
+            dashboard_probabilities = 100 - dashboard_probabilities
+            team_for_dashboard = home_team
+        else:
+            team_for_dashboard = away_team
 
-            # Get team nickname
-            team_nickname = get_team_nickname(team_for_dashboard)
+        # Get team nickname
+        team_nickname = get_team_nickname(team_for_dashboard)
 
-            # Construct URL for linking in the frontend
-            url_base = "../../_static/json/charts"
-            url_params = (
-                f"?years={years_string}&filter={filter_string}"
-                if filter_string
-                else f"?years={years_string}"
-            )
-            dashboard_url = f"{url_base}{url_params}"
+        # Construct URL for linking in the frontend
+        url_base = "../../_static/json/charts"
+        url_params = f"?years={years_string}"
+        if use_home_away_game_filters:
+            url_params += "&filter=ANY-h-ANY"
+        dashboard_url = f"{url_base}{url_params}"
 
-            dashboard_line = DashboardLine(
-                legend=f"{team_nickname} Dashboard Win Probability {legend_prefix}",
-                x_values=list(times),
-                y_values=list(dashboard_probabilities),
-                point_margins=list(dashboard_point_margins),
-                team_name=team_for_dashboard,
-                url=dashboard_url,
-                game_filter=game_filter,
-            )
-            lines.append(dashboard_line)
+        dashboard_line = DashboardLine(
+            legend=f"{team_nickname} Dashboard Win Probability {years_string}",
+            x_values=list(times),
+            y_values=list(dashboard_probabilities),
+            point_margins=list(dashboard_point_margins),
+            team_name=team_for_dashboard,
+            start_year=start_year,
+            stop_year=stop_year,
+            use_home_away_game_filter=use_home_away_game_filters,
+        )
+        lines.append(dashboard_line)
 
     # Create title
     title = f"{away_team} @ {home_team} ({game_date})"
     title = f"{title} | Use Seasons: {game_years_strings[0]}"
-    if game_filters[0] is not None:
+    if season_type == "all":
+        pass
+    elif season_type == "Regular Season":
+        title = f"{title} | Use Regular Season Data"
+    elif season_type == "Playoffs":
+        title = f"{title} | Use Playoff Data"
+    else:
+        raise ValueError(f"Invalid season type: {season_type}")
+
+    if use_home_away_game_filters:
         title = f"{title} | Use {away_team.split()[-1]} @ Away"
 
     # if number_of_year_groups == 1 and number_of_game_filters > 1:
@@ -1050,10 +1044,11 @@ def plot_espn_versus_dashboard(
 
     # For ESPN charts, use fixed min_y=0.0001 and max_y=0.9999 to ensure consistent scale
     # These values can be adjusted later if needed
-    min_y = 0.0001
-    max_y = 0.9999
 
     # Match the y_ticks structure from get_points_down_normally_spaced_y_ticks function
+    breakpoint()
+    min_y = norm().ppf(max(0.01 * min(dashboard_probabilities), 1e-6)) * 0.99
+    max_y = norm().ppf(min(0.01 * max(dashboard_probabilities), 1.0 - 1e-6)) * 1.01
     y_ticks = [
         -3.719016485156023,  # 0.0001 (norm.ppf(0.0001))
         -3.2905267314418994,  # 0.001 (1/1000)
@@ -1080,6 +1075,20 @@ def plot_espn_versus_dashboard(
         3.719016485156023,  # 0.9999
         4.264890793922602,  # 0.99999
     ]
+
+    # Find first index <= min_y and last index >= max_y
+    first_index = 0
+    last_index = len(y_ticks) - 1
+
+    for i, tick in enumerate(y_ticks):
+        if tick <= min_y:
+            first_index = i
+            break
+
+    for i in range(len(y_ticks) - 1, -1, -1):
+        if y_ticks[i] >= max_y:
+            last_index = i
+            break
 
     y_tick_labels = [
         "1/10000",  # 0.0001
