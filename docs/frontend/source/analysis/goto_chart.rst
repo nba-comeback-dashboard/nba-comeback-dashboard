@@ -98,7 +98,7 @@ Adding Conditionals
 -------------------
 
 We can add the same conditions to match the :ref:`second and third plots
-<home-versus-away-for-the-modern-era>` and :doc:`limit to seasons to the last 8 years
+<home-versus-away-for-the-modern-era>` where we :doc:`limit to the last 8 years
 </analysis/20_is_new_18>` and take the :doc:`home team advantage
 </analysis/home_v_away>` into account:
 
@@ -112,9 +112,9 @@ would have thought the charts limited to recent years and considering home court
 advantage would have been closer to the ESPN algorithm, but not knowing what's in the
 ESPN model, I don't have much on which to speculate.
 
-Taking another game at random that I just watched and was testing the dashboard against -
-GSW @ HOU on April 21, 2025. Here's the comparison just using all available
-game data since 1996:
+Taking another game at random that I just watched and was testing the dashboard against
+- GSW @ HOU on April 21, 2025. Here's the comparison just using all available game data
+since 1996:
 
 .. raw:: html
 
