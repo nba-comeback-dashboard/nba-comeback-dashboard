@@ -145,10 +145,6 @@ Game 2 MIN @ LAL on April 22, 2025
 
     <div id="goto/espn_v_dashboard_modern_at_home_min_at_lal_401767915" class="nbacd-chart"></div>
 
-.. raw:: html
-
-    <div id="goto/espn_v_dashboard_modern_at_home_min_at_lal_401767915_playoffs" class="nbacd-chart"></div>
-
 
 .. _supplementals:
 

@@ -1046,7 +1046,6 @@ def plot_espn_versus_dashboard(
     # These values can be adjusted later if needed
 
     # Match the y_ticks structure from get_points_down_normally_spaced_y_ticks function
-    breakpoint()
     min_y = norm().ppf(max(0.01 * min(dashboard_probabilities), 1e-6)) * 0.99
     max_y = norm().ppf(min(0.01 * max(dashboard_probabilities), 1.0 - 1e-6)) * 1.01
     y_ticks = [
@@ -1075,20 +1074,17 @@ def plot_espn_versus_dashboard(
         3.719016485156023,  # 0.9999
         4.264890793922602,  # 0.99999
     ]
-
-    # Find first index <= min_y and last index >= max_y
-    first_index = 0
-    last_index = len(y_ticks) - 1
-
-    for i, tick in enumerate(y_ticks):
-        if tick <= min_y:
-            first_index = i
+    for index, y_tick in enumerate(y_ticks):
+        first_index = index
+        if y_tick > min_y:
             break
 
-    for i in range(len(y_ticks) - 1, -1, -1):
-        if y_ticks[i] >= max_y:
-            last_index = i
+    for index, y_tick in enumerate(y_ticks):
+        last_index = index
+        if y_tick > max_y:
             break
+
+    print(first_index, last_index)
 
     y_tick_labels = [
         "1/10000",  # 0.0001
@@ -1118,13 +1114,14 @@ def plot_espn_versus_dashboard(
     ]
 
     # Create final plot
+    print(first_index, last_index)
     final_plot = FinalPlot(
         plot_type="espn_versus_dashboard",
         title=title,
         x_label="Time Remaining",
         y_label="Win Probability (%)",
-        y_ticks=y_ticks,
-        y_tick_labels=y_tick_labels,
+        y_ticks=y_ticks[first_index : last_index + 1],
+        y_tick_labels=y_tick_labels[first_index : last_index + 1],
         min_x=0,  # Changed to 0 since we're showing time remaining
         max_x=48 - start_time,  # Changed to show time remaining
         lines=lines,
