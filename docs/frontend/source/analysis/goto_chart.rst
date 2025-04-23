@@ -22,9 +22,9 @@ This includes all games from 1996 (which is about ~36,000 games). If your team i
 this gives you a pretty good sense of how steep of a mountain your team has to climb
 (and of course on the flip side how safe your lead is). Plus, I like being able to see
 the current record for a given time knowing that if you are beyond the record it would
-be, well, a record if you came back. (And, ahem, our :doc:`Minnesota Timberwolves
-</analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for allowing the
-biggest comebacks at the 3, 6, 7, and 10 minute marks).
+be, well, a record if you came back. (And just noting that the :doc:`Minnesota
+Timberwolves </analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for
+allowing the biggest comebacks at the 3, 6, 7, and 10 minute marks).
 
 You can click on data points and see which game(s) hold the record. Going full screen
 makes it easier and on mobile, you have to go full screen first. Once you go full
@@ -70,10 +70,9 @@ Using All Game Data
 
 To get a sense of how well the :ref:`first chart (which just looks at all available
 data) works <all-the-available-data>`, I plotted what probabilities it came up with
-versus what ESPN's live game probability page spits out. And, not because :doc:`I'm
-obsessed with this game or anything </analysis/do_the_twolves_give_up_big_leads>`,
-let's look at a recent run of the mill Timberwolves game `against the Bucks on
-04/09/2025 <https://www.nba.com/news/bucks-stun-timberwolves-4th-quarter-comeback>`_:
+versus what ESPN's live game probability page spits out. So let's look at a recent run
+of the mill Timberwolves game `against the Bucks on 04/09/2025
+<https://www.nba.com/news/bucks-stun-timberwolves-4th-quarter-comeback>`_:
 
 .. raw:: html
 
