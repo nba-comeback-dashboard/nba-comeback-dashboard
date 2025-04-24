@@ -43,13 +43,20 @@ How This Compares Versus ESPN's Live Win Probability
 ====================================================
 
 A useful way to judge the utility of this chart is to see how it compares to ESPN's
-running win probabilities for a given game. Even though the ESPN model is a complicated
-model, relying heavily on their `Basketball Power Index
-<https://www.espn.com/nba/story/_/page/Basketball-Power-Index/espn-nba-basketball-power-index>`_,
-and the dashboard model is simply relying on the raw game data from 1996 and
-:doc:`fitting a normal model to the data
-</analysis/methodology_forming_the_plot_trend_lines>`, both models mostly tell a
-similar story about a team's overall comeback chances.
+running win probabilities for a given game. Even though:
+
+* The ESPN model is a complicated model, relying heavily on individual player data and
+  their `Basketball Power Index
+  <https://www.espn.com/nba/story/_/page/Basketball-Power-Index/espn-nba-basketball-power-index>`_,
+
+* And the dashboard model is solely relying on the raw win/loss versus point margin
+  data from 1996 and :doc:`fitting a normal model to the data
+  </analysis/methodology_forming_the_plot_trend_lines>`
+  
+both models mostly tell a similar story about a team's overall comeback chances.  While
+requiring further analysis, this suggests the most correlated variable to comeback
+chances is points down versus time.
+
 
 Timberwolves @ Bucks on 04/09/2025
 ----------------------------------
@@ -161,7 +168,10 @@ we account for the fact that Golden State was the away team and limit our data t
 modern era (where comebacks are slightly more likely), the dashboard model drops the
 win probability to 95.9%. Seeing how Houston was the 2nd seed in the west and Golden
 State got in through the play-in, I am curious what data ESPN has that pushes them
-above the historical average by a point.
+above the historical average by a point. (Most likely, based on `discussions of how
+prediction models work
+https://fivethirtyeight.com/methodology/how-our-nba-predictions-work/` the model is
+giving the seasoned veterans Steph Curry and Jimmy Butler some extra juice.)
 
 .. _supplementals:
 
