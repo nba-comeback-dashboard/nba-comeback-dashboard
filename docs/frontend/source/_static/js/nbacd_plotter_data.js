@@ -749,15 +749,12 @@ nbacd_plotter_data = (() => {
          * @returns {Object} Secondary Y-axis configuration object
          */
         function createSecondaryYAxisConfig(chartData, findYLabel) {
-            // For espn_versus_dashboard plots, we might want to show the right axis even on mobile
-            const isEspnVsDashboard = chartData.plot_type === "espn_versus_dashboard";
-            const showOnMobile = isEspnVsDashboard; // Show right axis on mobile for espn_versus_dashboard
-            
+            // Never show the right axis on mobile, regardless of plot type
             return {
                 position: "right",
-                display: showOnMobile || !isMobile(), // Consider showing on mobile for espn_versus_dashboard
+                display: !isMobile(), // Never show on mobile
                 title: {
-                    display: showOnMobile || !isMobile(), // Consider showing on mobile for espn_versus_dashboard
+                    display: !isMobile(), // Never show on mobile
                     font: {
                         size: isMobile() ? 12 : 16,
                         weight: "bold",
