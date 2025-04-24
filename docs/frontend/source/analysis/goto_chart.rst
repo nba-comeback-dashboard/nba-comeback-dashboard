@@ -89,6 +89,10 @@ recently:
 
     <div id="goto/espn_v_dashboard_all_time_grizz_at_okc_401767903" class="nbacd-chart"></div>
 
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_all_time_lac_at_den_401768061" class="nbacd-chart"></div>
+
 Some features are notable:
 
 * Clearly, ESPN's BPI index is more heavily discounting certain teams independent of
@@ -116,6 +120,7 @@ accurate probability:
 
     <div id="goto/nbacd_points_versus_36_for_away_modern_era" class="nbacd-chart"></div>
 
+
 Comparing To The ESPN Model
 ---------------------------
 
@@ -136,6 +141,11 @@ Let's re-compare to the ESPN model taking these conditionals into account:
 .. raw:: html
 
     <div id="goto/espn_v_dashboard_modern_at_home_grizz_at_okc_401767903" class="nbacd-chart"></div>
+
+.. raw:: html
+
+    <div id="goto/espn_v_dashboard_modern_at_home_lac_at_den_401768061" class="nbacd-chart"></div>
+
 
 Making the dashboard model account for home court advantage and increased chances of
 coming back in the modern era leads the fit to be a little different (worse for some

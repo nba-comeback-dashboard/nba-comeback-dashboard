@@ -80,6 +80,13 @@ plot_espn_versus_dashboard(
     use_home_away_game_filters=False,
 )
 
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_lac_at_den_401768061.json.gz",
+    espn_game_id="401768061",
+    year_groups=eras,
+    use_home_away_game_filters=True,
+)
+
 
 eras = [
     # ERA ONE
@@ -110,6 +117,13 @@ plot_espn_versus_dashboard(
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_grizz_at_okc_401767903.json.gz",
     espn_game_id="401767903",
+    year_groups=eras,
+    use_home_away_game_filters=True,
+)
+
+plot_espn_versus_dashboard(
+    json_name=f"{chart_base_path}/goto/espn_v_dashboard_modern_at_home_lac_at_den_401768061.json.gz",
+    espn_game_id="401768061",
     year_groups=eras,
     use_home_away_game_filters=True,
 )
