@@ -70,8 +70,8 @@ game:
 
 An insight is that percent chance of coming back versus point deficit is normally
 distributed under most conditions.  So when plotted on a `normal probability plot
-<https://en.wikipedia.org/wiki/Normal_probability_plot>`_ and :doc:`we fit trend lines
-(e.g. fit a normal model) to the statistical data
+<https://en.wikipedia.org/wiki/Normal_probability_plot>`_ and :doc:`trend lines (e.g. a
+normal model) are fit to the statistical data
 </analysis/methodology_forming_the_plot_trend_lines>` we can then better examine the
 lower probability events and also more easily compare different eras or situations.
 
