@@ -72,10 +72,10 @@ An insight is that percent chance of coming back versus point deficit is normall
 distributed under most conditions.  So when plotted on a `normal probability plot
 <https://en.wikipedia.org/wiki/Normal_probability_plot>`_ and :doc:`trend lines (e.g. a
 normal model) are fit to the statistical data
-</analysis/methodology_forming_the_plot_trend_lines>` we can then better examine the
+</analysis/methodology_forming_the_plot_trend_lines>` one can then better examine the
 lower probability events and also more easily compare different eras or situations.
 
-And when comparing these two eras, we can see a mostly stable and constant shift of
+And when comparing these two eras, one can see a mostly stable and constant shift of
 about 2-3 points to the left for the modern era versus the past.
 
 You can :ref:`interact with this chart <using-the-plot-controls>` and hover over and
