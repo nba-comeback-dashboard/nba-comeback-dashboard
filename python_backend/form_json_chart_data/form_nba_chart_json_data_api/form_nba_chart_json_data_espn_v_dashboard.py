@@ -415,16 +415,18 @@ def create_play_data_with_win_probability(
         .get("team", {})
         .get("displayName", "Away")
     )
-
     # Extract game date
     game_date = ""
     if "date" in competitions:
         game_date = competitions["date"]
         try:
             # Convert from ISO format to readable date
-            game_date = datetime.datetime.fromisoformat(
-                game_date.replace("Z", "+00:00")
-            ).strftime("%B %d, %Y")
+            # Subtract one day to fix date offset
+            date_obj = datetime.datetime.fromisoformat(game_date.replace("Z", "+00:00"))
+            # Only subtract a day if it's between midnight and 3am
+            if date_obj.hour <= 3:
+                date_obj = date_obj - datetime.timedelta(days=1)
+            game_date = date_obj.strftime("%B %d, %Y")
         except ValueError:
             game_date = "Unknown Date"
 
