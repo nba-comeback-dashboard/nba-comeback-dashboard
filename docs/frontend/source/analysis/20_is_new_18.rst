@@ -44,12 +44,12 @@ era.  To put this in perspective, this overall 2 to 2.5 point shift is on par wi
 not quite as pronounced as :doc:`the advantage a home team has over a road team
 </analysis/home_v_away>` when attempting a comeback.   Note, there are :doc:`many ways
 to compare the comeback chances of the eras
-</analysis/understanding_and_using_the_plots>`, but 2.5 points is a fairly stable
+</analysis/understanding_and_using_the_plots>`, but roughly 2 points is a fairly stable
 characterization of the shift under varying conditions.
 
 To be clear, there has been a marked shift in the data: there are about 1.8 times as
 many 20-points-or-more comebacks comparing the eras.  And when viewed through the lens
-of a point spread in sport betting, a 2.5 point shift is significant.
+of a point spread in sport betting, a 2 point shift is significant.
 
 But as a fan watching the game, the data shows that leads are *roughly* as safe as they
 have been, perhaps needing an extra bucket to maintain the same level of security.

@@ -4,7 +4,7 @@ Using Claude Code to AI Auto-Generate This Site
 
 .. green-box::
     
-    Last updated 4/22/2025
+    Written in March 2025.  Last updated 4/20/2025.
 
 .. contents::
   :depth: 1
@@ -497,11 +497,10 @@ advice:
   I'm revisiting more in the future.)
 
 * **Use Claude to help write your requirements**: Since the whole point is to save
-  effort,
-  you'll start to notice that typing all the .md files and prompts can take time, too.
-  So I did get into a habit of writing bad specs and giving bad prompts, asking Claude
-  to clean up and flesh out my requirements before writing code. I had good success
-  doing this more than a few times.
+  effort, you'll start to notice that typing all the .md files and prompts can take
+  time, too. So I did get into a habit of writing bad specs and giving bad prompts,
+  asking Claude to clean up and flesh out my requirements before writing code. I had
+  good success doing this more than a few times.
 
 
 
