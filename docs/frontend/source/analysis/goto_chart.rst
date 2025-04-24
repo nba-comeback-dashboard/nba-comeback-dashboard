@@ -66,8 +66,9 @@ we can better examine the extreme probabilities. The dashboard probabilities are
 from the same ones shown in the goto chart at the top of this page. In fact, for any
 dashboard point, you can click on it and it will bring you to the interactive dashboard
 page and show the exact regression fit line used to calculate the probability for that
-point. And if you click on the 10 minutes remaining point, you will see that the
-Timberwolves hold the record for losing a game when up 24 points with 10 minutes to go.
+point. (And if you click on the 10 minutes remaining point, you will see that the
+Timberwolves hold the record for losing a game when up 24 points with 10 minutes to go.)
+
 
 .. raw:: html
 
@@ -118,10 +119,7 @@ accurate probability:
 Comparing To The ESPN Model
 ---------------------------
 
-You can add conditions to help discriminate on the current game. For example, we can
-plot this same game again but :doc:`limit to seasons to the last 8 years
-</analysis/20_is_new_18>` and take the :doc:`home team advantage
-</analysis/home_v_away>` into account:
+Let's re-compare to the ESPN model taking these conditionals into account:
 
 .. raw:: html
 
@@ -140,8 +138,8 @@ plot this same game again but :doc:`limit to seasons to the last 8 years
     <div id="goto/espn_v_dashboard_modern_at_home_grizz_at_okc_401767903" class="nbacd-chart"></div>
 
 Making the dashboard model account for home court advantage and increased chances of
-coming back in the modern era leads the fit to be a little worse for some cases (and a
-little better in others).
+coming back in the modern era leads the fit to be a little different (worse for some
+cases and a little better in others).
 
 Understanding how difficult it is to compare probability models, there still are some
 data points that stand out. For example, for the April 20 GSW @ HOU game, at 18 minutes

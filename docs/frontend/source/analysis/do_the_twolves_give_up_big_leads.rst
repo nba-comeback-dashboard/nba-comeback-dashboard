@@ -99,7 +99,7 @@ different in giving up big leads than the league average.
 Other Ways To Cut It
 ====================
 
-But they are *exceptional* that is for sure. For example, check out the biggest
+But they are *exceptional*, that is for sure. For example, check out the biggest
 comebacks ever at 4 minutes remaining from when play by play was recorded:
 
 .. raw:: html
