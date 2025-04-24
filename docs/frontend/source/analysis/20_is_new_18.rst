@@ -37,16 +37,23 @@ To frame this, I decided to break up the available play-by-play data into:
 
 (:ref:`As explained below <deciding-on-eras-breakdown>`, a more targeted recent modern
 era does not change the analysis so the larger dataset was chosen).
- 
-To be clear, there has been a marked shift in the data: there are about 1.8 times as
-many 20-points-or-more comebacks comparing the eras.  However, the *chance* of coming
-back from 20 points-or-more down (``~5.3%``) is about the same as coming back from 18
-points-or-more down (``~4.9%``) in the earlier era.  To put this in perspective, this
-overall ~2 point shift is on par with but not as pronounced as :doc:`the advantage a
-home team has over a road team </analysis/home_v_away>` when attempting a comeback.
 
-This means leads are *roughly* as safe as they have been, perhaps needing an extra
-bucket to maintain the same level of security.
+Looking at this data, the chance of coming back from 20 points-or-more down (``~5.3%``)
+is about the same as coming back from 18 points-or-more down (``~4.9%``) in the earlier
+era.  To put this in perspective, this overall ~2 point shift is on par with but not as
+pronounced as :doc:`the advantage a home team has over a road team
+</analysis/home_v_away>` when attempting a comeback.   Note, there are :doc:`many ways
+to compare the comeback chances of the eras
+</analysis/understanding_and_using_the_plots>`, but 2 points is a fairly stable
+characterization of the shift under varying conditions.
+
+To be clear, there has been a marked shift in the data: there are about 1.8 times as
+many 20-points-or-more comebacks comparing the eras.  And when viewed through the lens
+of a point spread in sport betting, a two point shift is significant.
+
+But as a fan watching the game, the data shows that leads are *roughly* as safe as they
+have been, perhaps needing an extra bucket to maintain the same level of security.
+
 
 .. _win-percentages-when-max-deficit-is-n-or-more-points:
 
@@ -247,7 +254,7 @@ If you:
   </analysis/plots/old_old_school_v_old_school>` you can see there is very little shift
   in the numbers.
 
-* Similarly, if you :doc:`break up the modern era into the more fine grained 4 year
+* Similarly, if you :doc:`break up the modern era into the more fine-grained 4 year
   chunks of 2017-2020 v 2021-2024 </analysis/plots/new_school_v_new_new_school>` you
   again see very little difference.
 
