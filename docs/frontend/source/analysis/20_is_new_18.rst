@@ -73,9 +73,10 @@ distributed under most conditions.  So when plotted on a `normal probability plo
 <https://en.wikipedia.org/wiki/Normal_probability_plot>`_ and :doc:`we fit trend lines
 (e.g. fit a normal model) to the statistical data
 </analysis/methodology_forming_the_plot_trend_lines>` we can then better examine the
-lower probability events and also more easily compare different eras or situations. And
-when comparing these two eras, we can see a mostly stable and constant shift of about
-2-3 points to the left for the modern era versus the past.
+lower probability events and also more easily compare different eras or situations.
+
+And when comparing these two eras, we can see a mostly stable and constant shift of
+about 2-3 points to the left for the modern era versus the past.
 
 You can :ref:`interact with this chart <using-the-plot-controls>` and hover over and
 click the points to see which games compose a point and compare it with a `list of
