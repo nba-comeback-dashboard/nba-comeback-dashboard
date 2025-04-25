@@ -94,12 +94,12 @@ remove = False
 
 if remove:
     try:
-        os.unlink("/Users/ajcarter/nbav0/nba_games_running_score_1983_2025_v5.sqlite")
+        os.unlink("/Users/ajcarter/nbav0/nba_games_running_score_1983_2025_v6.sqlite")
     except EnvironmentError:
         pass
 
 con = sqlite3.connect(
-    "/Users/ajcarter/nbav0/nba_games_running_score_1983_2025_v5.sqlite"
+    "/Users/ajcarter/nbav0/nba_games_running_score_1983_2025_v6.sqlite"
 )
 
 cursor = con.cursor()

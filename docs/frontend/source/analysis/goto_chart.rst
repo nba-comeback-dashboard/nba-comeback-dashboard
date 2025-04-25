@@ -53,7 +53,7 @@ running win probabilities for a given game. Even though:
   data from 1996 and :doc:`fitting a normal model to the data
   </analysis/methodology_forming_the_plot_trend_lines>`
   
-both models mostly tell a similar story about a team's overall comeback chances.  While
+both models mostly tell a similar story about a team's overall comeback chances. While
 requiring further analysis, this suggests the most correlated variable to comeback
 chances is points down versus time.
 
@@ -166,11 +166,11 @@ probability of 98.4%.
 Based just on all games from 1996 until now, the odds are about 97.8% -- however, when
 we account for the fact that Golden State was the away team and limit our data to the
 modern era (where comebacks are slightly more likely), the dashboard model drops the
-win probability to 95.9%. Seeing how Houston was the 2nd seed in the west and Golden
+win probability to 95.9%. Seeing how Houston was the 2nd seed in the West and Golden
 State got in through the play-in, I am curious what data ESPN has that pushes them
 above the historical average by a point. (Most likely, based on `discussions of how
 prediction models work
-https://fivethirtyeight.com/methodology/how-our-nba-predictions-work/` the model is
+<https://fivethirtyeight.com/methodology/how-our-nba-predictions-work/>`_, the model is
 giving the seasoned veterans Steph Curry and Jimmy Butler some extra juice.)
 
 .. _supplementals:

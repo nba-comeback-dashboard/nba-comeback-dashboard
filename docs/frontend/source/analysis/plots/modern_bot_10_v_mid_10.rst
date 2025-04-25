@@ -32,8 +32,8 @@ Win % v. Max Points Down Or More During 4th Quarter | 2017-18 to 2024-25
 
     <div id="plots/modern_bot_10_v_mid_10/max_down_or_more_12" class="nbacd-chart"></div>
 
-Max Points Down
-===============
+Max Points Down At Most
+=======================
 
 Win % v. Max Points Down During Entire Game | 2017-18 to 2024-25
 ----------------------------------------------------------------

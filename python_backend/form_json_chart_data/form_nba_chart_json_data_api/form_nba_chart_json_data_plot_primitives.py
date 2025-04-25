@@ -154,6 +154,8 @@ class PointsDownLine(PlotLine):
 
         self.start_time = start_time
         self.down_mode = down_mode
+        self.calculate_occurrences = calculate_occurrences
+
         self.point_margin_map = point_margin_map = self.setup_point_margin_map(
             games, game_filter, start_time, down_mode
         )
@@ -170,9 +172,13 @@ class PointsDownLine(PlotLine):
 
         import form_nba_chart_json_data_season_game_loader as loader
 
-        or_less_point_margin, or_more_point_margin = (
-            self.clean_point_margin_map_end_points(point_margin_map)
-        )
+        if calculate_occurrences:
+            or_less_point_margin = None
+            or_more_point_margin = None
+        else:
+            or_less_point_margin, or_more_point_margin = (
+                self.clean_point_margin_map_end_points(point_margin_map)
+            )
 
         self.point_margin_map = point_margin_map
         self.point_margins = sorted(point_margin_map)
@@ -298,17 +304,29 @@ class PointsDownLine(PlotLine):
                 raise NotImplementedError(f"Unsupported down_mode: {down_mode}")
 
             # Record the outcomes based on the game filter
-            if game_filter is None or game_filter.is_match(game, is_win=True):
-                win_point_margin_percent = point_margin_map.setdefault(
-                    win_point_margin, PointMarginPercent()
-                )
-                win_point_margin_percent.wins.add(game.game_id)
 
-            if game_filter is None or game_filter.is_match(game, is_win=False):
-                lose_point_margin_percent = point_margin_map.setdefault(
-                    lose_point_margin, PointMarginPercent()
+            if self.calculate_occurrences:
+                if (
+                    self.down_mode == "max"
+                    and min(lose_point_margin, win_point_margin) == 0
+                ):
+                    print(game.game_id)
+                occurs_point_margin_percent = point_margin_map.setdefault(
+                    min(lose_point_margin, win_point_margin), PointMarginPercent()
                 )
-                lose_point_margin_percent.losses.add(game.game_id)
+                occurs_point_margin_percent.wins.add(game.game_id)
+            else:
+                if game_filter is None or game_filter.is_match(game, is_win=True):
+                    win_point_margin_percent = point_margin_map.setdefault(
+                        win_point_margin, PointMarginPercent()
+                    )
+                    win_point_margin_percent.wins.add(game.game_id)
+
+                if game_filter is None or game_filter.is_match(game, is_win=False):
+                    lose_point_margin_percent = point_margin_map.setdefault(
+                        lose_point_margin, PointMarginPercent()
+                    )
+                    lose_point_margin_percent.losses.add(game.game_id)
 
         return point_margin_map
 
@@ -673,7 +691,7 @@ class FinalPlot:
         self.min_x = min_x
         self.max_x = max_x
         self.x_label = x_label
-        
+
         # For ESPN vs Dashboard plots, always use Win Probability (%)
         if plot_type == "espn_versus_dashboard":
             self.y_label = "Win Probability (%)"

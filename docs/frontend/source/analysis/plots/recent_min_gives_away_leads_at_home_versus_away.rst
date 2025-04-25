@@ -32,8 +32,8 @@ Win % v. Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
 
     <div id="plots/recent_min_gives_away_leads_at_home_versus_away/max_down_or_more_12" class="nbacd-chart"></div>
 
-Max Points Down
-===============
+Max Points Down At Most
+=======================
 
 Win % v. Max Points Down During Entire Game | 2021-22 to 2024-25
 ----------------------------------------------------------------

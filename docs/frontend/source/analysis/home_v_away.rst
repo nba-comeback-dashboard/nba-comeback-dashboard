@@ -20,8 +20,8 @@ the entire game, we see about a 3.5 point shift:
 
     <div id="home_v_away/max_down_or_more_48_home_v_away_all_time" class="nbacd-chart"></div>
 
-Note, this is the same point shift :doc:`538 arrived at using their Elo rating system
-<https://fivethirtyeight.com/features/how-we-calculate-nba-elo-ratings/>`_.
+(Note, this is the same point shift `538 arrived at using their Elo rating system
+<https://fivethirtyeight.com/features/how-we-calculate-nba-elo-ratings/>`_.)
 
 Looking at the odds of coming back from a point deficit at the half, the chances of
 coming back from a 20 point deficit for the home team is about the same as the road

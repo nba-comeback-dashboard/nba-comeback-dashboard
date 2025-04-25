@@ -12,7 +12,7 @@ slightly different ways of defining it. Let's explore the four plot types used i
 project:
 
 * `Max Points Down Or More`_
-* `Max Points Down`_
+* `Max Points Down At Most`_
 * `Points Down At Time`_
 * `Percent Chance of Winning: Time v. Points Down`_
 
@@ -62,10 +62,10 @@ games. This means that a given point margin (say -10) is getting weighted down w
 of the previous (and lower chance) probabilities, because the -10 point also includes
 the wins/losses from -11, -12, -13, ..., -20, ..., -30, and on and on.
 
-.. _max-points-down:
+.. _max-points-down-at-most:
 
-Max Points Down
-===============
+Max Points Down At Most
+=======================
 
 Even though this is a common way of talking about comebacks, it's a little unfair in a
 sense. For the -10 point deficit, the odds of coming back are weighted down by all the

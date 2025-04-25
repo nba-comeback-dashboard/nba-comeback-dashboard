@@ -32,8 +32,8 @@ Win % v. Max Points Down Or More During 4th Quarter
 
     <div id="plots/new_school_v_new_new_school/max_down_or_more_12" class="nbacd-chart"></div>
 
-Max Points Down
-===============
+Max Points Down At Most
+=======================
 
 Win % v. Max Points Down During Entire Game
 -------------------------------------------

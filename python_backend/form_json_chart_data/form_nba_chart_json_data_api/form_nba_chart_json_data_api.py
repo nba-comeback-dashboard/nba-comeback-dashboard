@@ -397,6 +397,8 @@ def plot_biggest_deficit(
         time_desc = f"Final {start_time}"
     elif 1 < start_time < 12:
         time_desc = f"Final {start_time} Minutes"
+    elif start_time == 0:
+        time_desc = f"At End of Regulation"
     else:
         raise NotImplementedError(start_time)
 
@@ -411,13 +413,17 @@ def plot_biggest_deficit(
     fit_min_win_game_count = (
         3 if fit_min_win_game_count is None else fit_min_win_game_count
     )
+    if calculate_occurrences:
+        start_text = ""
+    else:
+        start_text = "Win % v. "
     if down_mode == "at":
-        title = f"Win % v. Points Down{or_more} At Start of {time_desc}"
+        title = f"{start_text}Points Down{or_more} At Start of {time_desc}"
         or_more = ""
         max_point_margin = -1 if max_point_margin is None else max_point_margin
         fit_max_points = -1 if fit_max_points is None else fit_max_points
     else:
-        title = f"Win % v. Max Points Down{or_more} During {time_desc}"
+        title = f"{start_text}Max Points Down{or_more} During {time_desc}"
         max_point_margin = "auto" if max_point_margin is None else max_point_margin
         if fit_max_points is None:
             fit_max_points = "10%"

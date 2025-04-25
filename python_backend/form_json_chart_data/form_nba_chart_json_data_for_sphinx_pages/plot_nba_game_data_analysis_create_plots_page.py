@@ -435,7 +435,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 
         # Write Max Points Down section if relevant plots exist
         if max_down_plots:
-            section_title = "Max Points Down"
+            section_title = "Max Points Down At Most"
             f.write(f"{section_title}\n")
             f.write(f"{'=' * len(section_title)}\n\n")
 
