@@ -70,7 +70,11 @@ class PointMarginPercent:
             mode_keys = ["occurred", "not_occurred"]
 
         for mode in mode_keys:
+            if mode == "not_occurred":
+                continue
             game_ids = locals()[f"{mode}_games"]
+            if calculate_occurrences:
+                game_ids = [game_id.split("_AWAY")[0] for game_id in game_ids]
             game_sample = Num.random.sample(list(game_ids), min(10, len(game_ids)))
 
             # Create Game objects for the samples
@@ -185,11 +189,11 @@ class PointsDownLine(PlotLine):
         self.percents = [
             point_margin_map[minute].odds[0] for minute in self.point_margins
         ]
-        self.occurs = [
-            point_margin_map[minute].odds[-1] / self.number_of_games
-            for minute in self.point_margins
-        ]
         if calculate_occurrences:
+            self.occurs = [
+                point_margin_map[minute].odds[1] / (self.number_of_games)
+                for minute in self.point_margins
+            ]
             self.percents = self.occurs
 
         self.percents = [max(self.min_percent, percent) for percent in self.percents]
@@ -204,7 +208,9 @@ class PointsDownLine(PlotLine):
         if max_point_margin == "auto":
             max_point_margin = fix_max_points + 6
 
-        if min_point_margin is not None or max_point_margin is not None:
+        if self.down_mode == "score" or self.calculate_occurrences:
+            pass
+        elif min_point_margin is not None or max_point_margin is not None:
             self.filter_max_point_margin(min_point_margin, max_point_margin)
 
         self.max_point_margin = max_point_margin
@@ -257,7 +263,10 @@ class PointsDownLine(PlotLine):
             )
 
         for game in games:
-            if down_mode == "at":
+            if down_mode == "score":
+                win_point_margin = max(game.final_home_points, game.final_away_points)
+                lose_point_margin = min(game.final_home_points, game.final_away_points)
+            elif down_mode == "at":
                 # Analyze point deficit at the specific time point
                 sign = 1 if game.score_diff > 0 else -1
                 point_margin = game.point_margin_map[start_time]["point_margin"]
@@ -310,11 +319,22 @@ class PointsDownLine(PlotLine):
                     self.down_mode == "max"
                     and min(lose_point_margin, win_point_margin) == 0
                 ):
-                    print(game.game_id)
-                occurs_point_margin_percent = point_margin_map.setdefault(
-                    min(lose_point_margin, win_point_margin), PointMarginPercent()
-                )
-                occurs_point_margin_percent.wins.add(game.game_id)
+                    raise AssertionError
+
+                if self.down_mode == "score":
+                    occurs_point_margin_percent = point_margin_map.setdefault(
+                        win_point_margin, PointMarginPercent()
+                    )
+                    occurs_point_margin_percent.wins.add(game.game_id)
+                    occurs_point_margin_percent = point_margin_map.setdefault(
+                        lose_point_margin, PointMarginPercent()
+                    )
+                    occurs_point_margin_percent.wins.add(f"{game.game_id}_AWAY")
+                else:
+                    occurs_point_margin_percent = point_margin_map.setdefault(
+                        min(lose_point_margin, win_point_margin), PointMarginPercent()
+                    )
+                    occurs_point_margin_percent.wins.add(game.game_id)
             else:
                 if game_filter is None or game_filter.is_match(game, is_win=True):
                     win_point_margin_percent = point_margin_map.setdefault(
