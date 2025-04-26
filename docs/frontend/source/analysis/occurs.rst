@@ -14,9 +14,9 @@ Occurrence Frequencies of Points Scored, Points Down, and Garbage Time Games
 Largest and Smallest Final Scores
 =================================
 
-The probability density function of the final score for each team is shown below.
-Remarkably, the 1st and 2nd record since 1996 come from the same 02/24/2023 game -- `a
-double over time win by Kings over the Clippers 176-175
+The probability density function of the final score for each team of every game since
+1996 is shown below. Remarkably, the 1st and 2nd record since 1996 come from the same
+game -- `a double over time win by Kings over the Clippers 176-175 on 02/24/2023
 <https://www.nba.com/game/0022200902>`_.
 
 .. raw:: html
