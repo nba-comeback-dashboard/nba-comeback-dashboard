@@ -28,7 +28,7 @@ comebacks in a single season since 1996-97 and continues with analysis by Steve 
     mean, there's definitely an awareness from everybody that leads are not safe."
 
 
-But is this true? In short... not really.  While a statistically large and significant
+But is this true? In short... not really. While a statistically large and significant
 shift has occurred comparing new to old, the shift is more about 2 to 2.5 points, not 8.
 
 To frame this, I decided to break up the available play-by-play data into:
@@ -41,16 +41,16 @@ era does not change the analysis so the larger dataset was chosen).
 
 Looking at this data, the chance of coming back from 20 points-or-more down (``~5.3%``)
 is about the same as coming back from 18 points-or-more down (``~4.9%``) in the earlier
-era.  To put this in perspective, this overall 2 to 2.5 point shift is on par with but
+era. To put this in perspective, this overall 2 to 2.5 point shift is on par with but
 not quite as pronounced as :doc:`the advantage a home team has over a road team
-</analysis/home_v_away>` when attempting a comeback.   Note, there are :doc:`many ways
-to compare the comeback chances of the eras
+</analysis/home_v_away>` when attempting a comeback. Note, there are :doc:`many ways to
+compare the comeback chances of the eras
 </analysis/understanding_and_using_the_plots>`, but roughly 2 points is a fairly stable
 characterization of the shift under varying conditions.
 
 To be clear, there has been a marked shift in the data: there are about 1.8 times as
-many 20-points-or-more comebacks comparing the eras.  And when viewed through the lens
-of a point spread in sport betting, a 2-3 point shift is significant.
+many 20-points-or-more comebacks comparing the eras. And when viewed through the lens
+of a point spread in sports betting, a 2-3 point shift is significant.
 
 But as a fan watching the game, the data shows that leads are *roughly* as safe as they
 have been, perhaps needing an extra bucket to maintain the same level of security.
@@ -273,37 +273,37 @@ or more down against any other team.
 What Else Could Be Going On?
 ============================
 
-I am making the case that, in face of popular opinion, blowing a 20 point has about the
-same chances as blowing an 18 point lead in the past.  That two point shift is
+I am making the case that, in face of popular opinion, blowing a 20-point lead has
+about the same chances as blowing an 18-point lead in the past. That two-point shift is
 significant but I don't think matches what `I see people saying about leads these days
 <https://www.reddit.com/r/nba/comments/1cc2qqv/dumb_question_is_blowing_a_20_point_lead_that_bad/>`_.
  
-So I just want to consider a few points that I think is useful when thinking about this
-issue:
+So I just want to consider a few points that I think are useful when thinking about
+this issue:
 
-* Scoring is up dramatically.  :ref:`The median score is 111 points in the modern era
-  <comparing-occurs-eras>` as compared to 97 in the past: a 14 point shift.  Also,
-  teams getting down 30 or more points happens 60% more often and teams getting down 20
-  or more points happens 30% more now than in the past.
+* Scoring is up dramatically. :ref:`The median score is 111 points in the modern era
+  <comparing-occurs-eras>` as compared to 97 in the past: a 14-point shift. Also, teams
+  getting down 30 or more points happens 60% more often and teams getting down 20 or
+  more points happens 30% more now than in the past.
 
 * However, the fact that teams can score more quickly does not automatically
   lead to the conclusion that big comebacks should be more probable: I mean, if you are
-  down and can score quickly, so can your opponent and keep you down.  So while points
-  are a little easier to come by, this affect is offset by the counter fact that they
+  down and can score quickly, so can your opponent and keep you down. So while points
+  are a little easier to come by, this effect is offset by the counter fact that they
   are also a little easier to give up.
 
 * I do think part of the problem is `availability bias
   <https://www.simplypsychology.org/availability-heuristic.html>`_: that is, things
-  that happen recently especially ones you've witnessed personally lead to the false
-  conclusion that they are happening more often than in the past.  After personally
+  that happen recently, especially ones you've witnessed personally, lead to the false
+  conclusion that they are happening more often than in the past. After personally
   watching a series of garbage time games recently, I got to thinking "ok, but for sure
-  this is an increasing phenomena".  :ref:`But when I look at the data
+  this is an increasing phenomenon". :ref:`But when I look at the data
   <comparing-occurs-eras>` it's almost constant (there are slightly more large deficit
-  games but this is offset by a 2 point shift in a team's chances of coming back).
+  games but this is offset by a 2-point shift in a team's chances of coming back).
 
 * I do want to compare the average size and min/max size of runs between the two eras.
   It may be that large swings are much more common, leading to a perception of
-  increased chances of coming back.  But here again, if it's an option for you to go on
+  increased chances of coming back. But here again, if it's an option for you to go on
   a run, it's also an option for your opponent.
 
   For another day.
