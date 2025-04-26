@@ -106,9 +106,9 @@ Here:
   <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=12&s=1996-2024-B&m=auto>`_
   and that's only about 13-14% of games where the deficit is 20 points or more starting
   the 4th.
-* And games down 28 points or more -- which would require breaking `the current record
-  of 27 point 4th quarter comeback <https://www.nba.com/game/0020200278>`_ -- only
-  happen about 4% of the time.
+* And games down 28 points or more at the half -- which would require breaking `the
+  current record of 27 point 4th quarter comeback
+  <https://www.nba.com/game/0020200278>`_ -- only happen about 4% of the time.
 
 And at halftime:
 
