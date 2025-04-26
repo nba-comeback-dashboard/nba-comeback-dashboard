@@ -41,7 +41,7 @@ is the probability density function, which tells us that:
 
 * The tightest games since 1996 have been within 5 points and it's happened 8 times.
 
-* Only about 1,000 games out of 36,000 have been 'wire-to-wire' with either teams
+* Only about 1,000 games out of 36,000 have been 'wire-to-wire' with either team's
   lead being 8 or less.
 
 * And the biggest blowout ever got up to a 78 point deficit.
@@ -86,7 +86,7 @@ we can see that:
 
 Using those two numbers we can say:
 
-* A full 28% of games -- over 1 in 4! -- are effectively over by the 6 minute mark
+* A full 28% of games -- over 1 in 4! -- are effectively over by the 6-minute mark
   needing a 15 point comeback or more.
   
 * And 10.4% of games would require a 23 point comeback to set a record.
@@ -160,8 +160,8 @@ Now, teams fall down:
 * 30 points or more ``~12.2%`` of the time compared to ``~7.6%`` in the past, a notable
   1.59x increase (or about 59% more frequently).
 
-* 20 points or more ``~18.8%`` of the time compared to ``~14.3%`` in the past, a not
-  quite as dramatic 1.31x increase (or about 31% more frequently).
+* 20 points or more ``~18.8%`` of the time compared to ``~14.3%`` in the past, a
+  not-quite-as-dramatic 1.31x increase (or about 31% more frequently).
 
 
 Garbage Time Games
