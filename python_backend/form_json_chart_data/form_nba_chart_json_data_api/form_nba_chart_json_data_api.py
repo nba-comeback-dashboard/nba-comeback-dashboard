@@ -429,7 +429,7 @@ def plot_biggest_deficit(
             fit_max_points = "10%"
 
     if calculate_occurrences:
-        max_point_margin = 1
+        max_point_margin = 1000
 
     # Prepare data for combinations of year groups and filters
     points_down_lines = []
@@ -493,6 +493,11 @@ def plot_biggest_deficit(
 
     elif number_of_game_filters == 1:
         title = f"{title} | {game_filters[0].get_filter_string()}"
+
+    if down_mode == "score":
+        title = f"Points Scored"
+        for line in points_down_lines:
+            line.legend = line.legend.replace("Games)", "Scores)")
 
     if calculate_occurrences:
         title = f"Occurrences of {title}"

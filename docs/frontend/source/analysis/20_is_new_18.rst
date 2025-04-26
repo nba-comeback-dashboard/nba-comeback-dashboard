@@ -219,31 +219,31 @@ And doing it for 1% we get:
 The point spread changes over time, but between 2 - 3 points is a fairly good
 characterization.
 
+.. _real-time-probabilities:
 
-.. _occurrence-frequencies:
+Real Time Probabilities
+=======================
 
-Occurrence Frequencies
-======================
-
-In a certain sense, the fact that teams can score more quickly does not automatically
-lead to the conclusion that big comebacks should be more probable: I mean, if you are
-down and can score quickly, so can your opponent and keep you down.
-
-So a related question is: are there simply more games with large deficits? Plotting the
-occurrence rate between the eras we see:
+One interesting way to look at the data is to show what the running probabilities would
+be using data from the modern era versus the past.
 
 .. raw:: html
 
-    <div id="plots/old_school_v_modern/occurs_down_or_more_48" class="nbacd-chart"></div>
+    <div id="20_18/espn_v_dashboard_old_school_v_modern_min_at_lal_401767915" class="nbacd-chart"></div>
 
-Now, teams fall down 30 points or more ``~12%`` of the time compared to ``~7.6%`` in
-the past, a notable 1.59x increase (or about 59% more frequently).
+So at halftime, the wolves had 12.9% chance of winning using modern data versus a 9.1%
+chance if you use data from the past.
 
+Here's another game:
 
+.. raw:: html
 
+    <div id="20_18/espn_v_dashboard_old_school_v_modern_min_at_bucks_401705718" class="nbacd-chart"></div>
 
-
-
+The same basic trend emerges: from a statistical standpoint, there are notable large
+shifts in percentages comparing the eras (3-4% in some cases).  But the shift is not
+large enough to greatly effect how it "feels" as a fan to be down, say, 15 points at
+the half.
 
 .. _what-an-8-point-shift-looks-like:
 
@@ -268,38 +268,55 @@ Here, the chance of top ten team playing a bottom 10 team coming back from a
 or more down against any other team.
 
 
-.. _real-time-probabilities:
+.. _what-else-could-be-going-on:
 
-Real Time Probabilities
-=======================
+What Else Could Be Going On?
+============================
 
-One interesting way to look at the data is to show what the running probabilities would
-be using data from the modern era versus the past.
+I am making the case that, in face of popular opinion, blowing a 20 point has about the
+same chances as blowing an 18 point lead in the past.  That two point shift is
+significant but I don't think matches what `I see people saying about leads these days
+<https://www.reddit.com/r/nba/comments/1cc2qqv/dumb_question_is_blowing_a_20_point_lead_that_bad/>`_.
+ 
+So I just want to consider a few points that I think is useful when thinking about this
+issue:
 
-.. raw:: html
+* Scoring is up dramatically.  :ref:`The median score is 111 points in the modern era
+  <comparing-occurs-eras>` as compared to 97 in the past: a 14 point shift.  Also,
+  teams getting down 30 or more points happens 60% more often and teams getting down 20
+  or more points happens 30% more now than in the past.
 
-    <div id="20_18/espn_v_dashboard_old_school_v_modern_min_at_lal_401767915" class="nbacd-chart"></div>
+* However, the fact that teams can score more quickly does not automatically
+  lead to the conclusion that big comebacks should be more probable: I mean, if you are
+  down and can score quickly, so can your opponent and keep you down.  So while points
+  are a little easier to come by, this affect is offset by the counter fact that they
+  are also a little easier to give up.
 
-So at halftime, the wolves had 12.9% chance of winning using modern data versus a 9.1%
-chance if you use data from the past.
+* I do think part of the problem is `availability bias
+  <https://www.simplypsychology.org/availability-heuristic.html>`_: that is, things
+  that happen recently especially ones you've witnessed personally lead to the false
+  conclusion that they are happening more often than in the past.  After personally
+  watching a series of garbage time games recently, I got to thinking "ok, but for sure
+  this is an increasing phenomena".  :ref:`But when I look at the data
+  <comparing-occurs-eras>` it's almost constant (there are slightly more large deficit
+  games but this is offset by a 2 point shift in a team's chances of coming back).
 
-Here's another game:
+* I do want to compare the average size and min/max size of runs between the two eras.
+  It may be that large swings are much more common, leading to a perception of
+  increased chances of coming back.  But here again, if it's an option for you to go on
+  a run, it's also an option for your opponent.
 
-.. raw:: html
+  For another day.
 
-    <div id="20_18/espn_v_dashboard_old_school_v_modern_min_at_bucks_401705718" class="nbacd-chart"></div>
+.. _supplemental:
 
-The same basic trend emerges: from a statistical standpoint, there are notable large
-shifts in percentages comparing the eras (3-4% in some cases).  But the shift is not
-large enough to greatly effect how it "feels" to be down, say, 15 points at the half.
-
-
-
+Supplemental
+============
 
 .. _deciding-on-eras-breakdown:
 
 Why I Chose My Years Breakdown
-==============================
+------------------------------
 
 If you:
 

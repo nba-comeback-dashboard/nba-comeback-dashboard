@@ -108,6 +108,26 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/all_time_at_or_more_24_point_margin.json.gz",
+    year_groups=eras,
+    start_time=24,
+    down_mode="at",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/all_time_at_or_more_12_point_margin.json.gz",
+    year_groups=eras,
+    start_time=12,
+    down_mode="at",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
 
 eras = [
     # ERA ONE
@@ -154,6 +174,16 @@ plot_biggest_deficit(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_at_or_more_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
+    down_mode="at",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/old_school_v_modern_at_or_more_24_point_margin.json.gz",
+    year_groups=eras,
+    start_time=24,
     down_mode="at",
     cumulate=True,
     max_point_margin=1000,

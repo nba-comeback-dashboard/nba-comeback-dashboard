@@ -13,12 +13,8 @@
 // Use a module pattern and make it available globally for other modules
 const nbacd_plotter_core = (() => {
     // Import from utils - assuming nbacd_utils is always available
-    const { 
-        getColorWheel, 
-        isMobile, 
-        createZoomOptions, 
-        createPlotBackgroundPlugin 
-    } = nbacd_utils;
+    const { getColorWheel, isMobile, createZoomOptions, createPlotBackgroundPlugin } =
+        nbacd_utils;
 
     // Set up the CSS for icons using the staticDir variable for consistent paths
     function setupIconPaths() {
@@ -84,12 +80,12 @@ const nbacd_plotter_core = (() => {
 
         // Store the original chart data in the chart object for tooltip access
         chart.chartData = chartData;
-        
+
         // Store pointMarginData in the chart object for tooltip access
         if (chartConfig && chartConfig.pointMarginData) {
             chart.pointMarginData = chartConfig.pointMarginData;
         }
-        
+
         // Store lineCoefficients in the chart object for tooltip access
         if (chartConfig && chartConfig.lineCoefficients) {
             chart.lineCoefficients = chartConfig.lineCoefficients;
@@ -124,21 +120,22 @@ const nbacd_plotter_core = (() => {
     function addDatasetsToChart(chartConfig, chartData, colors, plotType) {
         chartData.lines.forEach((line, index) => {
             const color = colors[index % colors.length];
-            
+
             // Set the plot_type on the line object to ensure it's available in all functions
             if (!line.plot_type) {
                 line.plot_type = plotType;
             }
-            
+
             // Check if this is an ESPN chart with specific line type
             const isEspnChart = plotType === "espn_versus_dashboard";
-            const lineType = isEspnChart && line.line_type ? line.line_type : "standard";
+            const lineType =
+                isEspnChart && line.line_type ? line.line_type : "standard";
 
             // For dashboard lines in espn_versus_dashboard chart, create a single dataset with both line and points
             if (isEspnChart && lineType === "dashboard") {
                 // Create the data points
                 const trendlineData = createTrendlineData(line, chartData, plotType);
-                
+
                 // Create a single dataset for dashboard with line connecting points
                 const dashboardDataset = {
                     type: "line", // Use line type to connect points
@@ -158,8 +155,8 @@ const nbacd_plotter_core = (() => {
                         axis: "xy",
                         hoverRadius: 10,
                     },
-                    events: ['mousemove', 'click'],
-                    hoverEvents: ['mousemove'],
+                    events: ["mousemove", "click"],
+                    hoverEvents: ["mousemove"],
                     hitRadius: 20, // Larger hit area for easier clicking
                     pointBackgroundColor: color.replace("0.5", "0.7"),
                     pointBorderColor: color.replace("0.5", "0.7"),
@@ -171,7 +168,7 @@ const nbacd_plotter_core = (() => {
                     tooltipEnabled: true,
                     skipTooltip: false,
                 };
-                
+
                 // Add the combined dataset to the chart configuration
                 chartConfig.data.datasets.push(dashboardDataset);
             }
@@ -179,7 +176,7 @@ const nbacd_plotter_core = (() => {
             else if (isEspnChart && lineType === "live-data") {
                 // Create the data points
                 const trendlineData = createTrendlineData(line, chartData, plotType);
-                
+
                 // Create a single dataset for live-data with visible hover points
                 const liveDataset = {
                     type: "line", // Use line type to connect points
@@ -200,7 +197,7 @@ const nbacd_plotter_core = (() => {
                         hoverRadius: 10, // Larger hover detection
                     },
                     events: [], // No events at all for live-data - disable both mousemove and click
-                    hoverEvents: ['mousemove'], // Keep hover events only for visual feedback
+                    hoverEvents: ["mousemove"], // Keep hover events only for visual feedback
                     hitRadius: 15, // Larger hit area
                     pointBackgroundColor: color.replace("0.5", "0.7"),
                     pointBorderColor: color.replace("0.5", "0.7"),
@@ -211,7 +208,7 @@ const nbacd_plotter_core = (() => {
                     line_type: "live-data",
                     skipTooltip: true, // Explicitly skip tooltips for live-data
                 };
-                
+
                 // Add the combined dataset to the chart configuration
                 chartConfig.data.datasets.push(liveDataset);
                 return;
@@ -220,7 +217,7 @@ const nbacd_plotter_core = (() => {
             else if (isEspnChart && lineType === "espn") {
                 // Create the data points
                 const trendlineData = createTrendlineData(line, chartData, plotType);
-                
+
                 // Create a single dataset for ESPN with line connecting points
                 const espnDataset = {
                     type: "line", // Use line type to connect points
@@ -240,8 +237,8 @@ const nbacd_plotter_core = (() => {
                         axis: "xy",
                         hoverRadius: 10, // Larger hover detection radius
                     },
-                    events: ['mousemove', 'click'],
-                    hoverEvents: ['mousemove'],
+                    events: ["mousemove", "click"],
+                    hoverEvents: ["mousemove"],
                     hitRadius: 20, // Larger hit area to make it easier to hover over points
                     pointBackgroundColor: color.replace("0.5", "0.7"),
                     pointBorderColor: color.replace("0.5", "0.7"),
@@ -251,10 +248,10 @@ const nbacd_plotter_core = (() => {
                     hoverBorderWidth: 0,
                     line_type: "espn",
                 };
-                
+
                 // Add the combined dataset to the chart configuration
                 chartConfig.data.datasets.push(espnDataset);
-                
+
                 // Don't create the separate scatter and trendline datasets for ESPN lines
                 return;
             }
@@ -263,8 +260,12 @@ const nbacd_plotter_core = (() => {
                 // Create datasets appropriate for this line type
                 if (!chartData.calculate_occurrences) {
                     // Create trend line data
-                    const trendlineData = createTrendlineData(line, chartData, plotType);
-                    
+                    const trendlineData = createTrendlineData(
+                        line,
+                        chartData,
+                        plotType
+                    );
+
                     // Create dataset based on data
                     const trendlineDataset = createTrendlineDataset(
                         trendlineData,
@@ -272,7 +273,7 @@ const nbacd_plotter_core = (() => {
                         line,
                         chartData.calculate_occurrences
                     );
-                    
+
                     // Add the dataset to the chart configuration
                     chartConfig.data.datasets.push(trendlineDataset);
                 }
@@ -280,7 +281,12 @@ const nbacd_plotter_core = (() => {
                 // Only add scatter points for non-live-data lines
                 if (!(isEspnChart && lineType === "live-data")) {
                     const scatterPoints = createScatterPointsData(line, plotType);
-                    const scatterDataset = createScatterDataset(scatterPoints, color, line.legend, line);
+                    const scatterDataset = createScatterDataset(
+                        scatterPoints,
+                        color,
+                        line.legend,
+                        line
+                    );
                     chartConfig.data.datasets.push(scatterDataset);
                 }
             }
@@ -306,7 +312,7 @@ const nbacd_plotter_core = (() => {
             return createPointMarginVsWinPercentTrendData(line, chartData);
         }
     }
-    
+
     /**
      * Creates trend line data points for espn_versus_dashboard plot type
      * @param {Object} line - The line data containing y_values
@@ -317,9 +323,9 @@ const nbacd_plotter_core = (() => {
         if (!line.y_values || !Array.isArray(line.y_values)) {
             return [];
         }
-        
+
         const sortedYValues = [...line.y_values].sort((a, b) => a.x_value - b.x_value);
-        
+
         // Create trendline points from the sorted y_values
         return sortedYValues.map((point) => ({
             x: point.x_value,
@@ -446,8 +452,8 @@ const nbacd_plotter_core = (() => {
                 hoverRadius: 6, // Increased hover detection radius for trend line points
             },
             // Allow hover effects but show tooltips only on click
-            events: ['mousemove', 'click'],
-            hoverEvents: ['mousemove'], // Enable hover events for point growth
+            events: ["mousemove", "click"],
+            hoverEvents: ["mousemove"], // Enable hover events for point growth
             hitRadius: 5, // Smaller hit area for trend lines to prioritize scatter points
             // For occurrence plots we want to disable hover/tooltip on trend lines
             hoverEnabled: !calculateOccurrences,
@@ -490,7 +496,7 @@ const nbacd_plotter_core = (() => {
         // Check if this is an ESPN chart with a specific line type
         const isEspnChart = line && line.plot_type === "espn_versus_dashboard";
         const lineType = isEspnChart && line.line_type ? line.line_type : "standard";
-        
+
         // For dashboard lines in ESPN charts, use different settings
         if (isEspnChart && lineType === "dashboard") {
             return {
@@ -511,8 +517,8 @@ const nbacd_plotter_core = (() => {
                     axis: "xy",
                     hoverRadius: 10,
                 },
-                events: ['mousemove', 'click'],
-                hoverEvents: ['mousemove'],
+                events: ["mousemove", "click"],
+                hoverEvents: ["mousemove"],
                 hitRadius: 20, // Larger hit area for easier clicking
                 hoverBorderColor: color.replace("0.5", "0.7"),
                 hoverBackgroundColor: color.replace("0.5", "0.9"),
@@ -525,7 +531,7 @@ const nbacd_plotter_core = (() => {
                 skipTooltip: false, // EXPLICITLY set to false to ensure tooltips are processed
             };
         }
-        
+
         // For espn lines in ESPN charts, use settings similar to dashboard but no URL redirect
         if (isEspnChart && lineType === "espn") {
             return {
@@ -546,8 +552,8 @@ const nbacd_plotter_core = (() => {
                     axis: "xy",
                     hoverRadius: 6,
                 },
-                events: ['mousemove', 'click'],
-                hoverEvents: ['mousemove'],
+                events: ["mousemove", "click"],
+                hoverEvents: ["mousemove"],
                 hitRadius: 8, // Smaller hit area than dashboard
                 hoverBorderColor: color.replace("0.5", "0.7"),
                 hoverBackgroundColor: color.replace("0.5", "0.9"),
@@ -555,7 +561,7 @@ const nbacd_plotter_core = (() => {
                 line_type: "espn", // Mark as espn type for tooltip handler
             };
         }
-        
+
         // Standard scatter dataset for all other cases
         return {
             type: "scatter",
@@ -575,8 +581,8 @@ const nbacd_plotter_core = (() => {
                 hoverRadius: 8, // Moderate hover detection radius for scatter points
             },
             // Allow hover effects but show tooltips only on click
-            events: ['mousemove', 'click'],
-            hoverEvents: ['mousemove'], // Enable hover events for point growth
+            events: ["mousemove", "click"],
+            hoverEvents: ["mousemove"], // Enable hover events for point growth
             hitRadius: 15, // Larger hit area for scatter points
             // Ensure hover styles don't have white borders
             hoverBorderColor: color.replace("0.5", "0.7"), // Same color as background
@@ -663,15 +669,14 @@ const nbacd_plotter_core = (() => {
                     });
 
                     // Also check if we're clicking within a chart container area
-                    const chartContainers = document.querySelectorAll(
-                        ".chart-container"
-                    );
+                    const chartContainers =
+                        document.querySelectorAll(".chart-container");
                     let clickedInChartArea = false;
-                    
+
                     chartContainers.forEach((container) => {
                         if (container.contains(event.target)) {
                             // Only consider it a chart area click if it's not on a button
-                            if (!event.target.closest('.chart-btn')) {
+                            if (!event.target.closest(".chart-btn")) {
                                 clickedInChartArea = true;
                             }
                         }
@@ -695,24 +700,28 @@ const nbacd_plotter_core = (() => {
 
     // Create module-level variables for the zoom options and plot background plugin
     // Use window.updateButtonPositions directly if available, otherwise use a simple function
-    const buttonPositionsCallback = window.updateButtonPositions || function(chart) {
-        // This will be replaced by the global function when it's available
-        if (window.updateButtonPositions) window.updateButtonPositions(chart);
-    };
-    
+    const buttonPositionsCallback =
+        window.updateButtonPositions ||
+        function (chart) {
+            // This will be replaced by the global function when it's available
+            if (window.updateButtonPositions) window.updateButtonPositions(chart);
+        };
+
     // Create the zoom options and plot background plugin
     const coreZoomOptions = createZoomOptions(buttonPositionsCallback);
     const corePlotBackgroundPlugin = createPlotBackgroundPlugin();
-    
+
     // Note: We've moved the ESPN and Dashboard hover tooltip functionality
     // to the existing createHoverGuidancePlugin in nbacd_plotter_plugins.js
-    
+
     // Track click events on charts to determine if tooltip should be shown
-    document.addEventListener('click', function(event) {
+    document.addEventListener("click", function (event) {
         // Check if the click was on a chart canvas
-        if (event.target.tagName.toLowerCase() === 'canvas') {
+        if (event.target.tagName.toLowerCase() === "canvas") {
             // Find the canvas that was clicked
-            const canvasElements = document.querySelectorAll('canvas.chartjs-render-monitor');
+            const canvasElements = document.querySelectorAll(
+                "canvas.chartjs-render-monitor"
+            );
             for (let i = 0; i < canvasElements.length; i++) {
                 const canvas = canvasElements[i];
                 if (canvas.contains(event.target)) {
@@ -720,7 +729,7 @@ const nbacd_plotter_core = (() => {
                     if (chartInstance) {
                         // Set last click timestamp
                         chartInstance.lastClickEvent = new Date().getTime();
-                        
+
                         // Special handling for dashboard chart clicks
                         if (chartInstance.plotType === "espn_versus_dashboard") {
                             // Let the normal tooltip handling proceed, but make sure
@@ -733,7 +742,7 @@ const nbacd_plotter_core = (() => {
         }
     });
 
-// Also keep global references for backward compatibility
+    // Also keep global references for backward compatibility
     window.zoomOptions = coreZoomOptions;
     window.plotBackgroundPlugin = corePlotBackgroundPlugin;
 
@@ -742,6 +751,6 @@ const nbacd_plotter_core = (() => {
         createChartJSChart,
         addDatasetsToChart,
         plotBackgroundPlugin: corePlotBackgroundPlugin,
-        zoomOptions: coreZoomOptions
+        zoomOptions: coreZoomOptions,
     };
 })();
