@@ -88,7 +88,7 @@ Using those two numbers we can say:
 * A full 28% of games -- over 1 in 4! -- are effectively over by the 6-minute mark
   needing a 15 point comeback or more.
   
-* And 10.4% of games would require a 23 point comeback to set a record.
+* And 10.4% of games would require a record-setting comeback of 23 points.
 
 That's a lot of garbage time games!  Even though, about 35% of games are within 6-7
 points or less.
