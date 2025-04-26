@@ -9,7 +9,6 @@ Occurrence Frequencies of Points Scored, Points Down, and Garbage Time Games
 
 
 
-
 .. _largest-and-smallest-final-scores:
 
 Largest and Smallest Final Scores
