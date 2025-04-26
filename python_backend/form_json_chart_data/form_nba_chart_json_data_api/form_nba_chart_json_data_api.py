@@ -10,7 +10,7 @@ It contains the core functions for generating different types of analysis plots 
 from scipy.stats import norm
 
 # Local imports
-from form_nba_chart_json_data_season_game_loader import Season, Games
+from form_nba_chart_json_data_season_game_loader import Games
 from form_nba_chart_json_data_plot_primitives import (
     PointsDownLine,
     PercentLine,
@@ -398,7 +398,7 @@ def plot_biggest_deficit(
     elif 1 < start_time < 12:
         time_desc = f"Final {start_time} Minutes"
     elif start_time == 0:
-        time_desc = f"At End of Regulation"
+        time_desc = "At End of Regulation"
     else:
         raise NotImplementedError(start_time)
 
@@ -495,7 +495,10 @@ def plot_biggest_deficit(
         title = f"{title} | {game_filters[0].get_filter_string()}"
 
     if down_mode == "score":
-        title = f"Points Scored"
+        if cumulate:
+            title = "Points Scored Or Less"
+        else:
+            title = "Points Scored"
         for line in points_down_lines:
             line.legend = line.legend.replace("Games)", "Scores)")
 
@@ -514,7 +517,7 @@ def plot_biggest_deficit(
         max_y = y_tick_values[-1]
         points_down_line.set_sigma_final(min_y, max_y)
 
-    x_label = f"Point Margin"
+    x_label = "Point Margin"
     if calculate_occurrences:
         y_label = "Occurrence %"
     else:
@@ -902,7 +905,6 @@ def plot_espn_versus_dashboard(
     from form_nba_chart_json_data_espn_v_dashboard import (
         EspnLine,
         DashboardLine,
-        get_team_abbreviation,
         get_team_nickname,
         get_espn_game_data,
         extract_win_probability_data,

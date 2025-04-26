@@ -95,8 +95,8 @@ Win % v. Points Down At Start of Final 6 Minutes
 Occurrence of Max Points Down Or More
 =====================================
 
-Occurrences of Win % v. Max Points Down Or More During Entire Game
-------------------------------------------------------------------
+Occurrences of Max Points Down Or More During Entire Game
+---------------------------------------------------------
 
 .. _old_old_school_v_old_school_occurs_down_or_more_48:
 
@@ -104,8 +104,8 @@ Occurrences of Win % v. Max Points Down Or More During Entire Game
 
     <div id="plots/old_old_school_v_old_school/occurs_down_or_more_48" class="nbacd-chart"></div>
 
-Occurrences of Win % v. Max Points Down Or More During 2nd Half
----------------------------------------------------------------
+Occurrences of Max Points Down Or More During 2nd Half
+------------------------------------------------------
 
 .. _old_old_school_v_old_school_occurs_down_or_more_24:
 
@@ -113,8 +113,8 @@ Occurrences of Win % v. Max Points Down Or More During 2nd Half
 
     <div id="plots/old_old_school_v_old_school/occurs_down_or_more_24" class="nbacd-chart"></div>
 
-Occurrences of Win % v. Max Points Down Or More During 4th Quarter
-------------------------------------------------------------------
+Occurrences of Max Points Down Or More During 4th Quarter
+---------------------------------------------------------
 
 .. _old_old_school_v_old_school_occurs_down_or_more_12:
 

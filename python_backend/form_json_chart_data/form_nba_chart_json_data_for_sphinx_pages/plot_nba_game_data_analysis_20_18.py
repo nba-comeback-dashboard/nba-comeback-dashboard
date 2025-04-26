@@ -19,7 +19,6 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
-    plot_percent_versus_time,
     GameFilter,
 )
 
@@ -63,12 +62,3 @@ plot_biggest_deficit(
 )
 
 
-# plot_biggest_deficit(
-#     json_name=f"{chart_base_path}/20_18/dramatic.json",
-#     year_groups=eras,
-#     start_time=24,
-#     stop_time=None,
-#     cumulate=False,
-#     max_point_margin=100,
-#     calculate_occurrences=True,
-# )

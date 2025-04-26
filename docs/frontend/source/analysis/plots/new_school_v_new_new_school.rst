@@ -95,8 +95,8 @@ Win % v. Points Down At Start of Final 6 Minutes
 Occurrence of Max Points Down Or More
 =====================================
 
-Occurrences of Win % v. Max Points Down Or More During Entire Game
-------------------------------------------------------------------
+Occurrences of Max Points Down Or More During Entire Game
+---------------------------------------------------------
 
 .. _new_school_v_new_new_school_occurs_down_or_more_48:
 
@@ -104,8 +104,8 @@ Occurrences of Win % v. Max Points Down Or More During Entire Game
 
     <div id="plots/new_school_v_new_new_school/occurs_down_or_more_48" class="nbacd-chart"></div>
 
-Occurrences of Win % v. Max Points Down Or More During 2nd Half
----------------------------------------------------------------
+Occurrences of Max Points Down Or More During 2nd Half
+------------------------------------------------------
 
 .. _new_school_v_new_new_school_occurs_down_or_more_24:
 
@@ -113,8 +113,8 @@ Occurrences of Win % v. Max Points Down Or More During 2nd Half
 
     <div id="plots/new_school_v_new_new_school/occurs_down_or_more_24" class="nbacd-chart"></div>
 
-Occurrences of Win % v. Max Points Down Or More During 4th Quarter
-------------------------------------------------------------------
+Occurrences of Max Points Down Or More During 4th Quarter
+---------------------------------------------------------
 
 .. _new_school_v_new_new_school_occurs_down_or_more_12:
 
@@ -134,7 +134,7 @@ Percent Chance of Winning: Time Remaining Versus Points Down
 
     <div id="plots/new_school_v_new_new_school/percent_plot_group_0" class="nbacd-chart"></div>
 
-% Chance of Coming Back: Points Down v. Time | 2021-22 to 2024-25 (5,207 Games)
+% Chance of Coming Back: Points Down v. Time | 2021-22 to 2024-25 (5,219 Games)
 -------------------------------------------------------------------------------
 
 .. _new_school_v_new_new_school_percent_plot_group_1:

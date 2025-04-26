@@ -136,7 +136,7 @@ Shift in Final Scores
 There has been a remarkable shift in the final scores of NBA games, with the median
 score of games in the modern era being about 111 points versus 97 in the past, a 14
 point shift.  And this a static shift in the mean of the data, the slope or standard
-variation remains fairly constant:
+variation remains almost perfectly constant:
 
 .. raw:: html
 

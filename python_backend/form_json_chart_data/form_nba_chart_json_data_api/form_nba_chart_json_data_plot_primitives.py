@@ -174,7 +174,6 @@ class PointsDownLine(PlotLine):
         if cumulate:
             self.cumulate_point_totals(point_margin_map)
 
-        import form_nba_chart_json_data_season_game_loader as loader
 
         if calculate_occurrences:
             or_less_point_margin = None
@@ -189,11 +188,11 @@ class PointsDownLine(PlotLine):
         self.percents = [
             point_margin_map[minute].odds[0] for minute in self.point_margins
         ]
+        self.occurs = [
+            point_margin_map[minute].odds[1] / (self.number_of_games)
+            for minute in self.point_margins
+        ]
         if calculate_occurrences:
-            self.occurs = [
-                point_margin_map[minute].odds[1] / (self.number_of_games)
-                for minute in self.point_margins
-            ]
             self.percents = self.occurs
 
         self.percents = [max(self.min_percent, percent) for percent in self.percents]

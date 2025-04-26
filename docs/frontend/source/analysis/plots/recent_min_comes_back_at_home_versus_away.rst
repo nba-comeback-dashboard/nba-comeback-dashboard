@@ -95,8 +95,8 @@ Win % v. Points Down At Start of Final 6 Minutes | 2021-22 to 2024-25
 Occurrence of Max Points Down Or More
 =====================================
 
-Occurrences of Win % v. Max Points Down Or More During Entire Game | 2021-22 to 2024-25
----------------------------------------------------------------------------------------
+Occurrences of Max Points Down Or More During Entire Game | 2021-22 to 2024-25
+------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_occurs_down_or_more_48:
 
@@ -104,8 +104,8 @@ Occurrences of Win % v. Max Points Down Or More During Entire Game | 2021-22 to 
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/occurs_down_or_more_48" class="nbacd-chart"></div>
 
-Occurrences of Win % v. Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
-------------------------------------------------------------------------------------
+Occurrences of Max Points Down Or More During 2nd Half | 2021-22 to 2024-25
+---------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_occurs_down_or_more_24:
 
@@ -113,8 +113,8 @@ Occurrences of Win % v. Max Points Down Or More During 2nd Half | 2021-22 to 202
 
     <div id="plots/recent_min_comes_back_at_home_versus_away/occurs_down_or_more_24" class="nbacd-chart"></div>
 
-Occurrences of Win % v. Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
----------------------------------------------------------------------------------------
+Occurrences of Max Points Down Or More During 4th Quarter | 2021-22 to 2024-25
+------------------------------------------------------------------------------
 
 .. _recent_min_comes_back_at_home_versus_away_occurs_down_or_more_12:
 
