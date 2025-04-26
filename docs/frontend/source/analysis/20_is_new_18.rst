@@ -225,7 +225,9 @@ Real Time Probabilities
 =======================
 
 One interesting way to look at the data is to show what the running probabilities would
-be using data from the modern era versus the past.
+be using data from the modern era versus the past.  Note, this probability calculator
+doesn't account for team or players strength or home court advantage -- its' based
+solely on win / loss data from the specified time ranges.
 
 .. raw:: html
 

@@ -18,12 +18,12 @@ Overall, I feel the most useful dashboard chart is this one:
     <div id="goto/nbacd_points_versus_36_time_all_eras" class="nbacd-chart"></div>
 
 This includes all games from 1996 (which is about ~36,000 games). If your team is down,
-this gives you a pretty good sense of how steep of a mountain your team has to climb
-(and of course on the flip side, how safe your lead is). Plus, I like being able to see
-the current record for a given time, knowing that if you are beyond the record it would
-be, well, a record if you came back. (And just noting that the :doc:`Minnesota
-Timberwolves </analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for
-allowing the biggest comebacks at the 3, 6, 7, and 10 minute marks).
+this gives you a pretty good sense of how steep a mountain your team has to climb (and
+of course, on the flip side, how safe your lead is). Plus, I like being able to see the
+current record for a given time, knowing that if you are beyond the record it would be,
+well, a record if you came back. (And just noting that the :doc:`Minnesota Timberwolves
+</analysis/do_the_twolves_give_up_big_leads>` hold or tie the record for allowing the
+biggest comebacks at the 3, 6, 7, and 10 minute marks).
 
 You can click on data points and see which game(s) hold the record. Going full screen
 makes it easier, and on mobile, you have to go full screen first. Once you go full
@@ -53,10 +53,9 @@ running win probabilities for a given game. Even though:
   data from 1996 and :doc:`fitting a normal model to the data
   </analysis/methodology_forming_the_plot_trend_lines>`
   
-both models mostly tell a similar story about a team's overall comeback chances. While
-requiring further analysis, this suggests the most correlated variable to comeback
-chances is points down versus time.
-
+Despite these markedly different approaches, both models mostly tell a similar story
+about a team's overall comeback chances. While requiring further analysis, this
+suggests the most correlated variable to comeback chances is points down versus time.
 
 Timberwolves @ Bucks on 04/09/2025
 ----------------------------------
@@ -75,7 +74,6 @@ dashboard point, you can click on it and it will bring you to the interactive da
 page and show the exact regression fit line used to calculate the probability for that
 point. (And if you click on the 10 minutes remaining point, you will see that the
 Timberwolves hold the record for losing a game when up 24 points with 10 minutes to go.)
-
 
 .. raw:: html
 
@@ -112,12 +110,12 @@ Some features are notable:
 Adding Conditionals: Home Versus Away For The Modern Era
 ========================================================
 
-The conditional providing the greatest discrimination is probably adding whether
-:doc:`the team coming back is at home or away </analysis/home_v_away>`. Then,
-:doc:`limiting the seasons to the modern era </analysis/20_is_new_18>`.
-
-Adding those two conditions gives you these two plots, which will give you a more
-accurate probability:
+Outside of team/player strength (:ref:`which can have a very large effect
+<what-an-8-point-shift-looks-like>`), the conditional providing the greatest
+discrimination is probably adding whether :doc:`the team coming back is at home or away
+</analysis/home_v_away>`. Then, :doc:`limiting the seasons to the modern era
+</analysis/20_is_new_18>`. Adding those two conditions gives you these two plots, which
+will give you a more accurate probability:
 
 .. raw:: html
 
@@ -126,7 +124,6 @@ accurate probability:
 .. raw:: html
 
     <div id="goto/nbacd_points_versus_36_for_away_modern_era" class="nbacd-chart"></div>
-
 
 Comparing To The ESPN Model
 ---------------------------
@@ -153,7 +150,6 @@ Let's re-compare to the ESPN model taking these conditionals into account:
 
     <div id="goto/espn_v_dashboard_modern_at_home_lac_at_den_401768061" class="nbacd-chart"></div>
 
-
 Making the dashboard model account for home court advantage and increased chances of
 coming back in the modern era leads the fit to be a little different (worse for some
 cases and a little better in others).
@@ -175,8 +171,8 @@ giving the seasoned veterans Steph Curry and Jimmy Butler some extra juice.)
 
 .. _supplementals:
 
-Supplementals
-=============
+But Sometimes You Still Need a Supplemental Chart
+=================================================
 
 Even though the first chart gets you most of the way there, sometimes a chart like this
 limited to our recent history is also useful:
