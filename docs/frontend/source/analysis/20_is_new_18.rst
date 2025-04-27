@@ -37,7 +37,7 @@ To frame this, I decided to break up the available play-by-play data into:
 * 2017-18 to 2024-25 (modern)
 
 (:ref:`As explained below <deciding-on-eras-breakdown>`, a more targeted recent modern
-era does not change the analysis so the larger dataset was chosen).
+era does not change the analysis, so the larger dataset was chosen).
 
 Looking at this data, the chance of coming back from 20 points-or-more down (``~5.3%``)
 is about the same as coming back from 18 points-or-more down (``~4.9%``) in the earlier
@@ -226,8 +226,8 @@ Real Time Probabilities
 
 One interesting way to look at the data is to show what the running probabilities would
 be using data from the modern era versus the past.  Note, this probability calculator
-doesn't account for team or players strength or home court advantage -- its' based
-solely on win / loss data from the specified time ranges.
+doesn't account for team or player strength or home court advantage -- it's based
+solely on win/loss data from the specified time ranges.
 
 .. raw:: html
 
