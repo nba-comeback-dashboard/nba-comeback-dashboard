@@ -100,7 +100,7 @@ html_theme_options = {
     "show_prev_next": False,
     "logo": {
         "text": "NBA Comeback Dashboard",
-        # "image_light": "_static/logo-light.png",
+        "image_light": "_static/nbacd_v2_small.png",
     },
     "icon_links": [
         {
@@ -117,7 +117,7 @@ html_theme_options = {
 }
 
 # Favicon configuration
-html_favicon = "_static/bball.png"
+html_favicon = "_static/nbacd_v2.png"
 
 html_show_sourcelink = False
 
