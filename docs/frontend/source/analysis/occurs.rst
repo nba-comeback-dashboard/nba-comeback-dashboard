@@ -38,8 +38,7 @@ is the probability density function, which tells us that:
 * The tightest games ever since 1996 have been within 5 points for the entire game, and
   it's happened 8 times.
 
-* Only about 1,000 games out of 36,000 have been close for the entire game,
-  with either team's lead being 8 or less.
+* Only about 1,000 games out of 36,000 have been within 8 for the entire game.
 
 * And the biggest blowout ever got up to a whopping 78-point deficit.
 
