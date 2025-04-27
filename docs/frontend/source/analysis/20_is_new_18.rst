@@ -297,11 +297,13 @@ this issue:
 * I do think part of the problem is `availability bias
   <https://www.simplypsychology.org/availability-heuristic.html>`_: that is, things
   that happen recently, especially ones you've witnessed personally, lead to the false
-  conclusion that they are happening more often than in the past. After personally
-  watching a series of garbage time games recently, I got to thinking "ok, but for sure
-  this is an increasing phenomenon". :ref:`But when I look at the data
-  <comparing-occurs-eras>` it's almost constant (there are slightly more large deficit
-  games but this is offset by a 2-point shift in a team's chances of coming back).
+  conclusion that they are happening more often than in the past. An example of this
+  phenomenon is that after people hear about a plane crash in the news, they think that
+  plane crashes are getting more common.  After personally watching a series of garbage
+  time games recently, I got to thinking "for sure this is an increasing phenomenon".
+  :ref:`But when I look at the data <comparing-occurs-eras>` it's almost constant
+  (there are slightly more large deficit games but this is offset by a 2-point shift in
+  a team's chances of coming back).
 
 * I do want to compare the average size and min/max size of runs between the two eras.
   It may be that large swings are much more common, leading to a perception of
