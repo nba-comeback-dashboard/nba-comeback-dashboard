@@ -289,10 +289,10 @@ this issue:
   more points happens 30% more now than in the past.
 
 * However, the fact that teams can score more quickly does not automatically
-  lead to the conclusion that big comebacks should be more probable: I mean, if you are
-  down and can score quickly, so can your opponent and keep you down. So while points
-  are a little easier to come by, this effect is offset by the counter fact that they
-  are also a little easier to give up.
+  lead to the conclusion that big comebacks should be more probable: if you are down
+  and can score quickly, so can your opponent and keep you down. So while points are a
+  little easier to come by, this effect is offset by the counter fact that they are
+  also a little easier to give up.
 
 * I do think part of the problem is `availability bias
   <https://www.simplypsychology.org/availability-heuristic.html>`_: that is, things
