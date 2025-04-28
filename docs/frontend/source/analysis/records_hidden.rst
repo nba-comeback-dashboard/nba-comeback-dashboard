@@ -4,17 +4,15 @@ Some Notable Record Games, Some Hidden
 
 .. green-box::
     
-    Last updated 4/26/2025
+    Last updated 4/26/2025.  Here, all 'records' are from 1996 on, when play-by-play
+    data first became available.
+
 
 
 .. _some-hidden-records:
 
 Some Hidden Records
 ===================
-
-.. green-box::
-
-    Here, all 'records' are from 1996 on, when play-by-play data first became available.
 
 This is just a list of some games I noticed while working on this dashboard. Sometimes,
 when looking at a :ref:`down N points at time plot <points-down-at-time>`, I've noticed

@@ -10,6 +10,37 @@
   5. Dashboard modules
   6. UI module
 
+## Font Configuration Options
+
+Four font options are available for the documentation:
+
+### Font Choice #1: Original PyData Theme
+- Sans-serif headers and body text (Lato/system-ui)
+- Standard PyData Sphinx Theme typography
+- Located in `_static/css/font_choice_1.css` and `_static/css/toc_entry_font_choice_1.css`
+- To enable: Edit `conf.py` to comment out other font choices and uncomment both Font Choice #1 files
+
+### Font Choice #2: Charter/Georgia Serif 
+- Serif fonts for all text elements
+- More bookish, traditional documentation style
+- Located in `_static/css/font_choice_2.css` and `_static/css/toc_entry_font_choice_2.css`
+- To enable: Edit `conf.py` to comment out other font choices and uncomment both Font Choice #2 files
+
+### Font Choice #3: Hybrid Style (Baskerville/Sans-serif)
+- Elegant Baskerville serif headings with sans-serif body text
+- Combines modern readability with traditional heading style
+- Located in `_static/css/font_choice_3.css` and `_static/css/toc_entry_font_choice_3.css`
+- To enable: Edit `conf.py` to comment out other font choices and uncomment both Font Choice #3 files
+
+### Font Choice #4: Baskerville Headers with Charter Body
+- Baskerville headers (elegant serif from Choice #3 but with adjusted sizing)
+- Charter/Georgia body text (traditional serif from Choice #2)
+- Combines the most elegant aspects of both serif font choices
+- Located in `_static/css/font_choice_4.css` and `_static/css/toc_entry_font_choice_4.css`
+- To enable: Edit `conf.py` to comment out other font choices and uncomment both Font Choice #4 files
+
+Note: The navigation bar logo text always remains in the PyData default font for brand consistency, controlled by `custom_logo.css`.
+
 # Claude Code Documentation Guide
 
 ## Purpose
@@ -59,3 +90,24 @@ The documentation covers the translation of four key Python modules to JavaScrip
 3. Use `.. code::` for code blocks
 4. Use `.. pull-quote::` for quotations
 5. Use cross-references to other pages with `:doc:` directives
+
+## Custom Typography and Fonts
+We've implemented custom font styling to match the TOC entries style across all documentation:
+
+- Added `custom_fonts.css` which overrides default heading styles with Charter/Georgia serif fonts
+- Font styles are configured to match the toc-entry directive's appearance for consistency
+- Default theme fonts are commented out in the CSS file for easy restoration if needed
+- To revert to the original theme fonts:
+  1. Edit `conf.py` to remove or comment out the "css/custom_fonts.css" line
+  2. Or edit `_static/css/custom_fonts.css` to uncomment the original styles and comment out the new ones
+
+The custom TOC entry directive is styled to use Charter/Georgia fonts with specific sizes:
+- Title: 22px
+- Subtitle: 15px
+- Date: 11px
+
+Regular documentation text styling:
+- Body text: 17px (increased from standard 15px for better readability)
+- Lists, definition lists, and other text elements: 17px
+- Line height: 1.3 for comfortable reading spacing
+- All text maintains the Charter/Georgia font family for consistency

@@ -98,6 +98,7 @@ class Games:
         # Calculate score statistics for each game
         for game in self:
             game.score_stats_by_minute = ScoreStatsByMinute(game)
+        #    game.run_data = RunData(game)
 
         # Calculate team stats and rankings
         self.team_stats = self.calculate_team_stats()
@@ -276,6 +277,8 @@ class Game:
             "away_team_abbr": self.away_team_abbr,
             "score": self.score,
             "point_margins": self.score_stats_by_minute.point_margins,
+            # "run_data": {f"{k:.3f}": v for k, v in self.run_data.run_data.items()},
+            # "run_data": list(self.run_data.run_data.values()),
         }
 
 
@@ -358,6 +361,9 @@ class PlayByPlays:
         self.game = game
         self.plays = []
 
+    def __len__(self):
+        return self.plays.__len__()
+
     def __getitem__(self, index):
         return self.plays[index]
 
@@ -382,9 +388,123 @@ class PlayByPlay:
 
         # Convert period and time string to minutes remaining in game
         period_min, period_second = (int(x) for x in row["pctimestring"].split(":"))
+        if row["period"] >= 5:
+            period_length = 5
+        elif 1 <= row["period"] <= 4:
+            period_length = 12
+        else:
+            raise AssertionError(row["period"])
         self.time = (
-            (4 - int(row["period"])) * 12.0 + period_min + (period_second / 60.0)
+            (4 - int(row["period"])) * period_length
+            + period_min
+            + (period_second / 60.0)
         )
+
+
+class RunData:
+    """Tracks scoring runs throughout the game, recording when each run started and its size."""
+
+    def __init__(self, game):
+        """Calculate and store scoring runs for a game.
+
+        A run is defined as consecutive points scored by the same team.
+        Positive numbers indicate home team runs, negative numbers indicate away team runs.
+        The dictionary maps the time (in minutes remaining) to the size of the run.
+        """
+
+        # Initialize tracking variables
+        current_run_time = None
+        current_run_size = 0
+        last_home_score = 0  # Last recorded home team score
+        last_away_score = 0  # Last recorded away team score
+        run_start_time = None  # Time when current run started
+
+        # Get total number of plays for last play detection
+        total_plays = len(game.play_by_plays)
+
+        # Process each play to track scoring runs
+        self.run_data = run_data = {}
+        for index, play in enumerate(game.play_by_plays):
+            if play.home_score < last_home_score:
+                # Happens if the score gets correct like for game_id '0042400111'
+                if play.away_score != last_away_score:
+                    raise AssertionError
+                continue
+            if play.away_score < last_away_score:
+                # Happens if the score gets correct like for game_id '0022401081'
+                if play.home_score != last_home_score:
+                    raise AssertionError
+                continue
+            home_score_change = play.home_score - last_home_score
+            away_score_change = last_away_score - play.away_score
+            if home_score_change > 0 and away_score_change < 0:
+                if current_run_size > 0:
+                    current_run_size = current_run_size - (
+                        play.away_score - last_away_score
+                    )
+                elif current_run_size < 0:
+                    current_run_size = current_run_size + (
+                        play.home_score - last_home_score
+                    )
+                else:
+                    raise AssertionError
+            if home_score_change < 0 or away_score_change > 0:
+                raise AssertionError("Invalid score change detected")
+            elif home_score_change == 0 and away_score_change == 0:
+                pass
+            elif home_score_change > 0 and current_run_size > 0:
+                current_run_size += home_score_change
+            elif away_score_change < 0 and current_run_size < 0:
+                current_run_size += away_score_change
+            else:
+                if current_run_time is not None:
+                    if current_run_time in run_data:
+                        raise AssertionError
+                    run_data[current_run_time] = current_run_size
+                current_run_size = (
+                    home_score_change if home_score_change else away_score_change
+                )
+                current_run_time = play.time - index * 1e-9
+            last_home_score = play.home_score
+            last_away_score = play.away_score
+
+        if current_run_time is None:
+            raise AssertionError("No runs detected")
+
+        if current_run_time in run_data:
+            raise AssertionError
+        run_data[current_run_time] = current_run_size
+
+        # Validate that sum of runs equals final score differential
+        total_runs = sum(self.run_data.values())
+        final_diff = game.final_home_points - game.final_away_points
+        if total_runs != final_diff:
+            debug_data = []
+
+            # Add play-by-play data with small time offset
+            for index, play in enumerate(game.play_by_plays):
+                debug_data.append(
+                    [
+                        play.time - 1e-9 * index,
+                        "PLAY",
+                        f"Home: {play.home_score}, Away: {play.away_score}, "
+                        f"Score Differential {play.home_score - play.away_score}",
+                    ]
+                )
+
+            # Add run data with larger time offset
+            run_sum = 0
+            for time, run in self.run_data.items():
+                run_sum += run
+                debug_data.append([time, "RUN", f"Run size: {run}, Sum {run_sum}"])
+
+            print("\nDEBUG: Combined Play and Run Data:")
+            for time, data_type, data in sorted(debug_data, reverse=True):
+                print(f"Time: {time}, Type: {data_type}, Data: {data}")
+
+            raise AssertionError(
+                f"Sum of runs ({total_runs}) does not equal final score differential ({final_diff})"
+            )
 
 
 # Define base path for output JSON files

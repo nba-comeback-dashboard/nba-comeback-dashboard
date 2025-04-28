@@ -14,8 +14,13 @@
 
 .green-box {
     background-color: #d7edda; /* Lighter green */
-    color: #7a7a7a; /* Lighter grey text */
+    color: #8a8a8a !important; /* Medium grey text with highest priority */
     font-style: italic;
+}
+
+/* Additional styling for all child elements in green boxes to ensure color override */
+.green-box p, .green-box li, .green-box span, .green-box div, .green-box * {
+    color: #8a8a8a !important;
 }
 
 .blue-box {

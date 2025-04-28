@@ -30,6 +30,7 @@ h5, h6 {
 
 /* Make the navbar header smaller too */
 .navbar-brand {
+    font-family: var(--pst-font-family-heading) !important;
     font-size: calc(1.1rem - 3px);
     color: #555555;
     font-weight: 700;

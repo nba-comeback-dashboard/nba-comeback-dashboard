@@ -6,6 +6,7 @@ Occurrence Frequencies of Points Scored, Points Down, and Garbage Time Games
     
     Last updated 4/25/2025
 
+
 .. _largest-and-smallest-final-scores:
 
 Largest and Smallest Final Scores
@@ -58,6 +59,12 @@ max points or more, which tells us the median game runs at least a 17-point defi
 Garbage Time Games  
 ==================
 
+There's no exact definition of a garbage time game, so I am just going to propose a
+working one: being down so much at the 6-minute mark that you have a 1% or less chance
+of coming back.  That's maybe to low (maybe 5% or 10% is better) but nevertheless it
+gives us a starting point.  With this definition in mind, let's build up the data we
+need to count how often we get games that meet this criteria.
+
 We can now look at the point margins exactly at 6 minutes:
 
 .. raw:: html
@@ -70,9 +77,9 @@ And again, integrating to get points down or more at 6 minutes:
 
     <div id="occurs/all_time_at_or_more_6_point_margin" class="nbacd-chart"></div>
 
-And this can tell us some interesting things.  `From the dashboard
+And this can tell us some interesting things.  `From the dashboard we can see
 <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=6&s=1996-2024-B&m=auto>`_
-we can see that:
+that:
 
 * If you are down 15 points, you have about a 1% chance of coming back based on
   historical data from 1996.
@@ -122,6 +129,19 @@ And at halftime:
 
 So it's pretty rare you need to turn off the TV at halftime.
 
+Interestingly, for the playoffs the situation does not change by much.  `From the
+dashboard
+<https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=6&s=1996-2024-P&m=auto>`_
+the 1% point of combing back is again about 15 points.  And as we can see:
+
+.. raw:: html
+
+    <div id="occurs/all_time_playoffs_at_or_more_6_point_margin" class="nbacd-chart"></div>
+
+about 29-30% of games meet this criteria, an increase of 1%.  This surprised me, as I
+would have guessed there would have been many more tighter, competitive games during
+the playoffs.
+
 .. _comparing-occurs-eras:
 
 Comparing Old School (1996-2016) to Modern (2017-2024)
@@ -143,6 +163,9 @@ remains almost perfectly constant:
 
     <div id="occurs/old_school_v_modern_scores_or_more" class="nbacd-chart"></div>
 
+
+.. _comparing-occurs-eras-max-points-down:
+
 Max Points Down
 ---------------
 
@@ -159,6 +182,8 @@ Now, teams fall down:
 
 * 20 points or more ``~18.8%`` of the time compared to ``~14.3%`` in the past, a
   not-quite-as-dramatic 1.31x increase (or about 31% more frequently).
+
+.. _comparing-occurs-eras-garbage-time:
 
 Garbage Time Games
 ------------------

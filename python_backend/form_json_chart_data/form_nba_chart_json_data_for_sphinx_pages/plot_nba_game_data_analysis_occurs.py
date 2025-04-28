@@ -19,8 +19,6 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
-    plot_percent_versus_time,
-    GameFilter,
 )
 
 # Calculate script directory from __file__
@@ -122,6 +120,22 @@ plot_biggest_deficit(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_12_point_margin.json.gz",
     year_groups=eras,
     start_time=12,
+    down_mode="at",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
+
+eras = [
+    # ERA ONE
+    ("P1996", 2024),
+]
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/all_time_playoffs_at_or_more_6_point_margin.json.gz",
+    year_groups=eras,
+    start_time=6,
     down_mode="at",
     cumulate=True,
     max_point_margin=1000,
