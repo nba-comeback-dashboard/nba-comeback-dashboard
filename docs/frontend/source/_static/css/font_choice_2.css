@@ -1,0 +1,59 @@
+/* Font Choice #2: Charter/Georgia Serif Fonts (current) */
+
+/* Apply Charter/Georgia fonts to all content except logo */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Charter", Georgia, serif !important;
+    font-weight: 700;
+    color: #333;
+}
+
+h1 {
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 22px;
+    line-height: 1.15;
+}
+
+h3 {
+    font-size: 18px;
+    line-height: 1.15;
+}
+
+h4 {
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+/* Body text */
+p {
+    font-family: "Charter", Georgia, serif !important;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #333;
+}
+
+/* Ensure consistent alignment */
+.bd-content {
+    text-align: left;
+}
+
+/* Additional text elements */
+li, dt, dd, blockquote, cite, code, pre {
+    font-family: "Charter", Georgia, serif !important;
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+/* Make list items more readable */
+li {
+    margin-bottom: 6px;
+}
+
+/* Increase font size for notes and admonitions */
+.admonition p, .note p, .warning p, .hint p, .important p, .caution p, .attention p, .danger p, .error p {
+    font-size: 17px;
+}

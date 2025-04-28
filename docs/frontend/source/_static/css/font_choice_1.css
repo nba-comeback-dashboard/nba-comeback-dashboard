@@ -1,0 +1,40 @@
+/* Font Choice #1: Original PyData Theme Fonts */
+
+/* Reset all fonts to PyData defaults */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--pst-font-family-heading) !important;
+    font-weight: var(--pst-font-weight-heading);
+    color: var(--pst-color-h1);
+}
+
+p, li, dt, dd, blockquote, cite {
+    font-family: var(--pst-font-family-base) !important;
+}
+
+/* Ensure the logo text also uses PyData font */
+.navbar-brand .title,
+.navbar-brand-content, 
+.navbar-brand a {
+    font-family: var(--pst-font-family-base) !important;
+}
+
+/* Preserve the original sizing from pydata theme */
+h1 {
+    font-size: calc(1.8rem - 4px);
+}
+
+h2 {
+    font-size: calc(1.5rem - 4px);
+}
+
+h3 {
+    font-size: calc(1.25rem - 3px);
+}
+
+h4 {
+    font-size: calc(1.1rem - 3px);
+}
+
+h5, h6 {
+    font-size: calc(1rem - 2px);
+}

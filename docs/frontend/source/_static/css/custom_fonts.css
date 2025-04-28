@@ -1,0 +1,67 @@
+/* Custom font styling to match toc-entry typography */
+
+/* Original heading font styles (commented out for reference) */
+/*
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--pst-font-family-heading);
+    font-weight: var(--pst-font-weight-heading);
+    color: var(--pst-color-h1);
+}
+*/
+
+/* New heading styles to match toc-entry */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Charter", Georgia, serif;
+    font-weight: 700;
+    color: #333;
+}
+
+h1 {
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 22px;
+    line-height: 1.15;
+}
+
+h3 {
+    font-size: 18px;
+    line-height: 1.15;
+}
+
+h4 {
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+/* Body text - slightly larger than subtitle style for better readability */
+p {
+    font-family: "Charter", Georgia, serif;
+    font-size: 17px; /* Increased from 15px */
+    font-weight: 400;
+    line-height: 1.3; /* Increased slightly for better readability */
+    color: #333;
+}
+
+/* Ensure consistent alignment */
+.bd-content {
+    text-align: left;
+}
+
+/* Additional text elements */
+li, dt, dd, blockquote, cite, code, pre {
+    font-size: 17px; /* Match paragraph text size */
+    line-height: 1.3;
+}
+
+/* Make list items more readable */
+li {
+    margin-bottom: 6px;
+}
+
+/* Increase font size for notes and admonitions */
+.admonition p, .note p, .warning p, .hint p, .important p, .caution p, .attention p, .danger p, .error p {
+    font-size: 17px;
+}

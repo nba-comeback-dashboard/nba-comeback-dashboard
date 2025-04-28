@@ -1,0 +1,36 @@
+/* TOC Entry styling for Font Choice #1: Original PyData Theme Fonts */
+
+.toc-entry-title {
+    font-family: var(--pst-font-family-heading) !important;
+    font-weight: var(--pst-font-weight-heading);
+    font-size: calc(1.5rem - 4px);
+    line-height: 1.2;
+    color: var(--pst-color-h1);
+}
+
+.toc-entry-subtitle {
+    font-family: var(--pst-font-family-base) !important;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--pst-color-text-base);
+}
+
+.toc-entry-date {
+    font-family: var(--pst-font-family-base) !important;
+    font-size: 11px;
+    color: #777;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.toc-entry-title a {
+    color: var(--pst-color-h1);
+    text-decoration: none;
+}
+
+.toc-entry-title a:hover {
+    color: var(--pst-color-link);
+    text-decoration: underline;
+}

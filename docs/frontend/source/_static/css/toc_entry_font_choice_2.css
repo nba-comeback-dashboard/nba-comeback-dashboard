@@ -1,0 +1,36 @@
+/* TOC Entry styling for Font Choice #2: Charter/Georgia Serif */
+
+.toc-entry-title {
+    font-family: "Charter", Georgia, serif !important;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #333;
+}
+
+.toc-entry-subtitle {
+    font-family: "Charter", Georgia, serif !important;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #333;
+}
+
+.toc-entry-date {
+    font-family: "Charter", Georgia, serif !important;
+    font-size: 11px;
+    color: #777;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.toc-entry-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.toc-entry-title a:hover {
+    color: #111;
+    text-decoration: underline;
+}

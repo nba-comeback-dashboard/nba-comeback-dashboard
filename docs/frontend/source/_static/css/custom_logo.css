@@ -1,0 +1,12 @@
+/* Custom styling specifically for the navbar logo/brand text */
+
+/* Target the specific logo text in the navigation bar */
+.navbar-brand-content, 
+.navbar-brand a {
+    font-family: var(--pst-font-family-base) !important;
+}
+
+/* Target the logo text specifically */
+.navbar-brand .title {
+    font-family: var(--pst-font-family-base) !important;
+}
