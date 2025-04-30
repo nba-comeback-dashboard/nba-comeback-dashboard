@@ -45,7 +45,7 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2024),
+    (1996, 2023),
 ]
 
 plot_biggest_deficit(
@@ -66,9 +66,8 @@ plot_biggest_deficit(
 eras = [
     # ERA ONE
     (1996, 2016),
-    (2017, 2024),
+    (2017, 2023),
 ]
-
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern.json.gz",

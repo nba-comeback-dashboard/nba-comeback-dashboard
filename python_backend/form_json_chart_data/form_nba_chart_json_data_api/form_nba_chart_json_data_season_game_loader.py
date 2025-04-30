@@ -348,10 +348,11 @@ def get_point_margin_map_from_json(point_margins_data):
 
 class PlayoffMap:
     """A collection of playoff series data organized by series key.
-    
+
     This class maps playoff games to their respective series and provides
     methods to access playoff series data and point margins.
     """
+
     def __init__(self):
         self._data = {}  # Maps series keys to PlayoffSeries objects
 
@@ -361,8 +362,8 @@ class PlayoffMap:
 
     def _get_series_key(self, game):
         """Create a unique key for a playoff series based on teams and year.
-        
-        The key is a tuple of (team1, team2, year) where team1 and team2 are 
+
+        The key is a tuple of (team1, team2, year) where team1 and team2 are
         alphabetically sorted to ensure consistency regardless of home/away.
         """
         year = game.game_date.split("-", 1)[0]
@@ -373,26 +374,101 @@ class PlayoffMap:
     def finalize_adding_games(self):
         """Convert collected game sets into PlayoffSeries objects for analysis."""
         self._data = {k: PlayoffSeries(k, v) for k, v in self._data.items()}
+        self.add_round_number()
+        breakpoint()
 
     def get_playoff_point_margins(self, game):
         """Get the point margins for a game in the context of its playoff series.
-        
+
         Returns a tuple of (point_margin, inverse_point_margin, series_id).
         """
         series_key = self._get_series_key(game)
         playoff_series = self._data[series_key]
         return playoff_series.get_playoff_point_margins(game)
 
+    def add_round_number(self):
+        """
+        Add round numbers to each playoff series in the map.
+
+        Round 1 corresponds to the first round of playoffs,
+        Round 2 to the second round, etc., up to Round 4 (Finals).
+
+        The round is determined by counting each team's prior series wins in that year.
+        """
+        # Dictionary to track series wins by team and year
+        series_wins_by_year = {}
+
+        # First pass: identify series winners
+        for series_key, playoff_series in self._data.items():
+            year = series_key[2]
+            team1, team2 = series_key[0], series_key[1]
+
+            # Get the winner of this series
+            if playoff_series.series_home_team_wins:
+                winner = playoff_series.series_home_team
+            else:
+                winner = playoff_series.series_away_team
+
+            # Initialize the year's tracking dict if needed
+            if year not in series_wins_by_year:
+                series_wins_by_year[year] = {}
+
+            # Store the winner for this series
+            playoff_series.winner = winner
+
+            # Initialize win counts for both teams if not already present
+            for team in [team1, team2]:
+                if team not in series_wins_by_year[year]:
+                    series_wins_by_year[year][team] = 0
+
+        # Sort all series by date (so we count wins in chronological order)
+        series_by_date = {}
+        for series_key, playoff_series in self._data.items():
+            year = series_key[2]
+            # Get the first game date as the series start date
+            first_game_id = next(iter(playoff_series.game_results_map))
+            first_game_date = playoff_series.game_results_map[first_game_id][
+                "game_date"
+            ]
+
+            if year not in series_by_date:
+                series_by_date[year] = []
+
+            series_by_date[year].append((first_game_date, series_key, playoff_series))
+
+        # Process each year's series in chronological order
+        for year, series_list in series_by_date.items():
+            # Sort series by date
+            series_list.sort()
+
+            for _, series_key, playoff_series in series_list:
+                team1, team2 = series_key[0], series_key[1]
+
+                # The round is determined by the minimum number of series wins
+                # between the two teams at the start of this series
+                min_series_wins = min(
+                    series_wins_by_year[year].get(team1, 0),
+                    series_wins_by_year[year].get(team2, 0),
+                )
+
+                # Assign the round (1-based)
+                playoff_series.round = min_series_wins + 1
+
+                # After determining the round, increment the winner's series win count
+                winner = playoff_series.winner
+                series_wins_by_year[year][winner] += 1
+
 
 class PlayoffSeries:
     """Represents a single NBA playoff series between two teams.
-    
+
     This class tracks the progression of a playoff series, maintains the series score
     after each game, and maps the series states to point margins for analysis.
     """
+
     def __init__(self, id, games):
         """Initialize a playoff series with a set of games.
-        
+
         Args:
             id: Unique identifier for the series (tuple of teams and year)
             games: Collection of Game objects belonging to this series
@@ -453,15 +529,15 @@ class PlayoffSeries:
     # Magnitude reflects the strength of position (e.g., 4-0 is strongest win at +10)
     game_score_map = {
         "4-0": 10,  # Best win - sweep
-        "4-1": 9,   # Second best win
-        "4-2": 8,   # Win in 6 games
-        "4-3": 7,   # Win in 7 games (closest win)
-        "3-0": 6,   # Up 3-0
-        "3-1": 5,   # Up 3-1
-        "2-0": 4,   # Up 2-0
-        "3-2": 3,   # Up 3-2
-        "2-1": 2,   # Up 2-1
-        "1-0": 1,   # Up 1-0
+        "4-1": 9,  # Second best win
+        "4-2": 8,  # Win in 6 games
+        "4-3": 7,  # Win in 7 games (closest win)
+        "3-0": 6,  # Up 3-0
+        "3-1": 5,  # Up 3-1
+        "2-0": 4,  # Up 2-0
+        "3-2": 3,  # Up 3-2
+        "2-1": 2,  # Up 2-1
+        "1-0": 1,  # Up 1-0
         "0-1": -1,  # Down 0-1
         "1-2": -2,  # Down 1-2
         "2-3": -3,  # Down 2-3
@@ -471,21 +547,21 @@ class PlayoffSeries:
         "3-4": -7,  # Lost in 7 games (closest loss)
         "2-4": -8,  # Lost in 6 games
         "1-4": -9,  # Second worst loss
-        "0-4": -10, # Worst loss - swept
+        "0-4": -10,  # Worst loss - swept
     }
 
     def get_playoff_point_margins(self, game):
         """Convert a playoff series score to equivalent point margins for analysis.
-        
-        Maps the series score (e.g., "3-1") at the time of the given game to 
+
+        Maps the series score (e.g., "3-1") at the time of the given game to
         a point margin value that can be used in win probability analysis.
-        
+
         Args:
             game: The game object to get point margins for
-            
+
         Returns:
             Tuple of (point_margin, inverse_point_margin, series_id)
-            
+
         Raises:
             ValueError: If series is not a valid 7-game series or if series is over
         """
@@ -493,11 +569,11 @@ class PlayoffSeries:
         last_series_score = list(self.game_results_map.values())[-1]["series_score"]
         if "4-" not in last_series_score and "-4" not in last_series_score:
             raise ValueError("Not a 7 game series")
-            
+
         # Get the series score at the time of this game
         game_series_data = self.game_results_map[game.game_id]
         game_series_score = game_series_data["series_score"]
-        
+
         # Handle tied series (return 0 point margin)
         home_score, away_score = game_series_score.split("-")
         if home_score == away_score:
