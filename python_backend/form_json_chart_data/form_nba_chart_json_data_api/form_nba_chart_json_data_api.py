@@ -432,20 +432,29 @@ def plot_biggest_deficit(
     if calculate_occurrences:
         max_point_margin = 1000
 
+    # Special handling for playoff series analysis mode
     if down_mode == "playoff_series":
+        # For playoff series analysis, only use negative point margins (teams that are behind)
         max_point_margin = 0
+        
+        # Playoff series analysis doesn't support game filters
         if game_filters[0]:
-            raise AssertionError
+            raise AssertionError("Game filters not supported with playoff_series mode")
+            
+        # Ensure we're using playoff data by adding 'P' prefix to year numbers
+        # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)
         year_groups = list(year_groups)
         for index, year_group in enumerate(year_groups):
             try:
                 int(year_group[0])
             except ValueError:
+                # If already has P prefix, leave it
                 if str(year_group[0]) == "P":
                     pass
                 else:
-                    raise AssertionError
+                    raise AssertionError("Invalid year format for playoff_series mode")
             else:
+                # Add P prefix to year for playoff data
                 year_groups[index] = [f"P{year_group[0]}", year_group[1]]
 
     # Prepare data for combinations of year groups and filters
@@ -473,6 +482,8 @@ def plot_biggest_deficit(
                 season_type=season_type,
             )
 
+            # For playoff series analysis, create the mapping structure between games and series
+            # This organizes games into playoff series and calculates series standings for each game
             if down_mode == "playoff_series":
                 games.add_playoff_series_lookup_map()
 
@@ -521,11 +532,16 @@ def plot_biggest_deficit(
             title = "Points Scored"
         for line in points_down_lines:
             line.legend = line.legend.replace("Games)", "Scores)")
+    # For playoff series analysis, set appropriate chart title and customize legend
     elif down_mode == "playoff_series":
         if calculate_occurrences:
-            title = "Series Score"
+            # For occurrence analysis, show frequency distribution of different series scores
+            title = "Occurrence % of Series Score"
         else:
+            # For win probability analysis, show win % based on series score
             title = "Win % Versus Series Score"
+        
+        # Update legend to reflect playoff series instead of regular games
         for line in points_down_lines:
             line.legend = line.legend.replace("Games)", "Playoff Series)")
 
@@ -550,25 +566,31 @@ def plot_biggest_deficit(
     else:
         y_label = "Win %"
 
+    # For playoff series analysis, customize x-axis to show series scores instead of point margins
     if down_mode == "playoff_series":
         x_label = "Series Score"
+        
         if calculate_occurrences:
+            # For occurrence analysis, show full range of series scores
+            # Maps numeric values (-10 to 0) to series score labels (e.g., -10 → "0-4")
             x_ticks = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
             x_label = "Series Score"
             x_tick_labels = [
-                "0-4",
-                "1-4",
-                "2-4",
-                "3-4",
-                "0-3",
-                "1-3",
-                "0-2",
-                "2-3",
-                "1-2",
-                "0-1",
-                "Tied",
+                "0-4",  # Swept (worst position)
+                "1-4",  # Lost in 5
+                "2-4",  # Lost in 6
+                "3-4",  # Lost in 7 (closest loss)
+                "0-3",  # Down 0-3
+                "1-3",  # Down 1-3
+                "0-2",  # Down 0-2
+                "2-3",  # Down 2-3
+                "1-2",  # Down 1-2
+                "0-1",  # Down 0-1
+                "Tied", # Series tied
             ]
         else:
+            # For win probability analysis, focus on scenarios where teams can still win
+            # Excludes series scores where the series is already over (e.g., 0-4)
             x_ticks = [-7, -6, -5, -4, -3, -2, -1, 0]
             x_tick_labels = ["Lost", "0-3", "1-3", "0-2", "2-3", "1-2", "0-1", "Tied"]
     else:

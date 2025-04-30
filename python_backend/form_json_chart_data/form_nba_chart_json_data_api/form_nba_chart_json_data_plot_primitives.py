@@ -174,6 +174,9 @@ class PointsDownLine(PlotLine):
         if cumulate:
             self.cumulate_point_totals(point_margin_map)
 
+        # For playoff series analysis, only consider point margins <= 0
+        # This focuses on teams that are tied or behind in the series
+        # Disable cumulative calculations (or_less/or_more) as they don't apply to series scores
         if down_mode == "playoff_series":
             or_less_point_margin = None
             or_more_point_margin = None
@@ -221,9 +224,17 @@ class PointsDownLine(PlotLine):
         self.or_more_point_margin = or_more_point_margin
 
     def get_all_game_ids(self):
+        """Get all game IDs included in this plot line.
+        
+        For playoff series analysis, returns the set of playoff series IDs.
+        For regular analysis, returns the set of all game IDs in the point margin map.
+        """
         if self.down_mode == "playoff_series":
+            # For playoff series, use the playoff_ids set which tracks series IDs
+            # rather than individual game IDs
             all_game_ids = self.playoff_ids
         else:
+            # For regular analysis, collect all game IDs from wins and losses
             all_game_ids = set()
             for data in self.point_margin_map.values():
                 all_game_ids.update(data.wins)
@@ -267,6 +278,8 @@ class PointsDownLine(PlotLine):
                 f"Invalid start_time: {start_time}, not found in TIME_TO_INDEX_MAP"
             )
 
+        # Initialize tracking of playoff series IDs when in playoff_series mode
+        # This set will collect unique series identifiers instead of individual game IDs
         if down_mode == "playoff_series":
             self.playoff_ids = set()
 
@@ -317,19 +330,27 @@ class PointsDownLine(PlotLine):
                         lose_point_margin = min(min_point_margin, lose_point_margin)
                     else:
                         raise AssertionError("NBA games can't end in a tie")
+            # Special handling for playoff series analysis
             elif down_mode == "playoff_series":
                 try:
+                    # Get point margins based on playoff series score (e.g., 3-1, 2-3)
+                    # Returns a tuple of (win_margin, lose_margin, playoff_id)
                     win_point_margin, lose_point_margin, playoff_id = (
                         games.playoff_map.get_playoff_point_margins(game)
                     )
+                    
+                    # For win probability analysis, constrain margins to -7 to 7 range
+                    # This excludes series that are already over (like 0-4, 4-0)
                     if not self.calculate_occurrences:
                         win_point_margin = max(-7, win_point_margin)
                         lose_point_margin = max(-7, lose_point_margin)
                         win_point_margin = min(7, win_point_margin)
                         lose_point_margin = min(7, lose_point_margin)
                 except ValueError:
+                    # Skip series that don't meet our criteria (e.g., not completed)
                     continue
                 else:
+                    # Track this playoff series ID for analysis
                     self.playoff_ids.add(playoff_id)
             else:
                 raise NotImplementedError(f"Unsupported down_mode: {down_mode}")

@@ -29,13 +29,14 @@ The system was recently refactored to improve data handling and enable more gran
 
 3. **API Parameter Improvements**: 
    - Renamed `stop_time` parameter to `down_mode` for clarity
-   - `down_mode` can be either "at" (point at specific time) or "max" (maximum deficit)
+   - `down_mode` can be either "at" (point at specific time), "max" (maximum deficit), or "playoff_series" (series score analysis)
    - Added support for string-based time points (e.g., "45s", "30s")
 
 4. **Enhanced Analysis Capabilities**:
    - Improved tracking of point margin extremes throughout game periods
    - Added or_less_point_margin and or_more_point_margin tracking
    - Enhanced regression fitting with better handling of edge cases
+   - Added playoff series analysis to calculate win percentages based on series score
 
 ## Data Flow
 1. `form_nba_game_sqlite_database.py` (outside this dir) downloads data from stats.nba.com and creates SQLite database
@@ -63,6 +64,16 @@ Important constraints:
 - `Season` class loads data for a specific NBA season from JSON files
 - `Games` class collects game data across multiple seasons with optional filtering
 
+### PlayoffSeries and PlayoffMap
+- `PlayoffSeries` class represents a single NBA playoff series (e.g., a best-of-7 matchup)
+  - Tracks series score and game results
+  - Maps playoff series scores to point margins for analysis
+  - Provides methods to analyze series outcomes based on game scores
+- `PlayoffMap` class organizes all playoff series across multiple seasons
+  - Groups games by playoff series ID
+  - Creates and manages PlayoffSeries objects
+  - Provides methods to look up series by teams and games
+
 ### PlotLine and FinalPlot 
 - `PlotLine` is the base class for all chart lines, with concrete implementations:
   - `PointsDownLine`: For analyzing win probability based on point deficit
@@ -76,6 +87,10 @@ Analyzes win probability based on point deficit at different game times.
 - Accepts a list of `game_filters` for filtering games
 - Creates combinations of year groups and filters
 - Adds filter descriptions to titles and legends for better clarity
+- Supports special `down_mode="playoff_series"` for analyzing win probabilities based on playoff series scores
+  - Maps series scores (like "0-1", "1-3", etc.) to point margins for analysis
+  - Customizes x-axis labels to show series scores instead of point deficits
+  - Can calculate occurrence percentages with `calculate_occurrences=True`
 
 ### plot_percent_versus_time
 Analyzes how win probability changes throughout the game.

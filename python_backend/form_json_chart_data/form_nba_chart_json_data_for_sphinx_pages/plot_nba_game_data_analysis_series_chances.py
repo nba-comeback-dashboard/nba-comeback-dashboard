@@ -62,3 +62,25 @@ plot_biggest_deficit(
     down_mode="playoff_series",
     calculate_occurrences=True,
 )
+
+eras = [
+    # ERA ONE
+    (1996, 2016),
+    (2017, 2024),
+]
+
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern_occurs.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+    calculate_occurrences=True,
+)
