@@ -13,6 +13,7 @@ Analysis
    regular_v_playoffs
    occurs
    goto_chart
+   playoff_series
    rule_of_thumb_that_actually_works
    close_making_it_a_game
    do_the_twolves_give_up_big_leads
@@ -43,7 +44,13 @@ Analysis
                  Plus, how this single chart compares to ESPN's real time probability 
                  tracker.
       :date: April 12, 2025
-   
+
+   .. toc-entry::
+      :link: playoff_series.rst
+      :subtitle: Plotting playoff comeback and closeout odds on a normal probability plot.
+      :date: April 28, 2025
+
+
    .. toc-entry::
       :link: rule_of_thumb_that_actually_works.rst 
       :subtitle: A mathematical formula that has stood up to time. 

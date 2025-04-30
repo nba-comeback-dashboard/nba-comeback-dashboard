@@ -417,6 +417,7 @@ def plot_biggest_deficit(
         start_text = ""
     else:
         start_text = "Win % v. "
+
     if down_mode == "at":
         title = f"{start_text}Points Down{or_more} At Start of {time_desc}"
         or_more = ""
@@ -430,6 +431,22 @@ def plot_biggest_deficit(
 
     if calculate_occurrences:
         max_point_margin = 1000
+
+    if down_mode == "playoff_series":
+        max_point_margin = 0
+        if game_filters[0]:
+            raise AssertionError
+        year_groups = list(year_groups)
+        for index, year_group in enumerate(year_groups):
+            try:
+                int(year_group[0])
+            except ValueError:
+                if str(year_group[0]) == "P":
+                    pass
+                else:
+                    raise AssertionError
+            else:
+                year_groups[index] = [f"P{year_group[0]}", year_group[1]]
 
     # Prepare data for combinations of year groups and filters
     points_down_lines = []
@@ -455,6 +472,9 @@ def plot_biggest_deficit(
                 stop_year=stop_year_numeric,
                 season_type=season_type,
             )
+
+            if down_mode == "playoff_series":
+                games.add_playoff_series_lookup_map()
 
             if number_of_year_groups > 1 or number_of_game_filters < 2:
                 legend = games.get_years_string()
@@ -501,9 +521,16 @@ def plot_biggest_deficit(
             title = "Points Scored"
         for line in points_down_lines:
             line.legend = line.legend.replace("Games)", "Scores)")
+    elif down_mode == "playoff_series":
+        if calculate_occurrences:
+            title = "Series Score"
+        else:
+            title = "Win % Versus Series Score"
+        for line in points_down_lines:
+            line.legend = line.legend.replace("Games)", "Playoff Series)")
 
     if calculate_occurrences:
-        title = f"Occurrences of {title}"
+        title = f"Occurrence % of {title}"
 
     bound_x = float("inf")
     for line in points_down_lines:
@@ -523,12 +550,38 @@ def plot_biggest_deficit(
     else:
         y_label = "Win %"
 
+    if down_mode == "playoff_series":
+        x_label = "Series Score"
+        if calculate_occurrences:
+            x_ticks = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
+            x_label = "Series Score"
+            x_tick_labels = [
+                "0-4",
+                "1-4",
+                "2-4",
+                "3-4",
+                "0-3",
+                "1-3",
+                "0-2",
+                "2-3",
+                "1-2",
+                "0-1",
+                "Tied",
+            ]
+        else:
+            x_ticks = [-7, -6, -5, -4, -3, -2, -1, 0]
+            x_tick_labels = ["Lost", "0-3", "1-3", "0-2", "2-3", "1-2", "0-1", "Tied"]
+    else:
+        x_ticks = None
+        x_tick_labels = None
+
     final_plot = FinalPlot(
         plot_type="point_margin_v_win_percent",
         title=title,
         x_label=x_label,
         y_label=y_label,
-        # x_ticks=xticks_new,
+        x_ticks=x_ticks,
+        x_tick_labels=x_tick_labels,
         y_ticks=[Num.PPF(p) for p in y_tick_values],
         y_tick_labels=y_tick_labels,
         min_x=min_x,
@@ -852,6 +905,8 @@ def plot_percent_versus_time(
         title=title,
         x_label=x_label,
         y_label=y_label,
+        x_ticks=None,
+        x_tick_labels=None,
         y_ticks=y_ticks,
         y_tick_labels=y_ticks,
         min_x=min(x_ticks),
@@ -1132,6 +1187,8 @@ def plot_espn_versus_dashboard(
         title=title,
         x_label="Time Remaining",
         y_label="Win Probability (%)",
+        x_ticks=None,
+        x_tick_labels=None,
         y_ticks=y_ticks[first_index : last_index + 1],
         y_tick_labels=y_tick_labels[first_index : last_index + 1],
         min_x=0,  # Changed to 0 since we're showing time remaining

@@ -180,6 +180,12 @@ class Games:
                 f"{self.stop_year}-{short(self.stop_year+1)}{season_type}"
             )
 
+    def add_playoff_series_lookup_map(self):
+        self.playoff_map = PlayoffMap()
+        for game in self.games.values():
+            self.playoff_map.add_game(game)
+        self.playoff_map.finalize_adding_games()
+
 
 class Game:
     """
@@ -338,3 +344,122 @@ def get_point_margin_map_from_json(point_margins_data):
         point_margin_map[key] = point_margin_data
         last_point_margin = point_margin_data["point_margin"]
     return point_margin_map
+
+
+class PlayoffMap:
+    def __init__(self):
+        self._data = {}
+
+    def add_game(self, game):
+        self._data.setdefault(self._get_series_key(game), set()).add(game)
+
+    def _get_series_key(self, game):
+        year = game.game_date.split("-", 1)[0]
+        series_key = sorted([game.home_team_abbr, game.away_team_abbr])
+        series_key.append(year)
+        return tuple(series_key)
+
+    def finalize_adding_games(self):
+        self._data = {k: PlayoffSeries(k, v) for k, v in self._data.items()}
+
+    def get_playoff_point_margins(self, game):
+        series_key = self._get_series_key(game)
+        playoff_series = self._data[series_key]
+        return playoff_series.get_playoff_point_margins(game)
+
+
+class PlayoffSeries:
+    def __init__(self, id, games):
+        self.id = id
+        # Convert set to sorted list by game date
+        from datetime import datetime
+
+        sorted_games = sorted(
+            games, key=lambda g: datetime.strptime(g.game_date, "%Y-%m-%d")
+        )
+
+        # Get first game to determine home/away teams for series
+        first_game = sorted_games[0]
+        self.series_home_team = first_game.home_team_abbr
+        self.series_away_team = first_game.away_team_abbr
+
+        # Initialize tracking of wins
+        home_wins = 0
+        away_wins = 0
+
+        # Create game results map
+        self.game_results_map = {}
+
+        for game in sorted_games:
+            # Get scores
+            if game.home_team_abbr == self.series_home_team:
+                home_score = game.final_home_points
+                away_score = game.final_away_points
+            else:
+                home_score = game.final_away_points
+                away_score = game.final_home_points
+
+            # Update win counts
+            if home_score > away_score:
+                home_wins += 1
+            else:
+                away_wins += 1
+
+            # Create game summary with series score
+            self.game_results_map[game.game_id] = {
+                "home_team": game.home_team_abbr,
+                "away_team": game.away_team_abbr,
+                "home_score": game.final_home_points,
+                "away_score": game.final_away_points,
+                "game_date": game.game_date,
+                "series_score": f"{home_wins}-{away_wins}",
+            }
+
+        # Determine the series winner
+        if home_wins > away_wins:
+            self.series_home_team_wins = True
+        else:
+            self.series_home_team_wins = False
+
+    game_score_map = {
+        "4-0": 10,
+        "4-1": 9,
+        "4-2": 8,
+        "4-3": 7,
+        "3-0": 6,
+        "3-1": 5,
+        "2-0": 4,
+        "3-2": 3,
+        "2-1": 2,
+        "1-0": 1,
+        "0-1": -1,
+        "1-2": -2,
+        "2-3": -3,
+        "0-2": -4,
+        "1-3": -5,
+        "0-3": -6,
+        "3-4": -7,
+        "2-4": -8,
+        "1-4": -9,
+        "0-4": -10,
+    }
+
+    def get_playoff_point_margins(self, game):
+        last_series_score = list(self.game_results_map.values())[-1]["series_score"]
+        if "4-" not in last_series_score and "-4" not in last_series_score:
+            raise ValueError("Not a 7 game series")
+        game_series_data = self.game_results_map[game.game_id]
+        game_series_score = game_series_data["series_score"]
+        home_score, away_score = game_series_score.split("-")
+        if home_score == away_score:
+            return 0, 0, self.id
+
+        if not self.series_home_team_wins:
+            game_series_score = f"{away_score}-{home_score}"
+
+        try:
+            point_margin = self.game_score_map[game_series_score]
+        except KeyError:
+            raise ValueError(f"Series is over {game_series_score}")
+        else:
+            return point_margin, -point_margin, self.id

@@ -75,7 +75,7 @@ class PointMarginPercent:
             game_ids = locals()[f"{mode}_games"]
             if calculate_occurrences:
                 game_ids = [game_id.split("_AWAY")[0] for game_id in game_ids]
-            game_sample = Num.random.sample(list(game_ids), min(10, len(game_ids)))
+            game_sample = Num.random.sample(list(game_ids), min(1000, len(game_ids)))
 
             # Create Game objects for the samples
             sorted_games = [games[game_id] for game_id in game_sample]
@@ -174,8 +174,11 @@ class PointsDownLine(PlotLine):
         if cumulate:
             self.cumulate_point_totals(point_margin_map)
 
-
-        if calculate_occurrences:
+        if down_mode == "playoff_series":
+            or_less_point_margin = None
+            or_more_point_margin = None
+            point_margin_map = {k: v for (k, v) in point_margin_map.items() if k <= 0}
+        elif calculate_occurrences:
             or_less_point_margin = None
             or_more_point_margin = None
         else:
@@ -218,10 +221,13 @@ class PointsDownLine(PlotLine):
         self.or_more_point_margin = or_more_point_margin
 
     def get_all_game_ids(self):
-        all_game_ids = set()
-        for data in self.point_margin_map.values():
-            all_game_ids.update(data.wins)
-            all_game_ids.update(data.losses)
+        if self.down_mode == "playoff_series":
+            all_game_ids = self.playoff_ids
+        else:
+            all_game_ids = set()
+            for data in self.point_margin_map.values():
+                all_game_ids.update(data.wins)
+                all_game_ids.update(data.losses)
         return all_game_ids
 
     def setup_point_margin_map(self, games, game_filter, start_time, down_mode):
@@ -260,6 +266,9 @@ class PointsDownLine(PlotLine):
             raise AssertionError(
                 f"Invalid start_time: {start_time}, not found in TIME_TO_INDEX_MAP"
             )
+
+        if down_mode == "playoff_series":
+            self.playoff_ids = set()
 
         for game in games:
             if down_mode == "score":
@@ -308,6 +317,20 @@ class PointsDownLine(PlotLine):
                         lose_point_margin = min(min_point_margin, lose_point_margin)
                     else:
                         raise AssertionError("NBA games can't end in a tie")
+            elif down_mode == "playoff_series":
+                try:
+                    win_point_margin, lose_point_margin, playoff_id = (
+                        games.playoff_map.get_playoff_point_margins(game)
+                    )
+                    if not self.calculate_occurrences:
+                        win_point_margin = max(-7, win_point_margin)
+                        lose_point_margin = max(-7, lose_point_margin)
+                        win_point_margin = min(7, win_point_margin)
+                        lose_point_margin = min(7, lose_point_margin)
+                except ValueError:
+                    continue
+                else:
+                    self.playoff_ids.add(playoff_id)
             else:
                 raise NotImplementedError(f"Unsupported down_mode: {down_mode}")
 
@@ -329,11 +352,23 @@ class PointsDownLine(PlotLine):
                         lose_point_margin, PointMarginPercent()
                     )
                     occurs_point_margin_percent.wins.add(f"{game.game_id}_AWAY")
-                else:
+                elif self.down_mode == "playoff_series" or self.down_mode == "at":
+                    occurs_point_margin_percent = point_margin_map.setdefault(
+                        win_point_margin, PointMarginPercent()
+                    )
+                    occurs_point_margin_percent.wins.add(game.game_id)
+                    occurs_point_margin_percent = point_margin_map.setdefault(
+                        lose_point_margin, PointMarginPercent()
+                    )
+                    occurs_point_margin_percent.wins.add(game.game_id)
+                elif self.down_mode == "max":
                     occurs_point_margin_percent = point_margin_map.setdefault(
                         min(lose_point_margin, win_point_margin), PointMarginPercent()
                     )
                     occurs_point_margin_percent.wins.add(game.game_id)
+                else:
+                    raise Exception
+
             else:
                 if game_filter is None or game_filter.is_match(game, is_win=True):
                     win_point_margin_percent = point_margin_map.setdefault(
@@ -693,7 +728,8 @@ class FinalPlot:
         title,
         x_label,
         y_label,
-        # x_ticks,
+        x_ticks,
+        x_tick_labels,
         y_ticks,
         y_tick_labels,
         min_x,
@@ -734,6 +770,8 @@ class FinalPlot:
             raise NotImplementedError(use_normal_labels)
 
         self.calculate_occurrences = calculate_occurrences
+        self.x_ticks = x_ticks
+        self.x_tick_labels = x_tick_labels
         self.y_ticks = y_ticks
         self.y_tick_labels = y_tick_labels
         self.lines = lines

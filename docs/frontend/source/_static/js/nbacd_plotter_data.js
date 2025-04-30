@@ -652,6 +652,23 @@ nbacd_plotter_data = (() => {
          * @returns {Object} X-axis configuration object
          */
         function createXAxisConfig(chartData, plotType) {
+            // Create a mapping from x ticks to their display labels if available
+            const xTickLabelMap = {};
+            let hasCustomXTicks = false;
+            
+            // Check if both x_ticks and x_tick_labels are present
+            if (chartData.x_ticks && chartData.x_tick_labels && 
+                Array.isArray(chartData.x_ticks) && Array.isArray(chartData.x_tick_labels) &&
+                chartData.x_ticks.length === chartData.x_tick_labels.length) {
+                
+                // Create the mapping
+                for (let i = 0; i < chartData.x_ticks.length; i++) {
+                    xTickLabelMap[chartData.x_ticks[i]] = chartData.x_tick_labels[i];
+                }
+                hasCustomXTicks = true;
+            }
+            
+            // Create the x-axis configuration
             return {
                 type: "linear",
                 // Use the min/max from the chart data, but with some padding
@@ -676,6 +693,10 @@ nbacd_plotter_data = (() => {
                     color: "black",
                     maxRotation: 45,
                     minRotation: 45,
+                    // If we have custom x tick labels, use them
+                    callback: hasCustomXTicks ? function(value) {
+                        return xTickLabelMap[value] !== undefined ? xTickLabelMap[value] : value;
+                    } : undefined
                 },
                 grid: {
                     display: true,
@@ -684,6 +705,13 @@ nbacd_plotter_data = (() => {
                     lineWidth: 2,
                     color: "rgba(147, 149, 149, 0.25)",
                 },
+                // If we have custom x ticks, use them to set the exact tick values
+                afterBuildTicks: hasCustomXTicks ? function(axis) {
+                    const x_ticks = chartData.x_ticks
+                        .filter(value => value <= axis.max && value >= axis.min)
+                        .map(value => ({ value: value }));
+                    axis.ticks = x_ticks;
+                } : undefined
             };
         }
 
