@@ -69,7 +69,7 @@ const nbacd_plotter_core = (() => {
             addDatasetsToChart(chartConfig, chartData, colors, chartConfig.plotType);
         }
 
-        // Create the chart
+        // Create the chart with animation disabled for immediate rendering
         const chart = new Chart(canvas, chartConfig);
 
         // Set the plot type as a property on the chart instance for easy access
@@ -77,6 +77,9 @@ const nbacd_plotter_core = (() => {
 
         // Store the calculate_occurrences flag on the chart for access in other functions
         chart.calculate_occurrences = chartConfig.calculate_occurrences;
+
+        // Force an immediate draw to ensure all content renders
+        chart.draw(0);
 
         // Store the original chart data in the chart object for tooltip access
         chart.chartData = chartData;

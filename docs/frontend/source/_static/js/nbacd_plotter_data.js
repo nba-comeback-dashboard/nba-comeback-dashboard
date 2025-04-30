@@ -1733,7 +1733,7 @@ nbacd_plotter_data = (() => {
 
                 // Draw win counts for each point
                 drawWinCountsOnPoints(chart, chartData);
-            },
+            }
         };
     }
     
@@ -1824,8 +1824,7 @@ nbacd_plotter_data = (() => {
      */
     function shouldSkipWinCountDisplay(chart) {
         // Skip on mobile unless in fullscreen mode
-        // Skip on occurrence plots (when calculate_occurrences is true)
-        return (isMobile() && !chart.isFullscreen) || chart.calculate_occurrences;
+        return (isMobile() && !chart.isFullscreen);
     }
 
     /**
@@ -1897,9 +1896,16 @@ nbacd_plotter_data = (() => {
             (item) => item.x_value === dataPoint.x && item.y_value === dataPoint.y
         );
 
-        // Only draw win count if it's less than 10
-        if (pointData && pointData.win_count < 10) {
+        if (!pointData) return;
+
+        // For regular win plots, use win_count
+        if (!chart.calculate_occurrences && pointData.win_count < 10) {
             drawWinCountOnPoint(chart, ctx, element, pointData.win_count);
+        }
+        
+        // For occurrence plots, use game_count
+        if (chart.calculate_occurrences && pointData.game_count < 10) {
+            drawWinCountOnPoint(chart, ctx, element, pointData.game_count);
         }
     }
 

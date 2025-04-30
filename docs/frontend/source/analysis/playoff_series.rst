@@ -69,6 +69,10 @@ period:
 
     <div id="playoff_series/playoff_series_all_time_by_round_3_4_occurs" class="nbacd-chart"></div>
 
+An amazing 18% of the Conference Finals since the 1996-1997 season have been sweeps.
+And 3 Finals out of the last 28-- or over 10% -- have also been sweeps.  And only 4 of
+the 28 Finals have gone 7 games.
+
 
 
 .. _comparing-old-school-versus-modern-eras:
