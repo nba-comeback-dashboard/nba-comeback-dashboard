@@ -436,11 +436,11 @@ def plot_biggest_deficit(
     if down_mode == "playoff_series":
         # For playoff series analysis, only use negative point margins (teams that are behind)
         max_point_margin = 0
-        
+
         # Playoff series analysis doesn't support game filters
         if game_filters[0]:
             raise AssertionError("Game filters not supported with playoff_series mode")
-            
+
         # Ensure we're using playoff data by adding 'P' prefix to year numbers
         # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)
         year_groups = list(year_groups)
@@ -536,11 +536,11 @@ def plot_biggest_deficit(
     elif down_mode == "playoff_series":
         if calculate_occurrences:
             # For occurrence analysis, show frequency distribution of different series scores
-            title = "Occurrence % of Series Score"
+            title = "Series Score"
         else:
             # For win probability analysis, show win % based on series score
             title = "Win % Versus Series Score"
-        
+
         # Update legend to reflect playoff series instead of regular games
         for line in points_down_lines:
             line.legend = line.legend.replace("Games)", "Playoff Series)")
@@ -569,7 +569,7 @@ def plot_biggest_deficit(
     # For playoff series analysis, customize x-axis to show series scores instead of point margins
     if down_mode == "playoff_series":
         x_label = "Series Score"
-        
+
         if calculate_occurrences:
             # For occurrence analysis, show full range of series scores
             # Maps numeric values (-10 to 0) to series score labels (e.g., -10 → "0-4")
@@ -586,7 +586,7 @@ def plot_biggest_deficit(
                 "2-3",  # Down 2-3
                 "1-2",  # Down 1-2
                 "0-1",  # Down 0-1
-                "Tied", # Series tied
+                "Tied",  # Series tied
             ]
         else:
             # For win probability analysis, focus on scenarios where teams can still win

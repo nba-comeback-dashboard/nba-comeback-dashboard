@@ -466,6 +466,27 @@ nbacd_plotter_data = (() => {
 
             // Format x value with no decimal places
             const xValue = parseFloat(dataPoint.x).toFixed(0);
+            
+            // Create a mapping from x ticks to tick labels if available
+            const xTickLabelMap = {};
+            let hasCustomXTicks = false;
+            
+            // Check if both x_ticks and x_tick_labels are present
+            if (chartData.x_ticks && chartData.x_tick_labels && 
+                Array.isArray(chartData.x_ticks) && Array.isArray(chartData.x_tick_labels) &&
+                chartData.x_ticks.length === chartData.x_tick_labels.length) {
+                
+                // Create the mapping
+                for (let i = 0; i < chartData.x_ticks.length; i++) {
+                    xTickLabelMap[chartData.x_ticks[i]] = chartData.x_tick_labels[i];
+                }
+                hasCustomXTicks = true;
+            }
+            
+            // Use x_tick_label if available, otherwise use the raw value
+            const displayXValue = hasCustomXTicks && xTickLabelMap[xValue] !== undefined 
+                ? xTickLabelMap[xValue] 
+                : xValue;
 
             // Check if we're dealing with a Record line
             const isRecordLine = dataset.label && dataset.label.includes("Record");
@@ -479,14 +500,14 @@ nbacd_plotter_data = (() => {
                     // Use rounded value for Record points
                     const pointsDown = Math.round(recordData.pointValue);
                     // Return both values on separate lines
-                    return `${chartData.x_label} = ${xValue}<br>Points Down: ${pointsDown}`;
+                    return `${chartData.x_label} = ${displayXValue}<br>Points Down: ${pointsDown}`;
                 }
             }
 
             // Default header for all other cases - use the x_label from the chart data
             // For trend lines, always use "=" regardless of or_less/or_more values
             // Trend lines should always show "Point Margin = X" format
-            const tooltipHeader = `${chartData.x_label} = ${xValue}`;
+            const tooltipHeader = `${chartData.x_label} = ${displayXValue}`;
 
             // Check if we have pre-calculated data for this point margin
             if (pointMarginData[xValue]) {
@@ -531,6 +552,29 @@ nbacd_plotter_data = (() => {
             );
 
             if (!pointData) return "";
+            
+            // Create a mapping from x ticks to tick labels if available
+            const xTickLabelMap = {};
+            let hasCustomXTicks = false;
+            
+            // Check if both x_ticks and x_tick_labels are present
+            if (chartData.x_ticks && chartData.x_tick_labels && 
+                Array.isArray(chartData.x_ticks) && Array.isArray(chartData.x_tick_labels) &&
+                chartData.x_ticks.length === chartData.x_tick_labels.length) {
+                
+                // Create the mapping
+                for (let i = 0; i < chartData.x_ticks.length; i++) {
+                    xTickLabelMap[chartData.x_ticks[i]] = chartData.x_tick_labels[i];
+                }
+                hasCustomXTicks = true;
+            }
+            
+            // Function to get display x value based on mapping
+            const getDisplayXValue = (xValue) => {
+                return hasCustomXTicks && xTickLabelMap[xValue] !== undefined 
+                    ? xTickLabelMap[xValue] 
+                    : xValue;
+            };
 
             // Calculate win percentage if not calculating occurrences
             const winPercent =
@@ -561,15 +605,15 @@ nbacd_plotter_data = (() => {
                     line.or_less_point_margin !== undefined &&
                     pointData.x_value === line.or_less_point_margin
                 ) {
-                    pointMarginLabel = `${chartData.x_label} <= ${pointData.x_value}`;
+                    pointMarginLabel = `${chartData.x_label} <= ${getDisplayXValue(pointData.x_value)}`;
                 } else if (
                     line &&
                     line.or_more_point_margin !== undefined &&
                     pointData.x_value === line.or_more_point_margin
                 ) {
-                    pointMarginLabel = `${chartData.x_label} >= ${pointData.x_value}`;
+                    pointMarginLabel = `${chartData.x_label} >= ${getDisplayXValue(pointData.x_value)}`;
                 } else {
-                    pointMarginLabel = `${chartData.x_label} = ${pointData.x_value}`;
+                    pointMarginLabel = `${chartData.x_label} = ${getDisplayXValue(pointData.x_value)}`;
                 }
 
                 return `<div style="text-align: left;">${pointMarginLabel}<br/>Occurs: ${
@@ -588,7 +632,7 @@ nbacd_plotter_data = (() => {
                     const pointsDown = Math.round(pointData.y_value);
 
                     // Always use "=" for Record line time values
-                    const timeLabel = `${chartData.x_label} = ${pointData.x_value}`;
+                    const timeLabel = `${chartData.x_label} = ${getDisplayXValue(pointData.x_value)}`;
 
                     return `<div style="text-align: left;">${timeLabel}<br/>Points Down: ${pointsDown}<br/>Wins: ${
                         pointData.win_count
@@ -608,15 +652,15 @@ nbacd_plotter_data = (() => {
                         line.or_less_point_margin !== undefined &&
                         pointData.x_value === line.or_less_point_margin
                     ) {
-                        pointMarginLabel = `${chartData.x_label} <= ${pointData.x_value}`;
+                        pointMarginLabel = `${chartData.x_label} <= ${getDisplayXValue(pointData.x_value)}`;
                     } else if (
                         line &&
                         line.or_more_point_margin !== undefined &&
                         pointData.x_value === line.or_more_point_margin
                     ) {
-                        pointMarginLabel = `${chartData.x_label} >= ${pointData.x_value}`;
+                        pointMarginLabel = `${chartData.x_label} >= ${getDisplayXValue(pointData.x_value)}`;
                     } else {
-                        pointMarginLabel = `${chartData.x_label} = ${pointData.x_value}`;
+                        pointMarginLabel = `${chartData.x_label} = ${getDisplayXValue(pointData.x_value)}`;
                     }
 
                     return `<div style="text-align: left;">${pointMarginLabel}<br/>Wins: ${

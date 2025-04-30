@@ -75,7 +75,7 @@ class PointMarginPercent:
             game_ids = locals()[f"{mode}_games"]
             if calculate_occurrences:
                 game_ids = [game_id.split("_AWAY")[0] for game_id in game_ids]
-            game_sample = Num.random.sample(list(game_ids), min(1000, len(game_ids)))
+            game_sample = Num.random.sample(list(game_ids), min(10, len(game_ids)))
 
             # Create Game objects for the samples
             sorted_games = [games[game_id] for game_id in game_sample]
@@ -225,7 +225,7 @@ class PointsDownLine(PlotLine):
 
     def get_all_game_ids(self):
         """Get all game IDs included in this plot line.
-        
+
         For playoff series analysis, returns the set of playoff series IDs.
         For regular analysis, returns the set of all game IDs in the point margin map.
         """
@@ -338,7 +338,7 @@ class PointsDownLine(PlotLine):
                     win_point_margin, lose_point_margin, playoff_id = (
                         games.playoff_map.get_playoff_point_margins(game)
                     )
-                    
+
                     # For win probability analysis, constrain margins to -7 to 7 range
                     # This excludes series that are already over (like 0-4, 4-0)
                     if not self.calculate_occurrences:
