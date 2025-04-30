@@ -7,8 +7,6 @@ Some Notable Record Games, Some Hidden
     Last updated 4/26/2025.  Here, all 'records' are from 1996 on, when play-by-play
     data first became available.
 
-
-
 .. _some-hidden-records:
 
 Some Hidden Records

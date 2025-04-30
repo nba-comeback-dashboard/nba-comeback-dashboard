@@ -2,10 +2,6 @@
 Occurrence Frequencies of Points Scored, Points Down, and Garbage Time Games
 ****************************************************************************
 
-.. green-box::
-    
-    Last updated 4/25/2025
-
 
 .. _largest-and-smallest-final-scores:
 

@@ -2,10 +2,6 @@
 Regular Season vs. Playoffs 
 ***************************
     
-.. green-box::
-    
-    Last updated 4/23/2025
-
 
 .. _regular-season-vs-playoffs:
 

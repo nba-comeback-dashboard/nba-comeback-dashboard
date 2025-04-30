@@ -2,10 +2,6 @@
 Playoffs: The Odds of Coming Back Or Closing It Out
 ***************************************************
 
-.. green-box::
-    
-    Last updated 4/28/2025
-
 
 .. _comeback-odds-occurence-rate-versus-a-series-deficit:
 

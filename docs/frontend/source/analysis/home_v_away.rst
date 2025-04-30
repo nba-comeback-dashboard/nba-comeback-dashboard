@@ -2,10 +2,6 @@
 Home Versus Away
 ****************
     
-.. green-box::
-    
-    Last updated 4/22/2025
-
 .. _home-v-away-all-time:
 
 Home v. Away All Time

@@ -2,10 +2,6 @@
 The Goto Chart
 **************
 
-.. green-box::
-    
-    Last updated 4/22/2025
-
 .. _all-the-available-data:
 
 All The Available Data

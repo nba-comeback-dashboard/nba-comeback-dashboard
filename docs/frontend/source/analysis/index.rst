@@ -59,7 +59,7 @@ Analysis
 
    .. toc-entry::
       :link: close_making_it_a_game.rst
-      :subtitle: A guide for when to turn of the tv.
+      :subtitle: A guide for when to turn off the tv.
       :date: April 18, 2025
 
    .. toc-entry::
