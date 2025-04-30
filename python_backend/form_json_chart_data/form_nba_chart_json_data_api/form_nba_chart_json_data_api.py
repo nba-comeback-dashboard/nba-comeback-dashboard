@@ -69,6 +69,7 @@ class GameFilter:
         for_team_abbr=None,
         vs_rank=None,
         vs_team_abbr=None,
+        playoff_round=None,
     ):
         """
         Initialize a GameFilter with criteria for filtering NBA games.
@@ -109,6 +110,7 @@ class GameFilter:
         self.for_team_abbr = for_team_abbr
         self.vs_rank = vs_rank
         self.vs_team_abbr = vs_team_abbr
+        self.playoff_round = playoff_round
 
         # Parse team abbreviations into lists if provided as strings
         if isinstance(self.for_team_abbr, str):
@@ -253,6 +255,17 @@ class GameFilter:
         """
         for_parts = []
         vs_parts = []
+
+        if self.playoff_round == 1:
+            return "First Round"
+        elif self.playoff_round == 2:
+            return "Second Round"
+        elif self.playoff_round == 3:
+            return "Conference Finals"
+        elif self.playoff_round == 4:
+            return "Finals"
+        elif self.playoff_round is not None:
+            raise AssertionError
 
         # Build for criteria string
         if self.for_rank:
@@ -435,11 +448,7 @@ def plot_biggest_deficit(
     # Special handling for playoff series analysis mode
     if down_mode == "playoff_series":
         # For playoff series analysis, only use negative point margins (teams that are behind)
-        max_point_margin = 0
-
-        # Playoff series analysis doesn't support game filters
-        if game_filters[0]:
-            raise AssertionError("Game filters not supported with playoff_series mode")
+        fit_max_points = "40%"
 
         # Ensure we're using playoff data by adding 'P' prefix to year numbers
         # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)

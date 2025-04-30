@@ -375,16 +375,15 @@ class PlayoffMap:
         """Convert collected game sets into PlayoffSeries objects for analysis."""
         self._data = {k: PlayoffSeries(k, v) for k, v in self._data.items()}
         self.add_round_number()
-        breakpoint()
 
-    def get_playoff_point_margins(self, game):
+    def get_playoff_point_margins(self, game, game_filter):
         """Get the point margins for a game in the context of its playoff series.
 
         Returns a tuple of (point_margin, inverse_point_margin, series_id).
         """
         series_key = self._get_series_key(game)
         playoff_series = self._data[series_key]
-        return playoff_series.get_playoff_point_margins(game)
+        return playoff_series.get_playoff_point_margins(game, game_filter)
 
     def add_round_number(self):
         """
@@ -550,7 +549,7 @@ class PlayoffSeries:
         "0-4": -10,  # Worst loss - swept
     }
 
-    def get_playoff_point_margins(self, game):
+    def get_playoff_point_margins(self, game, game_filter):
         """Convert a playoff series score to equivalent point margins for analysis.
 
         Maps the series score (e.g., "3-1") at the time of the given game to
@@ -569,6 +568,11 @@ class PlayoffSeries:
         last_series_score = list(self.game_results_map.values())[-1]["series_score"]
         if "4-" not in last_series_score and "-4" not in last_series_score:
             raise ValueError("Not a 7 game series")
+
+        if game_filter and game_filter.playoff_round != self.round:
+            raise ValueError(
+                f"Not correct round {game_filter.playoff_round} != {self.round}"
+            )
 
         # Get the series score at the time of this game
         game_series_data = self.game_results_map[game.game_id]

@@ -180,7 +180,6 @@ class PointsDownLine(PlotLine):
         if down_mode == "playoff_series":
             or_less_point_margin = None
             or_more_point_margin = None
-            point_margin_map = {k: v for (k, v) in point_margin_map.items() if k <= 0}
         elif calculate_occurrences:
             or_less_point_margin = None
             or_more_point_margin = None
@@ -210,7 +209,10 @@ class PointsDownLine(PlotLine):
             fit_max_points,
             calculate_occurrences=calculate_occurrences,
         )
-        if max_point_margin == "auto":
+        if down_mode == "playoff_series":
+            point_margin_map = {k: v for (k, v) in point_margin_map.items() if k <= 0}
+            max_point_margin = 0
+        elif max_point_margin == "auto":
             max_point_margin = fix_max_points + 6
 
         if self.down_mode == "score" or self.calculate_occurrences:
@@ -336,7 +338,7 @@ class PointsDownLine(PlotLine):
                     # Get point margins based on playoff series score (e.g., 3-1, 2-3)
                     # Returns a tuple of (win_margin, lose_margin, playoff_id)
                     win_point_margin, lose_point_margin, playoff_id = (
-                        games.playoff_map.get_playoff_point_margins(game)
+                        games.playoff_map.get_playoff_point_margins(game, game_filter)
                     )
 
                     # For win probability analysis, constrain margins to -7 to 7 range

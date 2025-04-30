@@ -19,6 +19,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
+    GameFilter,
 )
 
 # Calculate script directory from __file__
@@ -62,6 +63,57 @@ plot_biggest_deficit(
     down_mode="playoff_series",
     calculate_occurrences=True,
 )
+
+
+eras = [
+    # ERA ONE
+    (1996, 2023),
+]
+
+game_filters = [
+    GameFilter(playoff_round=1),
+    GameFilter(playoff_round=2),
+]
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+    game_filters=game_filters,
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2_occurs.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+    calculate_occurrences=True,
+    game_filters=game_filters,
+)
+
+game_filters = [
+    GameFilter(playoff_round=3),
+    GameFilter(playoff_round=4),
+]
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+    game_filters=game_filters,
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4_occurs.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+    calculate_occurrences=True,
+    game_filters=game_filters,
+)
+
 
 eras = [
     # ERA ONE

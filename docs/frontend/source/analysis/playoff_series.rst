@@ -5,20 +5,24 @@ Playoffs: The Odds of Coming Back Or Closing It Out
 
 .. _comeback-odds-occurence-rate-versus-a-series-deficit:
 
-Comeback Odds / Occurrence Rate Versus A Series Deficit
-=======================================================
+Comeback Odds / Occurrence Rate Versus A Seven Game Series Deficit
+==================================================================
 
-With some slight modification to how the plotting tool works, we can look at the odds
-of coming back from a given series deficit:
+
+With some slight modifications to how the plotting tool works, we can look at the odds
+of coming back from a given series deficit and look at a lot of playoff series
+statistics with just a few charts. First, let's look at the odds of winning a
+best-of-seven series versus series deficit since 1996 (1st round series before 2003 --
+which were 5 game series -- are ignored):
 
 .. raw:: html
 
     <div id="playoff_series/playoff_series_all_time" class="nbacd-chart"></div>
 
-Since the 1996 season only 8 teams out of the 167 series where someone fell down 1-3
+Since the 1996 season, only 8 teams out of the 167 series where someone fell down 1-3
 have come back, leading to about a 5% chance of a series comeback if you fall down 1-3.
-Also notable: teams that fall down 0-1 only have about a 1 in 4 chance of winning.  And
-we're still waiting for someone to comeback from a 0-3 hole.
+Also notable: teams that fall down 0-1 only have about a 1 in 4 chance of winning. And
+we're still waiting for someone to come back from a 0-3 hole.
 
 We can also plot the occurrence rates of each series score:
 
@@ -30,6 +34,41 @@ This shows that 17% of series have been 4-0 sweeps. Also surprising, in nearly 6
 series teams fall down 0-2 and, using the chart above, only have a 10% chance of coming
 back (i.e., most series are over quickly -- which isn't surprising when you think of
 the mismatches in the beginning rounds).
+
+
+
+.. _odds-and-occurrence-by-playoff-round:
+
+Odds and Occurrence By Playoff Round
+====================================
+
+1st and 2nd Round
+-----------------
+
+We can now compare the 1st and 2nd rounds over the same time period:
+
+.. raw:: html
+
+    <div id="playoff_series/playoff_series_all_time_by_round_1_2" class="nbacd-chart"></div>
+
+.. raw:: html
+
+    <div id="playoff_series/playoff_series_all_time_by_round_1_2_occurs" class="nbacd-chart"></div>
+
+Conference Finals and Finals
+----------------------------
+
+We can also now compare the Conference Finals versus the Finals over the same time
+period:
+
+.. raw:: html
+
+    <div id="playoff_series/playoff_series_all_time_by_round_3_4" class="nbacd-chart"></div>
+
+.. raw:: html
+
+    <div id="playoff_series/playoff_series_all_time_by_round_3_4_occurs" class="nbacd-chart"></div>
+
 
 
 .. _comparing-old-school-versus-modern-eras:
@@ -60,8 +99,8 @@ Notes on Win % Plot
 
 When 'Win % Versus Series Score' is plotted on a `normal probability plot
 <https://en.wikipedia.org/wiki/Normal_probability_plot>`_, the data is fairly normally
-distributed (with really only the 0-1 chances throwing off the normality).  This is
-just more of curiosity than anything else.  I did this by using this mapping:
+distributed (with really only the 0-1 chances throwing off the normality). This is just
+more of a curiosity than anything else. I did this by using this mapping:
 
 .. list-table:: Series Score Mapping
    :header-rows: 1
