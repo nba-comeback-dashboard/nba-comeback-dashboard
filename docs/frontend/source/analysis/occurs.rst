@@ -57,9 +57,8 @@ Garbage Time Games
 
 There's no exact definition of a garbage time game, so I am just going to propose a
 working one: being down so much at the 6-minute mark that you have a 1% or less chance
-of coming back.  That's maybe too low (maybe 5% or 10% is better) but nevertheless it
-gives us a starting point.  With this definition in mind, let's build up the data we
-need to count how often we get games that meet this criteria.
+of coming back.  With this definition in mind, let's build up the data we need to count
+how often we get games that meet this criteria.
 
 We can now look at the point margins exactly at 6 minutes:
 
@@ -81,7 +80,7 @@ that:
   historical data from 1996.
 
 * The record since 1996 was the Kings came back after being down 22 points at the six-
-  minute mark and it was given up by our `Minnesota Timberwolves on 1/27/2020
+  minute mark.  It was given up by our `Minnesota Timberwolves on 1/27/2020
   <https://www.nba.com/game/0021900696>`_.
 
 Using those two numbers we can say:
@@ -93,6 +92,10 @@ Using those two numbers we can say:
 
 That's a lot of garbage time games. Even though about 35% of games are within 6-7
 points or less.
+
+And the 1% is a bit of an arbitrary choice, but I chose it because the 5% point of 10
+points seems, emotionally at least, very surmountable.  And being down 18 is about 1 in
+500 odds and close to the record of 22 points which seems a bit too much.
 
 To be fair, there could have been more drama before the 6-minute mark. Walking back in
 time gets a little better. Looking at the 4th quarter we get:
@@ -139,6 +142,10 @@ would have guessed there would have been many more tighter, competitive games du
 the playoffs.
 
 .. _comparing-occurs-eras:
+
+
+
+.. _comparing-old-school-1996-2016-to-modern-2017-2024:
 
 Comparing Old School (1996-2016) to Modern (2017-2024)
 ======================================================
@@ -193,5 +200,48 @@ Looking at max down or more at the 6-minute mark, we see a similar shift:
 But the amount of games where "it's over" stays about the same: while there are more
 games with larger deficits, this is offset by modern teams being able to overcome about
 :doc:`2-3 more points at the same probability as in the past </analysis/20_is_new_18>`.
+
+
+
+.. _comparing-regular-season-versus-the-playoffs:
+
+Comparing Regular Season Versus the Playoffs
+============================================
+
+Comparing the number of blowout games in the regular season versus the playoffs shows
+no appreicable difference.  Surprising, given the stakes and that the bottom teams have
+been weeded out from contention. It has been stated that `there's an increasing number
+of blowouts occuring in the playoffs
+<https://www.theringer.com/2022/05/25/nba/playoff-basketball-blowout-trend-historical-analysis>
+`_, but looking at the point margins across all games does not bare this out:
+
+.. raw:: html
+
+    <div id="occurs/all_time_reg_v_playoffs_at_or_more_6_point_margin" class="nbacd-chart"></div>
+
+Here, the occurrence of 15 point down or more games is 29.8% for the playoffs versus
+28.2% for the regular season, nothing major.  Looking at the point margin at the buzzer
+we get which tells a similar story:
+
+.. raw:: html
+
+    <div id="occurs/all_time_reg_v_playoffs_at_or_more_0_point_margin" class="nbacd-chart"></div>
+
+We can also check to see if there's been a dramatic shift recently.  Comparing all
+games since 1996 versus the last four years we get:
+
+.. raw:: html
+
+    <div id="occurs/very_modern_vs_all_time_at_or_more_6_point_margin" class="nbacd-chart"></div>
+
+.. raw:: html
+
+    <div id="occurs/very_modern_vs_all_time_at_or_more_0_point_margin" class="nbacd-chart"></div>
+
+A shift, but this is :doc:`the same two point shift </analysis/20_is_new_18> we see
+when comparing comeback chances`.  For the last four years of playoff games, 30% of
+games have a point deficit of 16 or more compared 14 points or more for all time.  And
+given that teams can overcome about 2 more points of deficit, this is about the same
+level of "excitement" left in the game.
 
 

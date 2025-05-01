@@ -5,15 +5,16 @@ Playoffs: The Odds of Coming Back Or Closing It Out
 
 .. _comeback-odds-occurrence-rate-versus-a-series-deficit:
 
-Comeback Odds / Occurrence Rate Versus A Seven Game Series Deficit
-==================================================================
+Comeback Odds and Occurrence Rate of a Seven-Game Series Deficit
+================================================================
 
+We can also look at the odds of coming back from a series deficit :doc:`plotted on a
+normal probability plot </analysis/methodology_forming_the_plot_trend_lines>` and look
+at a lot of playoff series statistics with just a few charts.
 
-With some slight modifications to how the plotting tool works, we can look at the odds
-of coming back from a given series deficit and look at a lot of playoff series
-statistics with just a few charts. First, let's look at the odds of winning a
-best-of-seven series versus series deficit since 1996 (1st round series before 2003 --
-which were 5-game series -- are ignored):
+First, let's look at the odds of coming back and winning a best-of-seven series versus
+series deficit since 1996 (note, 1st round series before 2003 -- which were 5-game
+series -- are ignored):
 
 .. raw:: html
 
@@ -31,28 +32,37 @@ We can also plot the occurrence rates of each series score:
     <div id="playoff_series/playoff_series_all_time_occurs" class="nbacd-chart"></div>
 
 
-Note, these charts can be mirrored -- so if you are up 3-2 in the series you have about
-an 82% chance of closing it out (100% - 18%). And the occurrence rate of 3-2 series is
-equal to the occurrence rate of 2-3 series - they happen about 54% of the time.
+Note, these charts can be mirrored -- so if you are up 3-2 in the series, you have
+about an 82% chance of closing it out (100% - 18%). And the occurrence rate of 3-2
+series is equal to the occurrence rate of 2-3 series - they happen about 54% of the
+time.
 
 .. _garbage-time-series:
 
 How Many "Garbage Time" Series?
 ===============================
+.  Among other things, the charts above show that:
 
-Among other things, the above charts show that:
+* 18% of series have been 4-0 sweeps and 28% have been 4-1 closeouts, leading
+  to 170 out of 372 or 46% of series being lopsided affairs. With the large difference
+  in team strength in the first rounds, this may be expected. But :ref:`this stat holds
+  up over most rounds <odds-and-occurrence-by-playoff-round>` with 12 out of the last
+  28 Finals (or 43%) being either 4-0 or 4-1 affairs.
 
-* 18% of series have been 4-0 sweeps and in 28% of series teams fall into a 0-3 hole,
-  a virtual playoff death sentence.
+* In 28% of series, teams fall into a 0-3 hole, a virtual playoff death sentence.
 
-* Surprisingly, in nearly 60% of all series a team falls down 0-2. And despite this
+* In nearly 60% of all series, a team falls down 0-2. And despite this
   supposedly being the normal state of affairs of just holding home court advantage,
   it's a very bad place to be: using the chart above, you only have about a 10% chance
   of coming back if you fall down 0-2. Which means the majority of series are not very
   competitive (although thankfully, this may not be apparent without the benefit of
   hindsight).
 
-On the happy side, this should be contrasted with the fact that:
+On the level, this is probably to be expected in any competitive sport, with roughly
+half the matches being not that close (with the stats about the Finals being a little
+unexpected). And on the happy side, this should be contrasted with the fact that:
+
+* 54% of series have the losing side getting at least 2 wins.
 
 * About 60% of series do get tied up at some point (individual tied series scores also
   shown).
@@ -135,7 +145,7 @@ Here:
 
 * Only 4 of the 28 Finals have gone 7 games.
 
-* And even for the Conference Finals, in nearly 60% of series a team falls down 0-2
+* And even for the Conference Finals, in nearly 60% of series, a team falls down 0-2
   and has only a 12% chance of coming back to win. And it's not that much better for
   the Finals. It is surprising that this stat does not change much as you compare the
   different rounds of the playoffs.
@@ -147,7 +157,7 @@ Here:
 Comparing Old School Versus Modern Eras
 =======================================
 
-There's not much here, but because it was easy to do I plotted the same charts
+There's not much here, but because it was easy to do, I plotted the same charts
 :doc:`comparing the eras </analysis/20_is_new_18>`:
 
 .. raw:: html

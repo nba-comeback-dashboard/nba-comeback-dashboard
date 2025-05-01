@@ -1387,15 +1387,28 @@ nbacd_plotter_data = (() => {
             }
         }
         
-        // Check if this is a click event
-        const isClick =
+        // Use more reliable click detection by directly checking the event type
+        // First try to get the event type directly from context.event
+        let eventType = context.event && context.event.type ? context.event.type : undefined;
+        
+        // If not available in context.event, check window.event
+        if (!eventType && window.event) {
+            eventType = window.event.type;
+        }
+        
+        // Fallback to using timestamp comparison, but with a longer window (800ms) for better reliability
+        const isTimestampClick = 
             context.chart &&
             context.chart.lastClickEvent &&
-            new Date().getTime() - context.chart.lastClickEvent < 500;
-
-        // Get the event type from context if available
-        const eventType =
-            context.tooltip && context.tooltip.opacity === 1 ? "click" : "mousemove";
+            new Date().getTime() - context.chart.lastClickEvent < 800;
+            
+        // Consider it a click if either the event type is 'click' or the timestamp check passes
+        const isClick = eventType === 'click' || isTimestampClick;
+        
+        // For backward compatibility
+        if (isClick && context.tooltip && context.tooltip.opacity !== 1) {
+            context.tooltip.opacity = 1;
+        }
 
         // Handle mobile tooltip behavior
         if (typeof isMobile === "function" && isMobile()) {

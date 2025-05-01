@@ -719,25 +719,57 @@ const nbacd_plotter_core = (() => {
 
     // Track click events on charts to determine if tooltip should be shown
     document.addEventListener("click", function (event) {
-        // Check if the click was on a chart canvas
-        if (event.target.tagName.toLowerCase() === "canvas") {
-            // Find the canvas that was clicked
+        // Check if the click was on a chart canvas OR within a chart container
+        // This is more reliable as it captures clicks on the entire chart area
+        const isCanvasClick = event.target.tagName.toLowerCase() === "canvas";
+        const isChartContainerClick = event.target.closest(".chart-container") !== null;
+        
+        if (isCanvasClick || isChartContainerClick) {
+            // Find all chart canvases
             const canvasElements = document.querySelectorAll(
                 "canvas.chartjs-render-monitor"
             );
+            
             for (let i = 0; i < canvasElements.length; i++) {
                 const canvas = canvasElements[i];
-                if (canvas.contains(event.target)) {
+                
+                // Check if this canvas contains or is related to the clicked element
+                if (canvas.contains(event.target) || 
+                    (isChartContainerClick && canvas.closest(".chart-container") === event.target.closest(".chart-container"))) {
+                    
                     const chartInstance = Chart.getChart(canvas);
                     if (chartInstance) {
-                        // Set last click timestamp
+                        // Set last click timestamp - use a more precise timestamp
                         chartInstance.lastClickEvent = new Date().getTime();
-
-                        // Special handling for dashboard chart clicks
-                        if (chartInstance.plotType === "espn_versus_dashboard") {
-                            // Let the normal tooltip handling proceed, but make sure
-                            // we set the lastClickEvent to ensure it's treated as a click
-                            // Dashboard chart click detected
+                        
+                        // For debugging purposes, we can add a marker to indicate this chart was clicked
+                        // This helps identify which chart instance is being used in tooltip handlers
+                        chartInstance.wasJustClicked = true;
+                        
+                        // Reset the marker after 1 second to avoid lingering state
+                        setTimeout(() => {
+                            if (chartInstance) {
+                                chartInstance.wasJustClicked = false;
+                            }
+                        }, 1000);
+                        
+                        // When a click is detected, also clear any existing tooltips
+                        // This helps ensure we're starting fresh with each click
+                        const tooltipEl = document.getElementById("chartjs-tooltip");
+                        if (tooltipEl && !tooltipEl.contains(event.target)) {
+                            // Only clear if we didn't click directly on the tooltip
+                            tooltipEl.style.opacity = "0";
+                            tooltipEl.style.display = "none";
+                            
+                            // Reset tooltip state after a brief delay
+                            setTimeout(() => {
+                                if (tooltipEl) {
+                                    const tableRoot = tooltipEl.querySelector("table");
+                                    if (tableRoot) {
+                                        tableRoot.innerHTML = "";
+                                    }
+                                }
+                            }, 100);
                         }
                     }
                 }

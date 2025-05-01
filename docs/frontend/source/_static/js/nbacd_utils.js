@@ -794,13 +794,86 @@ const nbacd_utils = (() => {
         if (!__USE_LOCAL_STORAGE_CACHE__) return false;
 
         try {
-            // Try to clear some space first if localStorage is getting full
-            if (isLocalStorageAlmostFull()) {
+            // For larger datasets (esp. season data), make sure we have enough space
+            if (key.includes("nbacd_season_") || isLocalStorageAlmostFull()) {
+                // Try to clear some space first
                 pruneOldestCacheEntries();
             }
 
-            // Store the data
-            localStorage.setItem(key, JSON.stringify(data));
+            // Try to store the data
+            try {
+                const jsonData = JSON.stringify(data);
+                
+                // Season data optimization - if the key is for season data and the data is large,
+                // consider removing some less essential fields to reduce storage size
+                if (key.includes("nbacd_season_") && jsonData.length > 2 * 1024 * 1024) { // > 2MB
+                    // Store simplified version with essential game data
+                    const essentialData = {
+                        season_year: data.season_year,
+                        team_count: data.team_count,
+                        teams: data.teams,
+                        team_stats: data.team_stats
+                    };
+                    
+                    // Keep only essential game data
+                    essentialData.games = {};
+                    if (data.games) {
+                        for (const [game_id, game] of Object.entries(data.games)) {
+                            essentialData.games[game_id] = {
+                                game_date: game.game_date,
+                                season_type: game.season_type,
+                                season_year: game.season_year,
+                                home_team_abbr: game.home_team_abbr,
+                                away_team_abbr: game.away_team_abbr,
+                                score: game.score,
+                                point_margins: game.point_margins
+                            };
+                        }
+                    }
+                    
+                    localStorage.setItem(key, JSON.stringify(essentialData));
+                } else {
+                    // Store the full data
+                    localStorage.setItem(key, jsonData);
+                }
+            } catch (storageError) {
+                // If storage fails, try to free up more space and retry once
+                console.warn("First storage attempt failed, pruning more aggressively:", storageError);
+                
+                // More aggressive pruning in case of failure
+                pruneOldestCacheEntries();
+                
+                // Try with reduced data for season data
+                if (key.includes("nbacd_season_")) {
+                    const minimalData = {
+                        season_year: data.season_year,
+                        team_count: data.team_count,
+                        teams: data.teams,
+                        team_stats: data.team_stats,
+                        games: {} // Include only minimal game data
+                    };
+                    
+                    if (data.games) {
+                        for (const [game_id, game] of Object.entries(data.games)) {
+                            // Store absolutely minimal data needed to reconstruct game objects
+                            minimalData.games[game_id] = {
+                                game_date: game.game_date,
+                                season_type: game.season_type,
+                                season_year: game.season_year,
+                                home_team_abbr: game.home_team_abbr,
+                                away_team_abbr: game.away_team_abbr,
+                                score: game.score,
+                                point_margins: game.point_margins
+                            };
+                        }
+                    }
+                    
+                    localStorage.setItem(key, JSON.stringify(minimalData));
+                } else {
+                    // For non-season data, just retry with original data
+                    localStorage.setItem(key, JSON.stringify(data));
+                }
+            }
 
             // Store timestamp metadata
             localStorage.setItem(`${key}_timestamp`, Date.now().toString());
@@ -819,7 +892,7 @@ const nbacd_utils = (() => {
 
     /**
      * Checks if localStorage is getting close to its quota
-     * @returns {boolean} True if localStorage is more than 80% full
+     * @returns {boolean} True if localStorage is more than 70% full
      */
     function isLocalStorageAlmostFull() {
         try {
@@ -832,9 +905,9 @@ const nbacd_utils = (() => {
             }
 
             // Default quota is typically 5MB (5,242,880 bytes)
-            // Consider it almost full if using more than 80% of estimated quota
+            // Consider it almost full if using more than 70% of estimated quota (more proactive)
             const estimatedQuota = 5 * 1024 * 1024; // 5MB in bytes
-            return totalSize > estimatedQuota * 0.8;
+            return totalSize > estimatedQuota * 0.7;
         } catch (e) {
             console.error("Error checking localStorage size:", e);
             return true; // Assume it's almost full if we can't check
@@ -843,16 +916,17 @@ const nbacd_utils = (() => {
 
     /**
      * Removes oldest cache entries to free up space
-     * Removes up to 20% of the cached entries, starting with the oldest
+     * Removes up to 30% of the cached entries, starting with the oldest
+     * Prioritizes large season data entries for removal
      */
     function pruneOldestCacheEntries() {
         try {
-            // Collect all cache entries with their timestamps
+            // Collect all cache entries with their timestamps and sizes
             const cacheEntries = [];
 
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-
+                
                 // Only process data keys (not metadata keys)
                 if (
                     key &&
@@ -862,22 +936,52 @@ const nbacd_utils = (() => {
                 ) {
                     const timestampKey = `${key}_timestamp`;
                     const timestamp = localStorage.getItem(timestampKey);
-
+                    const value = localStorage.getItem(key);
+                    const size = (key.length + (value ? value.length : 0)) * 2; // Estimate size in bytes
+                    
                     if (timestamp) {
                         cacheEntries.push({
                             key: key,
                             timestamp: parseInt(timestamp, 10),
+                            size: size,
+                            isSeason: key.includes("nbacd_season_")
                         });
                     }
                 }
             }
-
+            
+            // First try to remove large season data if that's what's causing the issue
+            let seasonEntries = cacheEntries.filter(entry => entry.isSeason);
+            seasonEntries.sort((a, b) => a.timestamp - b.timestamp); // Oldest first
+            
+            if (seasonEntries.length > 0) {
+                // Remove at least one season entry
+                const seasonEntriesToRemove = Math.max(1, Math.ceil(seasonEntries.length * 0.5));
+                
+                for (let i = 0; i < seasonEntriesToRemove; i++) {
+                    if (i < seasonEntries.length) {
+                        const key = seasonEntries[i].key;
+                        localStorage.removeItem(key);
+                        localStorage.removeItem(`${key}_timestamp`);
+                        localStorage.removeItem(`${key}_lastModified`);
+                    }
+                }
+                
+                // console.log(`Pruned ${seasonEntriesToRemove} season cache entries to free up space`);
+                
+                // If we removed any seasons, we're done
+                if (seasonEntriesToRemove > 0) {
+                    return;
+                }
+            }
+            
+            // If we didn't remove seasons or need more space, remove oldest entries across all types
             // Sort by timestamp (oldest first)
             cacheEntries.sort((a, b) => a.timestamp - b.timestamp);
-
-            // Remove oldest 20% of entries
-            const entriesToRemove = Math.ceil(cacheEntries.length * 0.2);
-
+            
+            // Remove oldest 30% of entries (increased from 20%)
+            const entriesToRemove = Math.ceil(cacheEntries.length * 0.3);
+            
             for (let i = 0; i < entriesToRemove; i++) {
                 if (i < cacheEntries.length) {
                     const key = cacheEntries[i].key;
@@ -886,7 +990,7 @@ const nbacd_utils = (() => {
                     localStorage.removeItem(`${key}_lastModified`);
                 }
             }
-
+            
             // console.log(`Pruned ${entriesToRemove} oldest cache entries to free up space`);
         } catch (e) {
             console.error("Error pruning cache entries:", e);

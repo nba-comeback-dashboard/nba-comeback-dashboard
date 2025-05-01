@@ -203,3 +203,56 @@ plot_biggest_deficit(
     max_point_margin=1000,
     calculate_occurrences=True,
 )
+
+
+eras = [
+    # ERA ONE
+    ("R1996", 2024),
+    ("P1996", 2024),
+]
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/all_time_reg_v_playoffs_at_or_more_6_point_margin.json.gz",
+    year_groups=eras,
+    start_time=6,
+    down_mode="at_down",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/all_time_reg_v_playoffs_at_or_more_0_point_margin.json.gz",
+    year_groups=eras,
+    start_time=0,
+    down_mode="at_down",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
+eras = [
+    # ERA ONE
+    ("P1996", 2024),
+    ("P2021", 2024),
+]
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/very_modern_vs_all_time_at_or_more_6_point_margin.json.gz",
+    year_groups=eras,
+    start_time=6,
+    down_mode="at_down",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/occurs/very_modern_vs_all_time_at_or_more_0_point_margin.json.gz",
+    year_groups=eras,
+    start_time=0,
+    down_mode="at_down",
+    cumulate=True,
+    max_point_margin=1000,
+    calculate_occurrences=True,
+)

@@ -433,7 +433,6 @@ class PointsDownLine(PlotLine):
                     )
                     lose_point_margin_percent.losses.add(game.game_id)
 
-        breakpoint()
         return point_margin_map
 
     def cumulate_point_totals(self, point_margin_map):

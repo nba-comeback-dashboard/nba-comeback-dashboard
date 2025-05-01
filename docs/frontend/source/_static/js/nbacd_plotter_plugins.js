@@ -310,12 +310,34 @@ window.externalTooltipHandler = (context) => {
         }
         
         // We've configured chart.js to allow hover effects but only show tooltips on click
-        // Check if this is a mousemove/hover event (not a click) and tooltip isn't sticky
-        const eventType = context.event?.type || '';
+        // Check event type from multiple sources for more reliable detection
         
-        // If this is a click event, make the tooltip sticky
-        if (eventType === 'click') {
+        // First try to get event type from context.event (preferred source)
+        let eventType = context.event ? context.event.type : '';
+        
+        // If not available, check window.event as fallback
+        if (!eventType && window.event) {
+            eventType = window.event.type;
+        }
+        
+        // Also check for timestamp-based click detection as additional reliability measure
+        const isTimestampClick = 
+            context.chart &&
+            context.chart.lastClickEvent &&
+            new Date().getTime() - context.chart.lastClickEvent < 800;
+        
+        // Consider it a click if either the explicit type is 'click' or the timestamp check passes
+        const isActualClick = eventType === 'click' || isTimestampClick;
+        
+        // If this is a click event (by any detection method), make the tooltip sticky
+        if (isActualClick) {
             tooltipEl.setAttribute("data-sticky", "true");
+            
+            // Clear any hide timers that might be active
+            if (tooltipEl.hideTimer) {
+                clearTimeout(tooltipEl.hideTimer);
+                tooltipEl.hideTimer = null;
+            }
         }
         // If this is a mousemove/hover event and tooltip isn't sticky, don't show it
         else if (eventType === 'mousemove' && tooltipEl.getAttribute("data-sticky") !== "true") {
@@ -441,51 +463,107 @@ function setupDesktopTooltipBehavior(tooltipEl) {
  * @returns {boolean} True if tooltip should be shown, false otherwise
  */
 function handleTooltipVisibility(tooltipEl, tooltipModel) {
-    // Get current stickiness state
+    // Get all relevant state information to make a consistent decision
+    
+    // First check if tooltip is marked as sticky
     const isSticky = tooltipEl.getAttribute("data-sticky") === "true";
+    
+    // Check if user is hovering over the tooltip
     const isHovered = tooltipEl.matches(":hover");
     
-    // Prevent hiding when hovering on tooltip or when sticky is true
+    // Get current event directly from multiple sources
+    let currentEventType = '';
+    if (window.event) {
+        currentEventType = window.event.type;
+    }
+    
+    // Check if this is a very recent click on the chart
+    const isRecentChartClick = tooltipModel.chart && 
+                               tooltipModel.chart.lastClickEvent && 
+                               new Date().getTime() - tooltipModel.chart.lastClickEvent < 800;
+    
+    // CASE 1: User is hovering over tooltip or tooltip is sticky - always show
     if (isHovered || isSticky) {
+        // Make sure tooltip is fully visible
+        tooltipEl.style.opacity = "1";
+        tooltipEl.style.display = "block";
+        
+        // Cancel any pending hide operations
+        clearAllTooltipTimers(tooltipEl);
+        
+        // Always return true to allow tooltip to show
         return true;
     }
     
-    // For click events, make the tooltip sticky immediately
-    const event = window.event || {};
-    if (event.type === 'click') {
+    // CASE 2: This is a click event - make tooltip sticky and show it
+    if (currentEventType === 'click' || isRecentChartClick || 
+        // Also check if chart instance has the wasJustClicked flag
+        (tooltipModel.chart && tooltipModel.chart.wasJustClicked)) {
+        
+        // Make sticky and ensure visible
         tooltipEl.setAttribute("data-sticky", "true");
-        // Clear any hide timers
-        if (tooltipEl.hideTimer) {
-            clearTimeout(tooltipEl.hideTimer);
-            tooltipEl.hideTimer = null;
-        }
+        tooltipEl.style.opacity = "1";
+        tooltipEl.style.display = "block";
+        
+        // Cancel any hide timers
+        clearAllTooltipTimers(tooltipEl);
+        
         return true;
     }
     
-    // For mousemove events when not sticky, don't show tooltip
-    if (event.type === 'mousemove' && !isSticky) {
+    // CASE 3: This is a mousemove event and tooltip is not sticky - don't show tooltip
+    if (currentEventType === 'mousemove' && !isSticky) {
+        // Explicitly hide tooltip for mousemove events when not sticky
+        tooltipEl.style.opacity = "0";
+        tooltipEl.style.display = "none";
         return false;
     }
     
-    // If we get here and tooltip is not sticky, add a brief delay before hiding
+    // CASE 4: Model indicates tooltip should be hidden
     if (tooltipModel.opacity === 0 && !isSticky) {
-        // If not sticky and model says to hide, add a small delay before hiding
+        // Add a brief delay before actually hiding the tooltip
+        // This prevents flickering when moving between nearby points
         if (!tooltipEl.hideTimer) {
             tooltipEl.hideTimer = setTimeout(() => {
-                tooltipEl.style.opacity = 0;
+                tooltipEl.style.opacity = "0";
+                tooltipEl.style.display = "none";
                 tooltipEl.hideTimer = null;
-            }, 100); // 100ms delay before hiding tooltip
-            return true; // Keep showing during delay
+            }, 150); // Slightly longer delay (150ms) for smoother experience
+            
+            // Return true during the delay period
+            return true;
         }
     } else {
         // Cancel hide timer if we're showing the tooltip again
-        if (tooltipEl.hideTimer) {
-            clearTimeout(tooltipEl.hideTimer);
-            tooltipEl.hideTimer = null;
-        }
+        clearAllTooltipTimers(tooltipEl);
     }
     
+    // Default behavior: show tooltip
     return true;
+}
+
+/**
+ * Helper function to clear all tooltip-related timers
+ * @param {HTMLElement} tooltipEl - The tooltip element
+ */
+function clearAllTooltipTimers(tooltipEl) {
+    // Clear hideTimer
+    if (tooltipEl.hideTimer) {
+        clearTimeout(tooltipEl.hideTimer);
+        tooltipEl.hideTimer = null;
+    }
+    
+    // Clear stickyTimeout
+    if (tooltipEl.stickyTimeout) {
+        clearTimeout(tooltipEl.stickyTimeout);
+        tooltipEl.stickyTimeout = null;
+    }
+    
+    // Clear any other timers that might be added in the future
+    if (tooltipEl._hideTimeout) {
+        clearTimeout(tooltipEl._hideTimeout);
+        tooltipEl._hideTimeout = null;
+    }
 }
 
 /**
