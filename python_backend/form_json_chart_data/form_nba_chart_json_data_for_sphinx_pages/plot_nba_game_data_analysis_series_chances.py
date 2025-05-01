@@ -49,20 +49,39 @@ eras = [
     (1996, 2023),
 ]
 
-plot_biggest_deficit(
-    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time.json.gz",
-    year_groups=eras,
-    start_time=48,
-    down_mode="playoff_series",
-)
+# plot_biggest_deficit(
+#     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time.json.gz",
+#     year_groups=eras,
+#     start_time=48,
+#     down_mode="playoff_series",
+# )
+
+# plot_biggest_deficit(
+#     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_occurs.json.gz",
+#     year_groups=eras,
+#     start_time=48,
+#     down_mode="playoff_series",
+#     calculate_occurrences=True,
+# )
+
+eras = [
+    # ERA ONE
+    (1996, 2023),
+]
+
+game_filters = [
+    GameFilter(playoff_for_home=True),
+    GameFilter(playoff_for_home=False),
+]
 
 plot_biggest_deficit(
-    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_occurs.json.gz",
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_home_v_away.json.gz",
     year_groups=eras,
     start_time=48,
     down_mode="playoff_series",
-    calculate_occurrences=True,
+    game_filters=game_filters,
 )
+exit()
 
 
 eras = [

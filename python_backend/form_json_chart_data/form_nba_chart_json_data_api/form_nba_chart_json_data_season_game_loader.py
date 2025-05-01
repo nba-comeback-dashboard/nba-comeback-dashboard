@@ -121,7 +121,7 @@ class Season:
 class Games:
     """Collection of NBA games for specified seasons loaded from JSON files."""
 
-    def __init__(self, start_year, stop_year, season_type="all"):
+    def __init__(self, start_year, stop_year, season_type, calculate_occurrences):
         """
         Initialize games collection for the given year range with optional filtering.
 
@@ -139,6 +139,8 @@ class Games:
         self.stop_year = stop_year
 
         self.season_type = season_type
+
+        self.calculate_occurrences = calculate_occurrences
 
         # Load all games from the date range
         for year in range(start_year, stop_year + 1):
@@ -181,7 +183,7 @@ class Games:
             )
 
     def add_playoff_series_lookup_map(self):
-        self.playoff_map = PlayoffMap()
+        self.playoff_map = PlayoffMap(self.calculate_occurrences)
         for game in self.games.values():
             self.playoff_map.add_game(game)
         self.playoff_map.finalize_adding_games()
@@ -353,14 +355,16 @@ class PlayoffMap:
     methods to access playoff series data and point margins.
     """
 
-    def __init__(self):
+    def __init__(self, calculate_occurrences):
         self._data = {}  # Maps series keys to PlayoffSeries objects
+        self.calculate_occurrences = calculate_occurrences
+        self.setup_game_score_map()
 
     def add_game(self, game):
         """Add a game to the appropriate playoff series based on teams and year."""
-        self._data.setdefault(self._get_series_key(game), set()).add(game)
+        self._data.setdefault(self.get_series_id(game), set()).add(game)
 
-    def _get_series_key(self, game):
+    def get_series_id(self, game):
         """Create a unique key for a playoff series based on teams and year.
 
         The key is a tuple of (team1, team2, year) where team1 and team2 are
@@ -371,9 +375,15 @@ class PlayoffMap:
         series_key.append(year)
         return tuple(series_key)
 
+    def get_playoff_series(self, game):
+        return self._data[self.get_series_id(game)]
+
     def finalize_adding_games(self):
         """Convert collected game sets into PlayoffSeries objects for analysis."""
-        self._data = {k: PlayoffSeries(k, v) for k, v in self._data.items()}
+        self._data = {
+            k: PlayoffSeries(k, v, self, self.calculate_occurrences)
+            for k, v in self._data.items()
+        }
         self.add_round_number()
 
     def get_playoff_point_margins(self, game, game_filter):
@@ -381,7 +391,7 @@ class PlayoffMap:
 
         Returns a tuple of (point_margin, inverse_point_margin, series_id).
         """
-        series_key = self._get_series_key(game)
+        series_key = self.get_series_id(game)
         playoff_series = self._data[series_key]
         return playoff_series.get_playoff_point_margins(game, game_filter)
 
@@ -457,6 +467,60 @@ class PlayoffMap:
                 winner = playoff_series.winner
                 series_wins_by_year[year][winner] += 1
 
+    def setup_game_score_map(self):
+        # Map series scores to point margins for analysis
+        # Positive values indicate winning position, negative for losing position
+        # Magnitude reflects the strength of position (e.g., 4-0 is strongest win at +10)
+        if not self.calculate_occurrences:
+            self.game_score_map = {
+                "4-0": 7,  # Best win - sweep
+                "4-1": 7,  # Second best win
+                "4-2": 7,  # Win in 6 games
+                "4-3": 7,  # Win in 7 games (closest win)
+                "3-0": 6,  # Up 3-0
+                "3-1": 5,  # Up 3-1
+                "2-0": 4,  # Up 2-0
+                "3-2": 3,  # Up 3-2
+                "2-1": 2,  # Up 2-1
+                "1-0": 1,  # Up 1-0
+                "0-1": -1,  # Down 0-1
+                "1-2": -2,  # Down 1-2
+                "2-3": -3,  # Down 2-3
+                "0-2": -4,  # Down 0-2
+                "1-3": -5,  # Down 1-3
+                "0-3": -6,  # Down 0-3
+                "3-4": -7,  # Lost in 7 games (closest loss)
+                "2-4": -7,  # Lost in 6 games
+                "1-4": -7,  # Second worst loss
+                "0-4": -7,  # Worst loss - swept
+            }
+        else:
+            self.game_score_map = {
+                "4-0": 13,  # Best win - sweep
+                "4-1": 12,  # Second best win
+                "4-2": 11,  # Win in 6 games
+                "4-3": 10,  # Win in 7 games (closest win)
+                "3-0": 9,  # Up 3-0
+                "3-1": 8,  # Up 3-1
+                "2-0": 7,  # Up 2-0
+                "3-2": 6,  # Up 3-2
+                "2-1": 5,  # Up 2-1
+                "1-0": 4,  # Up 1-0
+                "1-1": -1,
+                "2-2": -2,
+                "3-3": -3,
+                "0-1": -4,  # Down 0-1
+                "1-2": -5,  # Down 1-2
+                "2-3": -6,  # Down 2-3
+                "0-2": -7,  # Down 0-2
+                "1-3": -8,  # Down 1-3
+                "0-3": -9,  # Down 0-3
+                "3-4": -10,  # Lost in 7 games (closest loss)
+                "2-4": -11,  # Lost in 6 games
+                "1-4": -12,  # Second worst loss
+                "0-4": -13,  # Worst loss - swept
+            }
+
 
 class PlayoffSeries:
     """Represents a single NBA playoff series between two teams.
@@ -465,7 +529,7 @@ class PlayoffSeries:
     after each game, and maps the series states to point margins for analysis.
     """
 
-    def __init__(self, id, games):
+    def __init__(self, id, games, playoff_map, calculate_occurrences):
         """Initialize a playoff series with a set of games.
 
         Args:
@@ -473,6 +537,9 @@ class PlayoffSeries:
             games: Collection of Game objects belonging to this series
         """
         self.id = id
+        self.playoff_map = playoff_map
+        self.calculate_occurrences = calculate_occurrences
+
         # Convert set to sorted list by game date
         from datetime import datetime
 
@@ -523,32 +590,6 @@ class PlayoffSeries:
         else:
             self.series_home_team_wins = False
 
-    # Map series scores to point margins for analysis
-    # Positive values indicate winning position, negative for losing position
-    # Magnitude reflects the strength of position (e.g., 4-0 is strongest win at +10)
-    game_score_map = {
-        "4-0": 10,  # Best win - sweep
-        "4-1": 9,  # Second best win
-        "4-2": 8,  # Win in 6 games
-        "4-3": 7,  # Win in 7 games (closest win)
-        "3-0": 6,  # Up 3-0
-        "3-1": 5,  # Up 3-1
-        "2-0": 4,  # Up 2-0
-        "3-2": 3,  # Up 3-2
-        "2-1": 2,  # Up 2-1
-        "1-0": 1,  # Up 1-0
-        "0-1": -1,  # Down 0-1
-        "1-2": -2,  # Down 1-2
-        "2-3": -3,  # Down 2-3
-        "0-2": -4,  # Down 0-2
-        "1-3": -5,  # Down 1-3
-        "0-3": -6,  # Down 0-3
-        "3-4": -7,  # Lost in 7 games (closest loss)
-        "2-4": -8,  # Lost in 6 games
-        "1-4": -9,  # Second worst loss
-        "0-4": -10,  # Worst loss - swept
-    }
-
     def get_playoff_point_margins(self, game, game_filter):
         """Convert a playoff series score to equivalent point margins for analysis.
 
@@ -569,10 +610,13 @@ class PlayoffSeries:
         if "4-" not in last_series_score and "-4" not in last_series_score:
             raise ValueError("Not a 7 game series")
 
-        if game_filter and game_filter.playoff_round != self.round:
-            raise ValueError(
-                f"Not correct round {game_filter.playoff_round} != {self.round}"
-            )
+        if game_filter:
+            if game_filter.playoff_round is None:
+                pass
+            elif game_filter.playoff_round != self.round:
+                raise ValueError(
+                    f"Not correct round {game_filter.playoff_round} != {self.round}"
+                )
 
         # Get the series score at the time of this game
         game_series_data = self.game_results_map[game.game_id]
@@ -580,7 +624,7 @@ class PlayoffSeries:
 
         # Handle tied series (return 0 point margin)
         home_score, away_score = game_series_score.split("-")
-        if home_score == away_score:
+        if home_score == away_score and not self.calculate_occurrences:
             return 0, 0, self.id
 
         # Normalize series score if away team won the series
@@ -590,7 +634,7 @@ class PlayoffSeries:
 
         # Map series score to point margin
         try:
-            point_margin = self.game_score_map[game_series_score]
+            point_margin = self.playoff_map.game_score_map[game_series_score]
         except KeyError:
             raise ValueError(f"Series is over {game_series_score}")
         else:

@@ -142,6 +142,7 @@ Here, we also find the "Record" game -- that is, the game that overcame the larg
 deficit at that time and provide that point with game data.
 
 
+
 .. _using-the-plot-controls:
 
 Plot Controls
@@ -196,3 +197,6 @@ generally reported.
 Just note that in the hover boxes, the "Wins X out of Y Games" is using the total
 number of games for the Y. So if you divide X/Y you might get a different number than
 the Win %. Normally, the numbers are almost the same.
+
+.. _a-note-on-plot-titles:
+

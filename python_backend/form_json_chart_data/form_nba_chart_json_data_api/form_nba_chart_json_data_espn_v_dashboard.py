@@ -9,11 +9,8 @@ ESPN's predicted win probabilities and those calculated using the NBA Dashboard.
 """
 
 # Standard library imports
-import json
-import os
-import gzip
 import datetime
-from typing import Tuple, List, Dict, Any, Optional
+from typing import Tuple, List, Dict, Any
 
 # Third-party imports
 import requests
@@ -23,15 +20,11 @@ from scipy.stats import norm
 
 # Local imports
 from form_nba_chart_json_data_season_game_loader import (
-    TIME_TO_INDEX_MAP,
-    GAME_MINUTES,
     Games,
 )
-from form_nba_chart_json_data_plot_primitives import PlotLine, FinalPlot
-from form_nba_chart_json_data_num import Num
+from form_nba_chart_json_data_plot_primitives import PlotLine
 
 # Import from global variable
-import form_nba_chart_json_data_season_game_loader as loader
 
 
 class EspnLine(PlotLine):
@@ -653,6 +646,7 @@ def calculate_dashboard_probability(
         start_year=start_year,
         stop_year=stop_year,
         season_type=season_type,
+        calculate_occurrences=False,
     )
 
     # Create PointsDownLine for this time point
@@ -660,7 +654,7 @@ def calculate_dashboard_probability(
         games=games,
         game_filter=game_filter,
         start_time=time_point,
-        down_mode="at",
+        down_mode="at_margin",
         max_point_margin=-1,
         fit_max_points=-1,
     )

@@ -20,8 +20,6 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
     plot_percent_versus_time,
-    plot_espn_versus_dashboard,
-    GameFilter,
 )
 
 # Calculate script directory from __file__
@@ -64,7 +62,7 @@ plot_biggest_deficit(
     json_name=f"{chart_base_path}/playoffs/at_24_reg_v_playoffs_all_time.json.gz",
     year_groups=eras,
     start_time=24,
-    down_mode="at",
+    down_mode="at_margin",
     cumulate=False,
 )
 
@@ -72,7 +70,7 @@ plot_biggest_deficit(
     json_name=f"{chart_base_path}/playoffs/at_12_reg_v_playoffs_all_time.json.gz",
     year_groups=eras,
     start_time=12,
-    down_mode="at",
+    down_mode="at_margin",
     cumulate=False,
 )
 

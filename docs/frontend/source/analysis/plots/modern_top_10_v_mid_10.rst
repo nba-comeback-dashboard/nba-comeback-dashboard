@@ -95,8 +95,8 @@ Win % v. Points Down At Start of Final 6 Minutes | 2017-18 to 2024-25
 Occurrence of Max Points Down Or More
 =====================================
 
-Occurrences of Max Points Down Or More During Entire Game | 2017-18 to 2024-25
-------------------------------------------------------------------------------
+Occurrence % of Max Points Down Or More During Entire Game | 2017-18 to 2024-25
+-------------------------------------------------------------------------------
 
 .. _modern_top_10_v_mid_10_occurs_down_or_more_48:
 
@@ -104,8 +104,8 @@ Occurrences of Max Points Down Or More During Entire Game | 2017-18 to 2024-25
 
     <div id="plots/modern_top_10_v_mid_10/occurs_down_or_more_48" class="nbacd-chart"></div>
 
-Occurrences of Max Points Down Or More During 2nd Half | 2017-18 to 2024-25
----------------------------------------------------------------------------
+Occurrence % of Max Points Down Or More During 2nd Half | 2017-18 to 2024-25
+----------------------------------------------------------------------------
 
 .. _modern_top_10_v_mid_10_occurs_down_or_more_24:
 
@@ -113,8 +113,8 @@ Occurrences of Max Points Down Or More During 2nd Half | 2017-18 to 2024-25
 
     <div id="plots/modern_top_10_v_mid_10/occurs_down_or_more_24" class="nbacd-chart"></div>
 
-Occurrences of Max Points Down Or More During 4th Quarter | 2017-18 to 2024-25
-------------------------------------------------------------------------------
+Occurrence % of Max Points Down Or More During 4th Quarter | 2017-18 to 2024-25
+-------------------------------------------------------------------------------
 
 .. _modern_top_10_v_mid_10_occurs_down_or_more_12:
 

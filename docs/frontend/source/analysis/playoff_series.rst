@@ -30,10 +30,46 @@ We can also plot the occurrence rates of each series score:
 
     <div id="playoff_series/playoff_series_all_time_occurs" class="nbacd-chart"></div>
 
-This shows that 17% of series have been 4-0 sweeps. Also surprising, in nearly 60% of
-series teams fall down 0-2 and, using the chart above, only have a 10% chance of coming
-back (i.e., most series are over quickly -- which isn't surprising when you think of
-the mismatches in the beginning rounds).
+
+Note, these charts can be mirrored -- so if you are up 3-2 in the series you have about
+an 82% chance of closing it out (100% - 18%). And the occurrence rate of 3-2 series is
+equal to the occurrence rate of 2-3 series - they happen about 54% of the time.
+
+.. _garbage-time-series:
+
+How Many Garbage Time Series?
+=============================
+
+The above chart shows, among many other things, that:
+
+* 18% of series have been 4-0 sweeps and in 28% of series teams fall into a 0-3 hole,
+  a virtual playoffs death sentence.
+
+* Surprisingly, in nearly 60% of series the away team fall downs 0-2 to the home
+  team. And despite this supposedly being the normal state of affairs of just holding
+  home court advantage, it's a very bad place to be: using the chart above, you only
+  have about a 10% chance of coming back if you fall down 0-2. Which means the majority
+  of series are not very competitive.
+
+On the happy side, this should be contrasted with the fact that:
+
+* About 60% of series do get tied up at some point (individual tied series scores also
+  shown).
+
+With so many 0-2 starts, how can we square this?  Well, of those 216 0-2 starts, 65 of
+those away teams have come back and evened up the series at some point, or about 35% of
+the time.
+
+However, there have only been 21 teams that have come back from an 0-2 hole. So that
+means that even if a team ties of the series, they still only have a 21 out of 65 or a
+32% chance of winning. I would have thought that if a team fell down 0-2 and then tied
+it up momentum would have been on their side, but turns out that they are still behind
+in the odds.
+
+To check these numbers, I made a list of the 21 teams that have pulled off this
+somewhat rare feat:
+
+.. include:: playoff_series_table.rst
 
 
 
@@ -69,9 +105,18 @@ period:
 
     <div id="playoff_series/playoff_series_all_time_by_round_3_4_occurs" class="nbacd-chart"></div>
 
-An amazing 18% of the Conference Finals since the 1996-1997 season have been sweeps.
-And 3 Finals out of the last 28-- or over 10% -- have also been sweeps.  And only 4 of
-the 28 Finals have gone 7 games.
+Here:
+ 
+* An amazing 18% of the Conference Finals since the 1996-1997 season have been sweeps.
+
+* 3 Finals out of the last 28 -- or over 10% -- have also been sweeps.
+
+* Only 4 of the 28 Finals have gone 7 games.
+
+* And even for the Conference Finals, in nearly 60% of series a team falls down 0-2
+  and has only a 12% chance of coming back to win.  And it's not that much better for
+  the Finals.  It is surprising that this stat does not change much as you compare the
+  different rounds of the playoffs.
 
 
 
@@ -103,8 +148,8 @@ Notes on Win % Plot
 
 When 'Win % Versus Series Score' is plotted on a `normal probability plot
 <https://en.wikipedia.org/wiki/Normal_probability_plot>`_, the data is fairly normally
-distributed (with really only the 0-1 chances throwing off the normality). This is just
-more of a curiosity than anything else. I did this by using this mapping:
+distributed (with really only the 0-1 chances throwing off the normality). I did this
+by using this mapping:
 
 .. list-table:: Series Score Mapping
    :header-rows: 1

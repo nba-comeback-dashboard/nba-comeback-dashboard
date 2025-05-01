@@ -43,20 +43,17 @@ class PointMarginPercent:
         return float(len(self.wins) + len(self.losses))
 
     def to_json(self, games, all_game_ids, calculate_occurrences):
-        number_of_games = len(all_game_ids)
         if not calculate_occurrences:
             json_data = {
                 "win_count": len(self.wins),
                 "loss_count": len(self.losses),
                 "win_plus_loss_count": self.win_plus_loss_count,
                 "game_count": self.game_count,
-                "point_margin_occurs_percent": float(self.game_count) / number_of_games,
             }
         else:
             json_data = {
                 "win_plus_loss_count": self.win_plus_loss_count,
                 "game_count": self.game_count,
-                "point_margin_occurs_percent": float(self.game_count) / number_of_games,
             }
 
         if not calculate_occurrences:
@@ -163,8 +160,8 @@ class PointsDownLine(PlotLine):
         self.point_margin_map = point_margin_map = self.setup_point_margin_map(
             games, game_filter, start_time, down_mode
         )
-        x = [(x, y.odds[0])[0] for x, y in sorted(point_margin_map.items())]
-        y = [(x, y.odds[0])[1] for x, y in sorted(point_margin_map.items())]
+        # x = [(x, y.odds[0])[0] for x, y in sorted(point_margin_map.items())]
+        # y = [(x, y.odds[0])[1] for x, y in sorted(point_margin_map.items())]
 
         all_game_ids = self.get_all_game_ids()
         self.number_of_games = len(all_game_ids)
@@ -193,10 +190,23 @@ class PointsDownLine(PlotLine):
         self.percents = [
             point_margin_map[minute].odds[0] for minute in self.point_margins
         ]
-        self.occurs = [
-            point_margin_map[minute].odds[1] / (self.number_of_games)
-            for minute in self.point_margins
-        ]
+        if down_mode == "playoff_series":
+            self.occurs = []
+            for point_margin in self.point_margins:
+                point_margin_data = point_margin_map[point_margin]
+                all_games = point_margin_data.wins | point_margin_data.losses
+                current_playoff_ids = set()
+                for game_id in all_games:
+                    game_playoff_id = games.playoff_map.get_series_id(games[game_id])
+                    current_playoff_ids.add(game_playoff_id)
+                self.occurs.append(len(current_playoff_ids) / len(self.playoff_ids))
+        else:
+            self.occurs = []
+            for point_margin in self.point_margins:
+                point_margin_data = point_margin_map[point_margin]
+                game_count = len(point_margin_data.wins | point_margin_data.losses)
+                self.occurs.append(game_count / (self.number_of_games))
+
         if calculate_occurrences:
             self.percents = self.occurs
 
@@ -210,8 +220,12 @@ class PointsDownLine(PlotLine):
             calculate_occurrences=calculate_occurrences,
         )
         if down_mode == "playoff_series":
-            point_margin_map = {k: v for (k, v) in point_margin_map.items() if k <= 0}
-            max_point_margin = 0
+            # self.point_margins = [k for k in self.point_margins if k <= 0]
+            # self.point_margin_map = point_margin_map = {
+            #    k: v for (k, v) in point_margin_map.items() if k <= 0
+            # }
+            max_point_margin = 100
+
         elif max_point_margin == "auto":
             max_point_margin = fix_max_points + 6
 
@@ -289,7 +303,7 @@ class PointsDownLine(PlotLine):
             if down_mode == "score":
                 win_point_margin = max(game.final_home_points, game.final_away_points)
                 lose_point_margin = min(game.final_home_points, game.final_away_points)
-            elif down_mode == "at":
+            elif down_mode.startswith("at"):
                 # Analyze point deficit at the specific time point
                 sign = 1 if game.score_diff > 0 else -1
                 point_margin = game.point_margin_map[start_time]["point_margin"]
@@ -341,13 +355,6 @@ class PointsDownLine(PlotLine):
                         games.playoff_map.get_playoff_point_margins(game, game_filter)
                     )
 
-                    # For win probability analysis, constrain margins to -7 to 7 range
-                    # This excludes series that are already over (like 0-4, 4-0)
-                    if not self.calculate_occurrences:
-                        win_point_margin = max(-7, win_point_margin)
-                        lose_point_margin = max(-7, lose_point_margin)
-                        win_point_margin = min(7, win_point_margin)
-                        lose_point_margin = min(7, lose_point_margin)
                 except ValueError:
                     # Skip series that don't meet our criteria (e.g., not completed)
                     continue
@@ -375,7 +382,9 @@ class PointsDownLine(PlotLine):
                         lose_point_margin, PointMarginPercent()
                     )
                     occurs_point_margin_percent.wins.add(f"{game.game_id}_AWAY")
-                elif self.down_mode == "playoff_series" or self.down_mode == "at":
+                elif (
+                    self.down_mode == "playoff_series" or self.down_mode == "at_margin"
+                ):
                     occurs_point_margin_percent = point_margin_map.setdefault(
                         win_point_margin, PointMarginPercent()
                     )
@@ -384,7 +393,18 @@ class PointsDownLine(PlotLine):
                         lose_point_margin, PointMarginPercent()
                     )
                     occurs_point_margin_percent.wins.add(game.game_id)
-                elif self.down_mode == "max":
+                    if self.down_mode == "playoff_series":
+                        if win_point_margin == 0 or lose_point_margin == 0:
+                            raise AssertionError
+                        if -3 <= win_point_margin <= 3:
+                            # For playoff series occurs, we track 3-3, 2-2, 1-1 and tied
+                            # all as sep. x values.
+                            occurs_point_margin_percent = point_margin_map.setdefault(
+                                0, PointMarginPercent()
+                            )
+                            occurs_point_margin_percent.wins.add(game.game_id)
+
+                elif self.down_mode == "max" or self.down_mode == "at_down":
                     occurs_point_margin_percent = point_margin_map.setdefault(
                         min(lose_point_margin, win_point_margin), PointMarginPercent()
                     )
@@ -393,18 +413,27 @@ class PointsDownLine(PlotLine):
                     raise Exception
 
             else:
-                if game_filter is None or game_filter.is_match(game, is_win=True):
+                if self.down_mode == "playoff_series":
+                    playoff_series = games.playoff_map.get_playoff_series(game)
+                else:
+                    playoff_series = None
+                if game_filter is None or game_filter.is_match(
+                    game, is_win=True, playoff_series=playoff_series
+                ):
                     win_point_margin_percent = point_margin_map.setdefault(
                         win_point_margin, PointMarginPercent()
                     )
                     win_point_margin_percent.wins.add(game.game_id)
 
-                if game_filter is None or game_filter.is_match(game, is_win=False):
+                elif game_filter is None or game_filter.is_match(
+                    game, is_win=False, playoff_series=playoff_series
+                ):
                     lose_point_margin_percent = point_margin_map.setdefault(
                         lose_point_margin, PointMarginPercent()
                     )
                     lose_point_margin_percent.losses.add(game.game_id)
 
+        breakpoint()
         return point_margin_map
 
     def cumulate_point_totals(self, point_margin_map):
@@ -609,6 +638,7 @@ class PointsDownLine(PlotLine):
                 calculate_occurrences,
             )
             point_margin_json["percent"] = self.percents[index]
+            point_margin_json["point_margin_occurs_percent"] = self.occurs[index]
             point_margin_json["sigma"] = self.sigma_final[index]
             point_margin_json["y_value"] = self.sigma_final[index]
             point_margin_json["x_value"] = self.point_margins[index]

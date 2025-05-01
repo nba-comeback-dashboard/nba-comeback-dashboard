@@ -70,6 +70,7 @@ class GameFilter:
         vs_rank=None,
         vs_team_abbr=None,
         playoff_round=None,
+        playoff_for_home=None,
     ):
         """
         Initialize a GameFilter with criteria for filtering NBA games.
@@ -111,6 +112,7 @@ class GameFilter:
         self.vs_rank = vs_rank
         self.vs_team_abbr = vs_team_abbr
         self.playoff_round = playoff_round
+        self.playoff_for_home = playoff_for_home
 
         # Parse team abbreviations into lists if provided as strings
         if isinstance(self.for_team_abbr, str):
@@ -123,7 +125,7 @@ class GameFilter:
         # vs_at_home is just the inverse of for_at_home
         self.vs_at_home = None if self.for_at_home is None else not self.for_at_home
 
-    def is_match(self, game, is_win):
+    def is_match(self, game, is_win, playoff_series=None):
         """
         Check if a game matches the filter criteria.
 
@@ -176,6 +178,21 @@ class GameFilter:
         # Check vs_rank filter
         if self.vs_rank:
             if not self._check_rank(vs_team_rank, self.vs_rank, game.season.team_count):
+                return False
+
+        if self.playoff_for_home is not None and playoff_series is not None:
+            if game.score_diff > 0:
+                winner = game.home_team_abbr
+            else:
+                winner = game.away_team_abbr
+            playoff_home_won = winner == playoff_series.series_home_team
+            if is_win and self.playoff_for_home and not playoff_home_won:
+                return False
+            elif is_win and not self.playoff_for_home and playoff_home_won:
+                return False
+            elif not is_win and self.playoff_for_home and playoff_home_won:
+                return False
+            elif not is_win and not self.playoff_for_home and not playoff_home_won:
                 return False
 
         # If all filters passed, the game matches
@@ -396,7 +413,7 @@ def plot_biggest_deficit(
     if start_time == 48:
         time_desc = "Entire Game"
     elif start_time == 36:
-        if down_mode == "at":
+        if down_mode.startswith("at"):
             time_desc = "2nd Quarter"
         else:
             time_desc = "Final 3 Quarters"
@@ -431,8 +448,15 @@ def plot_biggest_deficit(
     else:
         start_text = "Win % v. "
 
-    if down_mode == "at":
-        title = f"{start_text}Points Down{or_more} At Start of {time_desc}"
+    if down_mode.startswith("at"):
+        if down_mode == "at_margin":
+            title = f"{start_text}Points Down{or_more} At Start of {time_desc}"
+        elif down_mode == "at_down":
+            title = (
+                f"{start_text}Losing Team Points Down{or_more} At Start of {time_desc}"
+            )
+        else:
+            raise AssertionError
         or_more = ""
         max_point_margin = -1 if max_point_margin is None else max_point_margin
         fit_max_points = -1 if fit_max_points is None else fit_max_points
@@ -448,8 +472,8 @@ def plot_biggest_deficit(
     # Special handling for playoff series analysis mode
     if down_mode == "playoff_series":
         # For playoff series analysis, only use negative point margins (teams that are behind)
-        fit_max_points = "40%"
-
+        fit_max_points = "90%"
+        max_point_margin = 0
         # Ensure we're using playoff data by adding 'P' prefix to year numbers
         # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)
         year_groups = list(year_groups)
@@ -489,6 +513,7 @@ def plot_biggest_deficit(
                 start_year=start_year_numeric,
                 stop_year=stop_year_numeric,
                 season_type=season_type,
+                calculate_occurrences=calculate_occurrences,
             )
 
             # For playoff series analysis, create the mapping structure between games and series
@@ -497,6 +522,8 @@ def plot_biggest_deficit(
                 games.add_playoff_series_lookup_map()
 
             if number_of_year_groups > 1 or number_of_game_filters < 2:
+                legend = games.get_years_string()
+            elif down_mode == "playoff_series" and number_of_game_filters >= 2:
                 legend = games.get_years_string()
             else:
                 legend = ""
@@ -569,7 +596,10 @@ def plot_biggest_deficit(
         max_y = y_tick_values[-1]
         points_down_line.set_sigma_final(min_y, max_y)
 
-    x_label = "Point Margin"
+    if down_mode == "score":
+        x_label = "Team Score"
+    else:
+        x_label = "Point Margin"
     if calculate_occurrences:
         y_label = "Occurrence %"
     else:
@@ -582,8 +612,7 @@ def plot_biggest_deficit(
         if calculate_occurrences:
             # For occurrence analysis, show full range of series scores
             # Maps numeric values (-10 to 0) to series score labels (e.g., -10 → "0-4")
-            x_ticks = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
-            x_label = "Series Score"
+            x_ticks = [-13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
             x_tick_labels = [
                 "0-4",  # Swept (worst position)
                 "1-4",  # Lost in 5
@@ -595,7 +624,10 @@ def plot_biggest_deficit(
                 "2-3",  # Down 2-3
                 "1-2",  # Down 1-2
                 "0-1",  # Down 0-1
-                "Tied",  # Series tied
+                "3-3",
+                "2-2",
+                "1-1",
+                "Tied",
             ]
         else:
             # For win probability analysis, focus on scenarios where teams can still win
@@ -697,6 +729,7 @@ def get_points_down_normally_spaced_y_ticks(plot_lines, bound_x=float("inf")):
             0.999999: "99.9999%",
             0.9999999: "99.99999%",
         }
+
     y_tick_indicies = [
         index for index, key in enumerate(y_ticks) if next_min_y <= key <= next_max_y
     ]
@@ -816,6 +849,7 @@ def plot_percent_versus_time(
                 start_year=start_year_numeric,
                 stop_year=stop_year_numeric,
                 season_type=season_type,
+                calculate_occurrences=False,
             )
             if game_filter_index == 0:
                 game_years_strings.append(games.get_years_string())
@@ -828,7 +862,7 @@ def plot_percent_versus_time(
                     games=games,
                     game_filter=game_filter,
                     start_time=current_time,
-                    down_mode="at",
+                    down_mode="at_margin",
                     max_point_margin=-1,
                     fit_max_points=-1,
                 )

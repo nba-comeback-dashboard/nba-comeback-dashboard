@@ -447,7 +447,6 @@ def main():
 
 
 import sys
-import os
 
 # Add the API directory to the path using relative path from script location
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -459,8 +458,6 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
-    # plot_percent_versus_time,
     GameFilter,
     Games,
     PointsDownLine,
@@ -485,7 +482,6 @@ loader.json_base_path = json_base_path
 
 def get_dashboard_prob(time_minutes, point_margin, modern=False, use_game_filter=False):
     from scipy.interpolate import interp1d
-    import numpy as np
 
     time_minutes = np.array(time_minutes)
     point_margin = np.array([float(x) for x in list(point_margin)])
@@ -541,7 +537,7 @@ def get_dashboard_prob(time_minutes, point_margin, modern=False, use_game_filter
             games=games,
             game_filter=game_filter,
             start_time=current_time,
-            down_mode="at",
+            down_mode="at_margin",
             max_point_margin=-1,
             fit_max_points=-1,
         )

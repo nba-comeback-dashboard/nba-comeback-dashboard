@@ -20,8 +20,6 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
-    plot_percent_versus_time,
-    GameFilter,
 )
 
 # Calculate script directory from __file__
@@ -79,7 +77,7 @@ plot_biggest_deficit(
     json_name=f"{chart_base_path}/understand/nbacd_down_at_24_eras_1.json",
     year_groups=eras_one,
     start_time=24,
-    down_mode="at",
+    down_mode="at_margin",
     cumulate=False,
     max_point_margin=2,
 )

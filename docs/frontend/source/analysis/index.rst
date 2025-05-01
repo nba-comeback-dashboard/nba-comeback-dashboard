@@ -30,7 +30,7 @@ Analysis
    .. toc-entry::
       :title: 20 is the New 18
       :link: 20_is_new_18.rst
-      :subtitle: How 'unsafe' are big leads in the modern NBA become?
+      :subtitle: How 'unsafe' have big leads in the modern NBA become?
       :date: March 26, 2025
 
    .. toc-entry::
@@ -47,7 +47,8 @@ Analysis
 
    .. toc-entry::
       :link: playoff_series.rst
-      :subtitle: Plotting playoff comeback and closeout odds on a normal probability plot.
+      :subtitle: Lots of playoff series statistics on just a few plots.  Plus, a look 
+                 at the occurrence rate of "garbage time" series.
       :date: April 28, 2025
 
 

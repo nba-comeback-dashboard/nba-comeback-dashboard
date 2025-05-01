@@ -19,8 +19,6 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
-    plot_percent_versus_time,
-    GameFilter,
 )
 
 # Calculate script directory from __file__
@@ -63,7 +61,7 @@ plot_biggest_deficit(
     json_name=f"{chart_base_path}/twolves_leads/at_10min_all_time.json.gz",
     year_groups=eras,
     start_time=10,
-    down_mode="at",
+    down_mode="at_margin",
     cumulate=False,
 )
 

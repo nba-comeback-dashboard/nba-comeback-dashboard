@@ -214,7 +214,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
         year_groups=years_groups,
         game_filters=game_filters,
         start_time=24,
-        down_mode="at",
+        down_mode="at_margin",
         cumulate=False,
     )
     clean_title = remove_game_count(title)
@@ -227,7 +227,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
         year_groups=years_groups,
         game_filters=game_filters,
         start_time=12,
-        down_mode="at",
+        down_mode="at_margin",
         cumulate=False,
     )
     clean_title = remove_game_count(title)
@@ -240,7 +240,7 @@ def create_plot_page(page_name, years_groups, game_filters=None):
         year_groups=years_groups,
         game_filters=game_filters,
         start_time=6,
-        down_mode="at",
+        down_mode="at_margin",
         cumulate=False,
     )
     clean_title = remove_game_count(title)
