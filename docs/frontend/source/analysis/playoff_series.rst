@@ -3,7 +3,7 @@ Playoffs: The Odds of Coming Back Or Closing It Out
 ***************************************************
 
 
-.. _comeback-odds-occurence-rate-versus-a-series-deficit:
+.. _comeback-odds-occurrence-rate-versus-a-series-deficit:
 
 Comeback Odds / Occurrence Rate Versus A Seven Game Series Deficit
 ==================================================================
@@ -37,45 +37,67 @@ equal to the occurrence rate of 2-3 series - they happen about 54% of the time.
 
 .. _garbage-time-series:
 
-How Many Garbage Time Series?
-=============================
+How Many "Garbage Time" Series?
+===============================
 
-The above chart shows, among many other things, that:
+Among other things, the above charts show that:
 
 * 18% of series have been 4-0 sweeps and in 28% of series teams fall into a 0-3 hole,
   a virtual playoffs death sentence.
 
-* Surprisingly, in nearly 60% of series the away team fall downs 0-2 to the home
-  team. And despite this supposedly being the normal state of affairs of just holding
-  home court advantage, it's a very bad place to be: using the chart above, you only
-  have about a 10% chance of coming back if you fall down 0-2. Which means the majority
-  of series are not very competitive.
+* Surprisingly, in nearly 60% of all series a team falls down 0-2.  And despite this
+  supposedly being the normal state of affairs of just holding home court advantage,
+  it's a very bad place to be: using the chart above, you only have about a 10% chance
+  of coming back if you fall down 0-2. Which means the majority of series are not very
+  competitive (although thankfully, this may not be apparent without the benefit of
+  hindsight).
 
 On the happy side, this should be contrasted with the fact that:
 
 * About 60% of series do get tied up at some point (individual tied series scores also
   shown).
 
-With so many 0-2 starts, how can we square this?  Well, of those 216 0-2 starts, 65 of
-those away teams have come back and evened up the series at some point, or about 35% of
-the time.
+With so many 0-2 starts and so many tied series, how can we square this?  Well, of
+those 216 0-2 starts, 65 of those teams have come back and evened up the series at some
+point, or about 35% of the time.
 
-However, there have only been 21 teams that have come back from an 0-2 hole. So that
-means that even if a team ties of the series, they still only have a 21 out of 65 or a
-32% chance of winning. I would have thought that if a team fell down 0-2 and then tied
-it up momentum would have been on their side, but turns out that they are still behind
-in the odds.
+However, there have only been 21 teams that have come back from a 0-2 hole (and of
+course tied the series up at some point). So that means that even if a team ties up the
+series, they still only have a 21 out of 65 or a 32% chance of winning. I would have
+thought that if a team fell down 0-2 and then tied it up momentum would have been on
+their side and at least gotten to a 50% win rate, but it turns out that they are still
+behind in the odds.
 
-To check these numbers, I made a list of the 21 teams that have pulled off this
-somewhat rare feat:
+Here's a list of the 21 teams that have pulled off this somewhat rare feat:
 
 .. include:: playoff_series_table.rst
 
 
 
+.. _how-big-a-deal-is-home-court-advantage:
+
+How Big Is the Home Court Advantage?
+====================================
+
+In short, very large.  Out of the 372 7-game series so far, the team with home court
+advantage has won 275 of them or about 73.9% (the majority of this benefit owing to
+team strength and not the actual home court advantage).  And this advantage carries
+even when carrying a series deficit.  Looking at the odds of coming back from various
+deficits for @Home (has home court advantage) versus @Away (does not):
+
+.. raw:: html
+
+    <div id="playoff_series/playoff_series_all_time_home_v_away" class="nbacd-chart"></div>
+
+Here, a team that goes down 0-1 at home still has about a 53% chance of winning the
+series.  And a team with home court advantage has about an 11% chance of coming back
+from a 1-3 deficit, much better than the overall 5% average and about the same odds as
+the team without home court advantage coming back from a 2-3 deficit (12.8%).
+
+
 .. _odds-and-occurrence-by-playoff-round:
 
-Odds and Occurrence By Playoff Round
+Odds and Occurrence by Playoff Round
 ====================================
 
 1st and 2nd Round

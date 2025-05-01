@@ -220,10 +220,10 @@ class PointsDownLine(PlotLine):
             calculate_occurrences=calculate_occurrences,
         )
         if down_mode == "playoff_series":
-            # self.point_margins = [k for k in self.point_margins if k <= 0]
-            # self.point_margin_map = point_margin_map = {
-            #    k: v for (k, v) in point_margin_map.items() if k <= 0
-            # }
+            self.point_margins = [k for k in self.point_margins if k <= 0]
+            self.point_margin_map = point_margin_map = {
+                k: v for (k, v) in point_margin_map.items() if k <= 0
+            }
             max_point_margin = 100
 
         elif max_point_margin == "auto":

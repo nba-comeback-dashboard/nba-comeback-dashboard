@@ -181,11 +181,7 @@ class GameFilter:
                 return False
 
         if self.playoff_for_home is not None and playoff_series is not None:
-            if game.score_diff > 0:
-                winner = game.home_team_abbr
-            else:
-                winner = game.away_team_abbr
-            playoff_home_won = winner == playoff_series.series_home_team
+            playoff_home_won = playoff_series.series_home_team_wins
             if is_win and self.playoff_for_home and not playoff_home_won:
                 return False
             elif is_win and not self.playoff_for_home and playoff_home_won:
@@ -282,6 +278,12 @@ class GameFilter:
         elif self.playoff_round == 4:
             return "Finals"
         elif self.playoff_round is not None:
+            raise AssertionError
+        elif self.playoff_for_home is True:
+            return "@ Home"
+        elif self.playoff_for_home is False:
+            return "@ Away"
+        elif self.playoff_for_home is not None:
             raise AssertionError
 
         # Build for criteria string

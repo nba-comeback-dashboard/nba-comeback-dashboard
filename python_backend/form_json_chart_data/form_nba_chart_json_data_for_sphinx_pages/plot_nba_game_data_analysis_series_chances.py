@@ -81,6 +81,16 @@ plot_biggest_deficit(
     down_mode="playoff_series",
     game_filters=game_filters,
 )
+
+plot_biggest_deficit(
+    json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_home_v_away_occurs.json.gz",
+    year_groups=eras,
+    start_time=48,
+    down_mode="playoff_series",
+    game_filters=game_filters,
+    calculate_occurrences=True,
+)
+
 exit()
 
 
