@@ -40,6 +40,7 @@ const nbacd_dashboard_state = (() => {
             const plotTypes = [
                 "Max Points Down Or More", 
                 "Max Points Down", 
+                "Points Down At Time Or More",
                 "Points Down At Time",
                 "Percent Chance: Time Vs. Points Down"
             ];
@@ -206,6 +207,7 @@ const nbacd_dashboard_state = (() => {
             const plotTypes = [
                 "Max Points Down Or More", 
                 "Max Points Down", 
+                "Points Down At Time Or More",
                 "Points Down At Time",
                 "Percent Chance: Time Vs. Points Down"
             ];

@@ -147,6 +147,22 @@ The system supports two types of plots, identified by the `plot_type` field in t
 
 Each plot type has specific visualization requirements handled by the plotter based on the `plot_type` value.
 
+## Dashboard Chart Types
+
+The dashboard offers several chart types to analyze NBA comeback data:
+
+1. **Max Points Down Or More** (p=0): Shows win percentage when down by a specific point margin or more at any time from the specified time to end of game. Uses a cumulative calculation.
+
+2. **Max Points Down** (p=1): Shows win percentage when down by exactly a specific point margin at any time from the specified time to end of game. Non-cumulative version of Max Points Down Or More.
+
+3. **Points Down At Time Or More** (p=2): Shows win percentage when down by a specific point margin or more at exactly the specified time. Uses a cumulative calculation.
+
+4. **Points Down At Time** (p=3): Shows win percentage when down by exactly a specific point margin at the specified time. Non-cumulative version of Points Down At Time Or More.
+
+5. **Percent Chance: Time Vs. Points Down** (p=4): Shows specified win percentage curves plotted against time remaining and point margin.
+
+The "Or More" variants use cumulative calculations, meaning they include all games where teams were down by at least the specified margin. The non-"Or More" variants only show games with exact point margins.
+
 
 
 ## Important Sections

@@ -41,7 +41,10 @@ time.
 
 How Many "Garbage Time" Series?
 ===============================
-.  Among other things, the charts above show that:
+This is not looking at how many individual playoff games are blowouts (:ref:`that has
+been looked at elsewhere
+<comparing-regular-season-versus-the-playoffs-late-game-point-margins>`).  Here only
+series score is considered, and the above charts show:
 
 * 18% of series have been 4-0 sweeps and 28% have been 4-1 closeouts, leading
   to 170 out of 372 or 46% of series being lopsided affairs. With the large difference

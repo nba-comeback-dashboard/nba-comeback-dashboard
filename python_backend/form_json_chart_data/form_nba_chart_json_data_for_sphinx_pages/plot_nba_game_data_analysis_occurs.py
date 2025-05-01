@@ -72,8 +72,8 @@ plot_biggest_deficit(
     start_time=48,
     down_mode="max",
     # cumulate=True,
-    max_point_margin=1000,
-    calculate_occurrences=True,
+    # max_point_margin=1000,
+    calculate_occurrences=False,
 )
 
 plot_biggest_deficit(

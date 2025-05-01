@@ -24,7 +24,7 @@ there are other games where a team fell down the same amount or even more but ju
 ==========================================================================
 
 The Wolves `hold the record for having a 24-point lead at the start of the 10th minute
-<https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=10&s=1996-2024-B&m=auto>`_
+<https://nba-comeback-dashboard.github.io/dashboard/index.html?p=3&t=10&s=1996-2024-B&m=auto>`_
 only to go on to lose the game.
 
 This is a 'hidden record', because it's really a `tied record
@@ -42,7 +42,7 @@ safe!
 
 The Thunder set a record for being the `only team to be down 26 points at the half in a
 playoff game and to come back and win
-<https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=24&s=1996-2024-P&m=auto>`_.
+<https://nba-comeback-dashboard.github.io/dashboard/index.html?p=3&t=24&s=1996-2024-P&m=auto>`_.
 
 While a playoffs record, this is not as notable, because `The Clippers, who were down
 23 at the half to the Warriors but later fell down 31 points in the 3rd

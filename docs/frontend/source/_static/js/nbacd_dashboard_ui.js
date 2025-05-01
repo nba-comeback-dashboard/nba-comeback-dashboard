@@ -255,6 +255,7 @@ const nbacd_dashboard_ui = (() => {
                             <select id="plot-type" class="form-control">
                                 <option value="Max Points Down Or More">Chart Type: Max Points Down Or More</option>
                                 <option value="Max Points Down">Chart Type: Max Points Down</option>
+                                <option value="Points Down At Time Or More">Chart Type: Points Down At Time Or More</option>
                                 <option value="Points Down At Time">Chart Type: Points Down At Time</option>
                                 <option value="Percent Chance: Time Vs. Points Down">Chart Type: Percent Chance -- Time v Points Down</option>
                                 <!-- Commented out temporarily as they aren't working yet
@@ -1591,11 +1592,13 @@ const nbacd_dashboard_ui = (() => {
                 // Determine if we should cumulate based on plot type
                 const cumulate =
                     state.plotType === "Max Points Down Or More" ||
+                    state.plotType === "Points Down At Time Or More" ||
                     state.plotType === "Occurrence Max Points Down Or More";
 
                 // Determine the down_mode based on plot type
                 const downMode =
                     state.plotType === "Points Down At Time" ||
+                    state.plotType === "Points Down At Time Or More" ||
                     state.plotType === "Occurrence Points Down At Time"
                         ? "at"
                         : "max";
@@ -1913,11 +1916,13 @@ const nbacd_dashboard_ui = (() => {
                 // Determine if we should cumulate based on plot type
                 const cumulate =
                     state.plotType === "Max Points Down Or More" ||
+                    state.plotType === "Points Down At Time Or More" ||
                     state.plotType === "Occurrence Max Points Down Or More";
 
                 // Determine the down_mode based on plot type
                 const downMode =
                     state.plotType === "Points Down At Time" ||
+                    state.plotType === "Points Down At Time Or More" ||
                     state.plotType === "Occurrence Points Down At Time"
                         ? "at"
                         : "max";
