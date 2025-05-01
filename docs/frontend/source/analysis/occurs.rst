@@ -10,7 +10,7 @@ Largest and Smallest Final Scores
 
 The probability density function of the final score for each team of every game since
 1996 is shown below. Remarkably, the 1st and 2nd records since 1996 come from the same
-game -- `a double overtime win by Kings over the Clippers 176-175 on 02/24/2023
+game -- `a double overtime win by the Kings over the Clippers 176-175 on 02/24/2023
 <https://www.nba.com/game/0022200902>`_.
 
 .. raw:: html
@@ -35,7 +35,7 @@ is the probability density function, which tells us that:
 * The tightest games ever since 1996 have been within 5 points for the entire game, and
   it's happened 8 times.
 
-* Only about 1,000 games out of 36,000 have been within 8 for the entire game.
+* Only about 1,000 games out of 36,000 have been within 8 points for the entire game.
 
 * And the biggest blowout ever got up to a whopping 78-point deficit.
 
@@ -57,8 +57,8 @@ Garbage Time Games
 
 There's no exact definition of a garbage time game, so I am just going to propose a
 working one: being down so much at the 6-minute mark that you have a 1% or less chance
-of coming back.  With this definition in mind, let's build up the data we need to count
-how often we get games that meet this criteria.
+of coming back. With this definition in mind, let's build up the data we need to count
+how often we get games that meet this criterion.
 
 We can now look at the point margins exactly at 6 minutes:
 
@@ -72,15 +72,15 @@ And again, integrating to get points down or more at 6 minutes:
 
     <div id="occurs/all_time_at_or_more_6_point_margin" class="nbacd-chart"></div>
 
-And this can tell us some interesting things.  `From the dashboard we can see
+And this can tell us some interesting things. `From the dashboard we can see
 <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=6&s=1996-2024-B&m=auto>`_
 that:
 
 * If you are down 15 points, you have about a 1% chance of coming back based on
   historical data from 1996.
 
-* The record since 1996 was the Kings came back after being down 22 points at the six-
-  minute mark.  It was given up by our `Minnesota Timberwolves on 1/27/2020
+* The record since 1996 was when the Kings came back after being down 22 points at the
+  six- minute mark. It was given up by our `Minnesota Timberwolves on 1/27/2020
   <https://www.nba.com/game/0021900696>`_.
 
 Using those two numbers we can say:
@@ -94,7 +94,7 @@ That's a lot of garbage time games. Even though about 35% of games are within 6-
 points or less.
 
 And the 1% is a bit of an arbitrary choice, but I chose it because the 5% point of 10
-points seems, emotionally at least, very surmountable.  And being down 18 is about 1 in
+points seems, emotionally at least, very surmountable. And being down 18 is about 1 in
 500 odds and close to the record of 22 points which seems a bit too much.
 
 To be fair, there could have been more drama before the 6-minute mark. Walking back in
@@ -128,16 +128,16 @@ And at halftime:
 
 So it's pretty rare you need to turn off the TV at halftime.
 
-Interestingly, for the playoffs the situation does not change by much.  `From the
+Interestingly, for the playoffs the situation does not change by much. `From the
 dashboard
 <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=6&s=1996-2024-P&m=auto>`_
-the 1% point of coming back is again about 15 points.  And as we can see:
+the 1% point of coming back is again about 15 points. And as we can see:
 
 .. raw:: html
 
     <div id="occurs/all_time_playoffs_at_or_more_6_point_margin" class="nbacd-chart"></div>
 
-about 29-30% of games meet this criteria, an increase of 1%.  This surprised me, as I
+about 29-30% of games meet this criterion, an increase of 1%. This surprised me, as I
 would have guessed there would have been many more tighter, competitive games during
 the playoffs.
 
@@ -209,26 +209,26 @@ Comparing Regular Season Versus the Playoffs
 ============================================
 
 Comparing the number of blowout games in the regular season versus the playoffs shows
-no appreicable difference.  Surprising, given the stakes and that the bottom teams have
+no appreciable difference. Surprising, given the stakes and that the bottom teams have
 been weeded out from contention. It has been stated that `there's an increasing number
-of blowouts occuring in the playoffs
-<https://www.theringer.com/2022/05/25/nba/playoff-basketball-blowout-trend-historical-analysis>
-`_, but looking at the point margins across all games does not bare this out:
+of blowouts occurring in the playoffs
+<https://www.theringer.com/2022/05/25/nba/playoff-basketball-blowout-trend-historical-analysis>`_,
+but looking at the point margins across all games does not bear this out:
 
 .. raw:: html
 
     <div id="occurs/all_time_reg_v_playoffs_at_or_more_6_point_margin" class="nbacd-chart"></div>
 
-Here, the occurrence of 15 point down or more games is 29.8% for the playoffs versus
-28.2% for the regular season, nothing major.  Looking at the point margin at the buzzer
-we get which tells a similar story:
+Here, the occurrence of 15 points down or more games is 29.8% for the playoffs versus
+28.2% for the regular season, nothing major. Looking at the point margin at the buzzer,
+we get a result which tells a similar story:
 
 .. raw:: html
 
     <div id="occurs/all_time_reg_v_playoffs_at_or_more_0_point_margin" class="nbacd-chart"></div>
 
-We can also check to see if there's been a dramatic shift recently.  Comparing all
-games since 1996 versus the last four years we get:
+We can also check to see if there's been a dramatic shift recently. Comparing all games
+since 1996 versus the last four years we get:
 
 .. raw:: html
 
@@ -239,9 +239,9 @@ games since 1996 versus the last four years we get:
     <div id="occurs/very_modern_vs_all_time_at_or_more_0_point_margin" class="nbacd-chart"></div>
 
 A shift, but this is :doc:`the same two point shift </analysis/20_is_new_18> we see
-when comparing comeback chances`.  For the last four years of playoff games, 30% of
-games have a point deficit of 16 or more compared 14 points or more for all time.  And
-given that teams can overcome about 2 more points of deficit, this is about the same
-level of "excitement" left in the game.
+when comparing comeback chances`. For the last four years of playoff games, 30% of
+games have a point deficit of 16 or more compared to 14 points or more for all time.
+And given that teams can overcome about 2 more points of deficit, this is about the
+same level of "excitement" left in the game.
 
 
