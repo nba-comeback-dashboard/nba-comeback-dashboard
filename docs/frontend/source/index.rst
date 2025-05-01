@@ -35,7 +35,7 @@ taken from the NBA play-by-play database from the 1996-1997 season to now.
 
    .. toc-entry::
       :title: About
-      :link: about/index.rst
+      :link: analysis/about.rst
       :subtitle: A little bit about this project.
 
 

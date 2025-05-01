@@ -106,7 +106,7 @@ Analysis
 
    .. toc-entry::
       :title: About
-      :link: ../about/index.rst
+      :link: ../analysis/about.rst
       :subtitle: A little bit about this project.
 
 
