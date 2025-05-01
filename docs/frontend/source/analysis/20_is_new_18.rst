@@ -280,7 +280,7 @@ this issue:
   having a 12.8% chance versus a 9.2% chance gives you a markedly different feeling
   about the game. If you :ref:`compare that to the 8 point shift graph
   <what-an-8-point-shift-looks-like>`, here the percent chance is about 34% for a top
-  10 team to comeback 15 or more against a bottom ten team over the last 8 years. That
+  10 team to come back 15 or more against a bottom ten team over the last 8 years. That
   is dramatic and would warrant the kind of talk of "a 15 point lead doesn't matter
   anymore".
 
@@ -293,7 +293,7 @@ this issue:
   However, the fact that teams can score more quickly does not automatically lead to
   the conclusion that big comebacks should be more probable: if you are down and can
   score quickly, so can your opponent and keep you down. So while points are a little
-  easier to come by, this effect is offset by the counter fact that they are also a
+  easier to come by, this effect is offset by the counterpoint that they are also a
   little easier to give up.
 
 * I do think part of the problem is `availability bias

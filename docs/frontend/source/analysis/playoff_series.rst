@@ -13,7 +13,7 @@ With some slight modifications to how the plotting tool works, we can look at th
 of coming back from a given series deficit and look at a lot of playoff series
 statistics with just a few charts. First, let's look at the odds of winning a
 best-of-seven series versus series deficit since 1996 (1st round series before 2003 --
-which were 5 game series -- are ignored):
+which were 5-game series -- are ignored):
 
 .. raw:: html
 
@@ -43,9 +43,9 @@ How Many "Garbage Time" Series?
 Among other things, the above charts show that:
 
 * 18% of series have been 4-0 sweeps and in 28% of series teams fall into a 0-3 hole,
-  a virtual playoffs death sentence.
+  a virtual playoff death sentence.
 
-* Surprisingly, in nearly 60% of all series a team falls down 0-2.  And despite this
+* Surprisingly, in nearly 60% of all series a team falls down 0-2. And despite this
   supposedly being the normal state of affairs of just holding home court advantage,
   it's a very bad place to be: using the chart above, you only have about a 10% chance
   of coming back if you fall down 0-2. Which means the majority of series are not very
@@ -57,14 +57,14 @@ On the happy side, this should be contrasted with the fact that:
 * About 60% of series do get tied up at some point (individual tied series scores also
   shown).
 
-With so many 0-2 starts and so many tied series, how can we square this?  Well, of
-those 216 0-2 starts, 65 of those teams have come back and evened up the series at some
+With so many 0-2 starts and so many tied series, how can we square this? Well, of those
+216 0-2 starts, 65 of those teams have come back and evened up the series at some
 point, or about 35% of the time.
 
 However, there have only been 21 teams that have come back from a 0-2 hole (and of
 course tied the series up at some point). So that means that even if a team ties up the
 series, they still only have a 21 out of 65 or a 32% chance of winning. I would have
-thought that if a team fell down 0-2 and then tied it up momentum would have been on
+thought that if a team fell down 0-2 and then tied it up, momentum would have been on
 their side and at least gotten to a 50% win rate, but it turns out that they are still
 behind in the odds.
 
@@ -79,10 +79,10 @@ Here's a list of the 21 teams that have pulled off this somewhat rare feat:
 How Big Is the Home Court Advantage?
 ====================================
 
-In short, very large.  Out of the 372 7-game series so far, the team with home court
+In short, very large. Out of the 372 7-game series so far, the team with home court
 advantage has won 275 of them or about 73.9% (the majority of this benefit owing to
-team strength and not the actual home court advantage).  And this advantage carries
-even when carrying a series deficit.  Looking at the odds of coming back from various
+team strength and not the actual home court advantage). And this advantage persists
+even when facing a series deficit. Looking at the odds of coming back from various
 deficits for @Home (has home court advantage) versus @Away (does not):
 
 .. raw:: html
@@ -90,7 +90,7 @@ deficits for @Home (has home court advantage) versus @Away (does not):
     <div id="playoff_series/playoff_series_all_time_home_v_away" class="nbacd-chart"></div>
 
 Here, a team that goes down 0-1 at home still has about a 53% chance of winning the
-series.  And a team with home court advantage has about an 11% chance of coming back
+series. And a team with home court advantage has about an 11% chance of coming back
 from a 1-3 deficit, much better than the overall 5% average and about the same odds as
 the team without home court advantage coming back from a 2-3 deficit (12.8%).
 
@@ -136,8 +136,8 @@ Here:
 * Only 4 of the 28 Finals have gone 7 games.
 
 * And even for the Conference Finals, in nearly 60% of series a team falls down 0-2
-  and has only a 12% chance of coming back to win.  And it's not that much better for
-  the Finals.  It is surprising that this stat does not change much as you compare the
+  and has only a 12% chance of coming back to win. And it's not that much better for
+  the Finals. It is surprising that this stat does not change much as you compare the
   different rounds of the playoffs.
 
 

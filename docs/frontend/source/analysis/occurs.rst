@@ -57,7 +57,7 @@ Garbage Time Games
 
 There's no exact definition of a garbage time game, so I am just going to propose a
 working one: being down so much at the 6-minute mark that you have a 1% or less chance
-of coming back.  That's maybe to low (maybe 5% or 10% is better) but nevertheless it
+of coming back.  That's maybe too low (maybe 5% or 10% is better) but nevertheless it
 gives us a starting point.  With this definition in mind, let's build up the data we
 need to count how often we get games that meet this criteria.
 
@@ -94,7 +94,7 @@ Using those two numbers we can say:
 That's a lot of garbage time games. Even though about 35% of games are within 6-7
 points or less.
 
-To be fair, there could have been more drama before the 6-minute mark. Walking up in
+To be fair, there could have been more drama before the 6-minute mark. Walking back in
 time gets a little better. Looking at the 4th quarter we get:
 
 .. raw:: html
@@ -105,7 +105,7 @@ Here:
 
 * `The team down 20 points starting the 4th has about a 1% chance of coming back
   <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=12&s=1996-2024-B&m=auto>`_.
-  And only about 13-14% of games is the deficit 20 points or more starting the 4th.
+  And only about 13-14% of games have a deficit of 20 points or more starting the 4th.
 * And games down 28 points or more at the half -- which would require breaking `the
   current record of 27-point 4th quarter comeback
   <https://www.nba.com/game/0020200278>`_ -- only happen about 4% of the time.
@@ -119,7 +119,7 @@ And at halftime:
 * `Since 1996 there's about a 1% chance of coming back from a 27-point deficit
   <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=24&s=1996-2024-B&m=auto>`_,
   and that's only 1.5% of all games where the deficit is 27 or more points starting the
-  4th.
+  3rd quarter.
 * The 10% chance of coming back is about 15 points, which is only about 17% of all
   games since 1996.
 
@@ -128,7 +128,7 @@ So it's pretty rare you need to turn off the TV at halftime.
 Interestingly, for the playoffs the situation does not change by much.  `From the
 dashboard
 <https://nba-comeback-dashboard.github.io/dashboard/index.html?p=2&t=6&s=1996-2024-P&m=auto>`_
-the 1% point of combing back is again about 15 points.  And as we can see:
+the 1% point of coming back is again about 15 points.  And as we can see:
 
 .. raw:: html
 
