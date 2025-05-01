@@ -732,7 +732,9 @@ nbacd_plotter_data = (() => {
                     // Set stepSize based on screen width
                     stepSize: 1,
                     font: {
-                        size: isMobile() ? 10 : 14,
+                        // On mobile with custom ticks, dynamically adjust font size if needed
+                        // If we have too many labels (> 8), decrease font size
+                        size: isMobile() && hasCustomXTicks && chartData.x_ticks.length > 8 ? 8 : (isMobile() ? 10 : 14),
                     },
                     color: "black",
                     maxRotation: 45,
@@ -740,7 +742,11 @@ nbacd_plotter_data = (() => {
                     // If we have custom x tick labels, use them
                     callback: hasCustomXTicks ? function(value) {
                         return xTickLabelMap[value] !== undefined ? xTickLabelMap[value] : value;
-                    } : undefined
+                    } : undefined,
+                    // For mobile with custom ticks, always show all labels
+                    autoSkip: isMobile() && hasCustomXTicks ? false : true,
+                    // Only allow skipping major ticks on desktop
+                    maxTicksLimit: isMobile() && hasCustomXTicks ? chartData.x_ticks.length : undefined
                 },
                 grid: {
                     display: true,
