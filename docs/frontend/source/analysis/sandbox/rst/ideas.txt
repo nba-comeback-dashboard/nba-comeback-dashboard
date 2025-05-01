@@ -1,0 +1,121 @@
+
+A Note On Plot Titles
+=====================
+
+I struggled with how to title the plots or label the x-axis.  I settled on:
+
+* The x-axis is shown with negative numbers meaning you are 'behind' or 'points down'.
+  This is the most natural way to look at the data.
+
+* For the title however, I used the most common way of speaking about comebacks using
+  'points down' and 'points down or more'.
+
+This leads to the contradiction that on the plots, 'points down' is a negative number
+when technically speaking, it should be a positive number (e.g. if you are down -5
+points, aren't you up 5?).
+
+To square the x-axis with the language, I could have used 'Point Margin' in the titles
+and then used the phrase 'Point Margin or Less' -- but I think that would have been
+more confusing than useful.
+
+I could have also switched the sign on the x-axis, but then that would lead lines with
+negative slopes from left to right, which is not the standard way of reporting normal
+probability data.
+
+I think it's ok the way it is, maybe needing a second to get used to the conventions.
+
+
+
+** NBA Finals **
+
+* `2021 Finals Bucks Vs. Suns
+  <https://www.basketball-reference.com/playoffs/2021-nba-finals-bucks-vs-suns.html>`_
+* `2006 Finals Heat Vs. Mavericks
+  <https://www.basketball-reference.com/playoffs/2006-nba-finals-heat-vs-mavericks.html>`_
+* `2016 Finals Cavaliers Vs. Warriors
+  <https://www.basketball-reference.com/playoffs/2016-nba-finals-cavaliers-vs-warriors.html>`_
+
+** Conference Finals **
+
+* `2018 Eastern Conference Finals Cavaliers Vs. Celtics
+  <https://www.basketball-reference.com/playoffs/2018-nba-eastern-conference-finals-cavaliers-vs-celtics.html>`_
+* `2007 Eastern Conference Finals Cavaliers Vs. Pistons
+  <https://www.basketball-reference.com/playoffs/2007-nba-eastern-conference-finals-cavaliers-vs-pistons.html>`_
+* `2012 Western Conference Finals Thunder Vs. Spurs
+  <https://www.basketball-reference.com/playoffs/2012-nba-western-conference-finals-thunder-vs-spurs.html>`_
+* `2019 Eastern Conference Finals Raptors Vs. Bucks
+  <https://www.basketball-reference.com/playoffs/2019-nba-eastern-conference-finals-raptors-vs-bucks.html>`_
+
+** Round 2 **
+
+* `2024 Eastern Conference Semifinals Pacers Vs. Knicks
+  <https://www.basketball-reference.com/playoffs/2024-nba-eastern-conference-semifinals-pacers-vs-knicks.html>`_
+* `2008 Western Conference Semifinals Spurs Vs. Hornets
+  <https://www.basketball-reference.com/playoffs/2008-nba-western-conference-semifinals-spurs-vs-hornets.html>`_
+* `2021 Eastern Conference Semifinals Bucks Vs. Nets
+  <https://www.basketball-reference.com/playoffs/2021-nba-eastern-conference-semifinals-bucks-vs-nets.html>`_
+* `2021 Western Conference Semifinals Clippers Vs. Jazz
+  <https://www.basketball-reference.com/playoffs/2021-nba-western-conference-semifinals-clippers-vs-jazz.html>`_
+* `2022 Western Conference Semifinals Mavericks Vs. Suns
+  <https://www.basketball-reference.com/playoffs/2022-nba-western-conference-semifinals-mavericks-vs-suns.html>`_
+* `2004 Western Conference Semifinals Lakers Vs. Spurs
+  <https://www.basketball-reference.com/playoffs/2004-nba-western-conference-semifinals-lakers-vs-spurs.html>`_
+
+** Round 1 **
+
+* `2023 Western Conference First Round Warriors Vs. Kings
+  <https://www.basketball-reference.com/playoffs/2023-nba-western-conference-first-round-warriors-vs-kings.html>`_
+* `2021 Western Conference First Round Mavericks Vs. Clippers
+  <https://www.basketball-reference.com/playoffs/2021-nba-western-conference-first-round-mavericks-vs-clippers.html>`_
+* `2017 Eastern Conference First Round Bulls Vs. Celtics
+  <https://www.basketball-reference.com/playoffs/2017-nba-eastern-conference-first-round-bulls-vs-celtics.html>`_
+* `2007 Western Conference First Round Jazz Vs. Rockets
+  <https://www.basketball-reference.com/playoffs/2007-nba-western-conference-first-round-jazz-vs-rockets.html>`_
+* `2013 Western Conference First Round Grizzlies Vs. Clippers
+  <https://www.basketball-reference.com/playoffs/2013-nba-western-conference-first-round-grizzlies-vs-clippers.html>`_
+* `2016 Western Conference First Round Trail Blazers Vs. Clippers
+  <https://www.basketball-reference.com/playoffs/2016-nba-western-conference-first-round-trail-blazers-vs-clippers.html>`_
+* `2005 Western Conference First Round Rockets Vs. Mavericks
+  <https://www.basketball-reference.com/playoffs/2005-nba-western-conference-first-round-rockets-vs-mavericks.html>`_
+* `2005 Eastern Conference First Round Wizards Vs. Bulls
+  <https://www.basketball-reference.com/playoffs/2005-nba-eastern-conference-first-round-wizards-vs-bulls.html>`_
+
+
+        if self.calculate_occurrences:
+            games_0_2 = point_margin_map[-7].wins
+            playoff_ids = set(
+                [games.playoff_map.get_series_id(games[id]) for id in games_0_2]
+            )
+            get_2_2 = set()
+            get_3_3 = set()
+            playoff_series = games.playoff_map._data
+            for pid in playoff_ids:
+                for result_map in playoff_series[pid].game_results_map.values():
+                    if result_map["series_score"] == "2-2":
+                        get_2_2.add(pid)
+                    if result_map["series_score"] == "3-3":
+                        get_3_3.add(pid)
+            tied_series = get_2_2 | get_3_3
+            winner_game_ids = set()
+            winner_playoff_ids = set()
+            for pid in tied_series:
+                for game_id, result_map in playoff_series[pid].game_results_map.items():
+                    if result_map["series_score"] == "0-2":
+                        if playoff_series[pid].series_home_team_wins:
+                            winner_playoff_ids.add(pid)
+                            winner_game_ids.add(game_id)
+                    elif result_map["series_score"] == "2-0":
+                        if not playoff_series[pid].series_home_team_wins:
+                            winner_playoff_ids.add(pid)
+                            winner_game_ids.add(game_id)
+                    else:
+                        continue
+
+            for pid in winner_playoff_ids:
+                print(
+                    pid,
+                    playoff_series[pid].round,
+                    playoff_series[pid].series_away_team,
+                    playoff_series[pid].series_home_team,
+                )
+
