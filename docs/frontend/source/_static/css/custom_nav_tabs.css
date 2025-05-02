@@ -1,0 +1,13 @@
+/* Custom styling for navigation tabs to match the logo font */
+
+/* Target the navigation menu items */
+.navbar-nav .nav-link,
+.bd-toc-nav .nav-link,
+.bd-sidebar .nav-link {
+    font-family: var(--pst-font-family-base) !important;
+}
+
+/* Target dropdown menus too if present */
+.dropdown-menu .dropdown-item {
+    font-family: var(--pst-font-family-base) !important;
+}

@@ -33,6 +33,7 @@ taken from the NBA play-by-play database from the 1996-1997 season to now.
       :subtitle: Provides a configurable plotting tool so you can slice and
                  dice the data as you like (including for your favorite team).
 
+
    .. toc-entry::
       :title: About
       :link: analysis/about.rst

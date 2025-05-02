@@ -46,24 +46,25 @@ html_css_files = [
     "css/pydata-customizations.css",
     "css/toc_entry.css",
     # Font choices - uncomment only ONE of these blocks at a time:
-    
+
     # Font Choice #1: Original PyData Theme
     # "css/font_choice_1.css",
     # "css/toc_entry_font_choice_1.css",
-    
+
     # Font Choice #2: Charter/Georgia Serif
-    # "css/font_choice_2.css", 
+    # "css/font_choice_2.css",
     # "css/toc_entry_font_choice_2.css",
-    
+
     # Font Choice #3: Hybrid Style (Baskerville headers, sans-serif body)
     # "css/font_choice_3.css",
     # "css/toc_entry_font_choice_3.css",
-    
+
     # Font Choice #4: Balanced approach (Optima headers, Charter body)
     "css/font_choice_4.css",
     "css/toc_entry_font_choice_4.css",
-    
+
     "css/custom_logo.css",     # Custom styling for the navbar logo/brand
+    "css/custom_nav_tabs.css", # Custom styling for navigation tabs to match logo font
 ]
 
 
