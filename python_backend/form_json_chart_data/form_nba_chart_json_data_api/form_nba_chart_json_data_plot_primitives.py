@@ -425,7 +425,7 @@ class PointsDownLine(PlotLine):
                     )
                     win_point_margin_percent.wins.add(game.game_id)
 
-                elif game_filter is None or game_filter.is_match(
+                if game_filter is None or game_filter.is_match(
                     game, is_win=False, playoff_series=playoff_series
                 ):
                     lose_point_margin_percent = point_margin_map.setdefault(

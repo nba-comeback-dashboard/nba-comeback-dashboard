@@ -5,7 +5,7 @@ This script tests all the main features of the form_nba_chart_json_data_api by m
 calls with different parameters to ensure all functionality works as expected.
 
 The script was created to provide a central place for testing all API features and
-to make it easy to add new test cases as the API evolves. If new functionality is 
+to make it easy to add new test cases as the API evolves. If new functionality is
 added to the API, new test cases should be added to this script.
 
 All test outputs go to the '/test_plots/' directory instead of specific feature directories
@@ -52,55 +52,57 @@ loader.json_base_path = json_base_path
 test_plots_dir = os.path.join(chart_base_path, "test_plots")
 os.makedirs(test_plots_dir, exist_ok=True)
 
+
 def run_tests():
     """Run all tests for the chart JSON data API."""
     print("Starting API tests...")
-    
+
     # Test 1: Basic plot_biggest_deficit with different year groups
     print("Test 1: Testing plot_biggest_deficit with different year groups")
     test_year_groups()
-    
+
     # Test 2: Different down_modes
     print("Test 2: Testing different down_modes")
     test_down_modes()
-    
+
     # Test 3: Testing cumulate parameter
     print("Test 3: Testing cumulate parameter")
     test_cumulate()
-    
+
     # Test 4: Test game filters
     print("Test 4: Testing game filters")
     test_game_filters()
-    
+
     # Test 5: Test calculate_occurrences
     print("Test 5: Testing calculate_occurrences")
     test_calculate_occurrences()
-    
+
     # Test 6: Test special time strings and different start_times
     print("Test 6: Testing special time strings and different start_times")
     test_start_times()
-    
+
     # Test 7: Test plot_percent_versus_time
     print("Test 7: Testing plot_percent_versus_time")
     test_plot_percent_versus_time()
-    
+
     # Test 8: Test plot flags (normal labels, linear y axis, logit)
     print("Test 8: Testing plot flags")
     test_plot_flags()
-    
+
     # Test 9: Test playoff series analysis
     print("Test 9: Testing playoff series analysis")
     test_playoff_series()
-    
+
     # Test 10: Test ESPN vs Dashboard comparison
     print("Test 10: Testing ESPN vs Dashboard comparison")
     test_espn_dashboard()
-    
+
     print("All tests completed successfully!")
+
 
 def test_year_groups():
     """Test different year group combinations."""
-    
+
     # Test 1.1: Single year group (modern era)
     eras = [(2017, 2024)]
     plot_biggest_deficit(
@@ -110,7 +112,7 @@ def test_year_groups():
         down_mode="max",
         cumulate=True,
     )
-    
+
     # Test 1.2: Multiple year groups (comparing eras)
     eras = [
         (1996, 2016),  # Older era
@@ -123,7 +125,7 @@ def test_year_groups():
         down_mode="max",
         cumulate=True,
     )
-    
+
     # Test 1.3: Regular season vs Playoffs
     eras = [
         ("R1996", 2024),  # Regular season
@@ -137,12 +139,13 @@ def test_year_groups():
         cumulate=False,
     )
 
+
 def test_down_modes():
     """Test different down_modes."""
-    
+
     # Use one consistent era for all tests
     eras = [(1996, 2024)]
-    
+
     # Test 2.1: at_margin mode
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/down_mode_at_margin.json",
@@ -151,7 +154,7 @@ def test_down_modes():
         down_mode="at_margin",
         cumulate=False,
     )
-    
+
     # Test 2.2: at_down mode
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/down_mode_at_down.json",
@@ -160,7 +163,7 @@ def test_down_modes():
         down_mode="at_down",
         cumulate=False,
     )
-    
+
     # Test 2.3: max mode
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/down_mode_max.json",
@@ -169,7 +172,7 @@ def test_down_modes():
         down_mode="max",
         cumulate=False,
     )
-    
+
     # Test 2.4: score mode
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/down_mode_score.json",
@@ -180,11 +183,12 @@ def test_down_modes():
         max_point_margin=1000,
     )
 
+
 def test_cumulate():
     """Test the cumulate parameter with different settings."""
-    
+
     eras = [(1996, 2024)]
-    
+
     # Test 3.1: Without cumulate (exact points)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/cumulate_false.json",
@@ -193,7 +197,7 @@ def test_cumulate():
         down_mode="at_margin",
         cumulate=False,
     )
-    
+
     # Test 3.2: With cumulate (or more points)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/cumulate_true.json",
@@ -203,17 +207,18 @@ def test_cumulate():
         cumulate=True,
     )
 
+
 def test_game_filters():
     """Test different game filter combinations."""
-    
+
     eras = [(1996, 2024)]
-    
+
     # Test 4.1: Home vs Away filter
     game_filters = [
         GameFilter(for_at_home=True),  # Home team wins
         GameFilter(for_at_home=False),  # Away team wins
     ]
-    
+
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/filters_home_away.json",
         year_groups=eras,
@@ -221,13 +226,13 @@ def test_game_filters():
         down_mode="at_margin",
         game_filters=game_filters,
     )
-    
+
     # Test 4.2: Team ranking filter
     game_filters = [
         GameFilter(for_rank="top_10"),  # Top 10 team wins
         GameFilter(for_rank="bot_10"),  # Bottom 10 team wins
     ]
-    
+
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/filters_team_rank.json",
         year_groups=eras,
@@ -235,12 +240,12 @@ def test_game_filters():
         down_mode="at_margin",
         game_filters=game_filters,
     )
-    
+
     # Test 4.3: Matchup filter
     game_filters = [
         GameFilter(for_rank="top_10", vs_rank="bot_10"),  # Top 10 vs Bottom 10
     ]
-    
+
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/filters_matchup.json",
         year_groups=eras,
@@ -248,12 +253,12 @@ def test_game_filters():
         down_mode="at_margin",
         game_filters=game_filters,
     )
-    
+
     # Test 4.4: Team-specific filter
     game_filters = [
         GameFilter(for_team_abbr="MIN"),  # Minnesota wins
     ]
-    
+
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/filters_specific_team.json",
         year_groups=eras,
@@ -261,14 +266,14 @@ def test_game_filters():
         down_mode="at_margin",
         game_filters=game_filters,
     )
-    
+
     # Test 4.5: Playoff round filter
     eras = [("P1996", 2024)]
     game_filters = [
         GameFilter(playoff_round=1),  # First round
         GameFilter(playoff_round=4),  # Finals
     ]
-    
+
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/filters_playoff_round.json",
         year_groups=eras,
@@ -277,11 +282,12 @@ def test_game_filters():
         game_filters=game_filters,
     )
 
+
 def test_calculate_occurrences():
     """Test the calculate_occurrences parameter."""
-    
+
     eras = [(1996, 2024)]
-    
+
     # Test 5.1: Win probabilities (default)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_false.json",
@@ -290,7 +296,7 @@ def test_calculate_occurrences():
         down_mode="at_margin",
         calculate_occurrences=False,
     )
-    
+
     # Test 5.2: Occurrence percentages
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_true.json",
@@ -299,7 +305,7 @@ def test_calculate_occurrences():
         down_mode="at_margin",
         calculate_occurrences=True,
     )
-    
+
     # Test 5.3: Score distribution with occurrences
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_score.json",
@@ -311,11 +317,12 @@ def test_calculate_occurrences():
         calculate_occurrences=True,
     )
 
+
 def test_start_times():
     """Test different start time values including special string times."""
-    
+
     eras = [(1996, 2024)]
-    
+
     # Test 6.1: Start from beginning (48 minutes)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/time_48min.json",
@@ -323,7 +330,7 @@ def test_start_times():
         start_time=48,
         down_mode="max",
     )
-    
+
     # Test 6.2: Start from halftime (24 minutes)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/time_24min.json",
@@ -331,7 +338,7 @@ def test_start_times():
         start_time=24,
         down_mode="at_margin",
     )
-    
+
     # Test 6.3: Start from 4th quarter (12 minutes)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/time_12min.json",
@@ -339,7 +346,7 @@ def test_start_times():
         start_time=12,
         down_mode="at_margin",
     )
-    
+
     # Test 6.4: Start from last minute (1 minute)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/time_1min.json",
@@ -347,7 +354,7 @@ def test_start_times():
         start_time=1,
         down_mode="at_margin",
     )
-    
+
     # Test 6.5: Start from 45 seconds left (sub-minute string)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/time_45sec.json",
@@ -355,7 +362,7 @@ def test_start_times():
         start_time="45s",
         down_mode="at_margin",
     )
-    
+
     # Test 6.6: Start from end of regulation (0 minutes)
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/time_0min.json",
@@ -364,11 +371,12 @@ def test_start_times():
         down_mode="at_margin",
     )
 
+
 def test_plot_percent_versus_time():
     """Test the plot_percent_versus_time function with different parameters."""
-    
+
     eras = [(1996, 2024)]
-    
+
     # Test 7.1: Basic plot_percent_versus_time
     plot_percent_versus_time(
         json_name=f"{chart_base_path}/test_plots/percent_v_time_basic.json",
@@ -376,13 +384,13 @@ def test_plot_percent_versus_time():
         start_time=24,
         percents=["20%", "10%", "5%", "1%"],
     )
-    
+
     # Test 7.2: With game filters
     game_filters = [
         GameFilter(for_at_home=True),
         GameFilter(for_at_home=False),
     ]
-    
+
     plot_percent_versus_time(
         json_name=f"{chart_base_path}/test_plots/percent_v_time_filters.json",
         year_groups=eras,
@@ -390,7 +398,7 @@ def test_plot_percent_versus_time():
         percents=["10%", "1%"],
         game_filters=game_filters,
     )
-    
+
     # Test 7.3: With guide lines
     plot_percent_versus_time(
         json_name=f"{chart_base_path}/test_plots/percent_v_time_guides.json",
@@ -401,11 +409,12 @@ def test_plot_percent_versus_time():
         plot_4x_guide=True,
     )
 
+
 def test_plot_flags():
     """Test various plot flag options."""
-    
+
     eras = [(1996, 2024)]
-    
+
     # Test 8.1: Normal labels
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/flags_normal_labels.json",
@@ -414,7 +423,7 @@ def test_plot_flags():
         down_mode="at_margin",
         use_normal_labels="at",
     )
-    
+
     # Test 8.2: Linear y-axis
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/flags_linear_y_axis.json",
@@ -423,7 +432,7 @@ def test_plot_flags():
         down_mode="at_margin",
         linear_y_axis=True,
     )
-    
+
     # Test 8.3: Logit transformation
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/flags_logit.json",
@@ -433,12 +442,13 @@ def test_plot_flags():
         use_logit=True,
     )
 
+
 def test_playoff_series():
     """Test playoff series analysis mode."""
-    
+
     # Only use playoff data for playoff series analysis
     eras = [("P1996", 2024)]
-    
+
     # Test 9.1: Basic playoff series analysis
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/playoff_series_basic.json",
@@ -446,7 +456,7 @@ def test_playoff_series():
         start_time=48,
         down_mode="playoff_series",
     )
-    
+
     # Test 9.2: Playoff series with occurrences
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/playoff_series_occurrences.json",
@@ -455,13 +465,13 @@ def test_playoff_series():
         down_mode="playoff_series",
         calculate_occurrences=True,
     )
-    
+
     # Test 9.3: Playoff series with home/away filters
     game_filters = [
         GameFilter(playoff_for_home=True),
         GameFilter(playoff_for_home=False),
     ]
-    
+
     plot_biggest_deficit(
         json_name=f"{chart_base_path}/test_plots/playoff_series_home_away.json",
         year_groups=eras,
@@ -470,15 +480,16 @@ def test_playoff_series():
         game_filters=game_filters,
     )
 
+
 def test_espn_dashboard():
     """Test ESPN vs Dashboard comparison."""
-    
+
     # Example ESPN game ID - Minnesota vs Denver 2022-04-26
     espn_game_id = "401430254"
-    
+
     # Era for Dashboard calculations
     eras = [(1996, 2024)]
-    
+
     # Test 10.1: Basic ESPN vs Dashboard comparison
     plot_espn_versus_dashboard(
         json_name=f"{chart_base_path}/test_plots/espn_dashboard_basic.json",
@@ -486,7 +497,7 @@ def test_espn_dashboard():
         year_groups=eras,
         show_team="away",  # Minnesota perspective
     )
-    
+
     # Test 10.2: With home/away game filters
     plot_espn_versus_dashboard(
         json_name=f"{chart_base_path}/test_plots/espn_dashboard_home_away.json",
@@ -495,6 +506,7 @@ def test_espn_dashboard():
         use_home_away_game_filters=True,
         show_team="away",
     )
+
 
 if __name__ == "__main__":
     run_tests()
