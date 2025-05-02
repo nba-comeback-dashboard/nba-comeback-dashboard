@@ -246,9 +246,9 @@ class Game:
         else:
             raise AssertionError("NBA games can't end in a tie")
 
-        # Process and store point margins at each time point
-        # This creates a dictionary mapping time points (from GAME_MINUTES) to point margin data
-        self.point_margin_map = get_point_margin_map_from_json(
+        # Process and store score statistics at each time point
+        # This creates a dictionary mapping time points (from GAME_MINUTES) to score statistic data
+        self.score_statistic_map = get_score_statistic_map_from_json(
             game_data["point_margins"]
         )
 
@@ -287,12 +287,12 @@ class Game:
         )
 
 
-def get_point_margin_map_from_json(point_margins_data):
+def get_score_statistic_map_from_json(point_margins_data):
     """
-    Process point margins from JSON data into a structured map.
+    Process score statistics from JSON data into a structured map.
 
     Converts the compact string representation of point margins from the JSON data
-    into a structured dictionary mapping time points to point margin data.
+    into a structured dictionary mapping time points to score statistic data.
 
     The input format is a list of strings with format "index=value" or
     "index=point_margin,min_point_margin,max_point_margin" where:
@@ -308,11 +308,11 @@ def get_point_margin_map_from_json(point_margins_data):
     Returns:
     --------
     dict
-        A dictionary mapping time points (from GAME_MINUTES) to point margin data dictionaries
+        A dictionary mapping time points (from GAME_MINUTES) to score statistic data dictionaries
         containing 'point_margin', 'min_point_margin', and 'max_point_margin' keys
     """
     # Extract point margins from the JSON data
-    raw_point_margin_map = {}
+    raw_score_statistic_map = {}
     for point_margin in point_margins_data:
         index, points_string = point_margin.split("=", 1)
         if "," in points_string:
@@ -321,31 +321,31 @@ def get_point_margin_map_from_json(point_margins_data):
             ]
         else:
             point_margin = min_point_margin = max_point_margin = int(points_string)
-        raw_point_margin_map[int(index)] = {
+        raw_score_statistic_map[int(index)] = {
             "point_margin": point_margin,
             "min_point_margin": min_point_margin,
             "max_point_margin": max_point_margin,
         }
 
     # Create a complete mapping for all time points in GAME_MINUTES
-    point_margin_map = {}
+    score_statistic_map = {}
     last_point_margin = None
     for index in range(len(GAME_MINUTES)):
         key = GAME_MINUTES[index]
         try:
-            point_margin_data = raw_point_margin_map[index]
+            score_statistic_data = raw_score_statistic_map[index]
         except KeyError:
             # If data is missing for this time point, use the last known point margin
             if last_point_margin is None:
                 raise AssertionError
-            point_margin_data = {
+            score_statistic_data = {
                 "point_margin": last_point_margin,
                 "min_point_margin": last_point_margin,
                 "max_point_margin": last_point_margin,
             }
-        point_margin_map[key] = point_margin_data
-        last_point_margin = point_margin_data["point_margin"]
-    return point_margin_map
+        score_statistic_map[key] = score_statistic_data
+        last_point_margin = score_statistic_data["point_margin"]
+    return score_statistic_map
 
 
 class PlayoffMap:
@@ -468,9 +468,9 @@ class PlayoffMap:
                 series_wins_by_year[year][winner] += 1
 
     def setup_game_score_map(self):
-        # Map series scores to point margins for analysis
+        # Map series scores to score statistics for analysis
         # Positive values indicate winning position, negative for losing position
-        # Magnitude reflects the strength of position (e.g., 4-0 is strongest win at +10)
+        # Magnitude reflects the strength of position (e.g., 4-0 is strongest win)
         if not self.calculate_occurrences:
             self.game_score_map = {
                 "4-0": 7,  # Best win - sweep
@@ -591,16 +591,16 @@ class PlayoffSeries:
             self.series_home_team_wins = False
 
     def get_playoff_point_margins(self, game, game_filter):
-        """Convert a playoff series score to equivalent point margins for analysis.
+        """Convert a playoff series score to equivalent score statistics for analysis.
 
         Maps the series score (e.g., "3-1") at the time of the given game to
-        a point margin value that can be used in win probability analysis.
+        a score statistic value that can be used in win probability analysis.
 
         Args:
-            game: The game object to get point margins for
+            game: The game object to get score statistics for
 
         Returns:
-            Tuple of (point_margin, inverse_point_margin, series_id)
+            Tuple of (score_statistic, inverse_score_statistic, series_id)
 
         Raises:
             ValueError: If series is not a valid 7-game series or if series is over
@@ -622,7 +622,7 @@ class PlayoffSeries:
         game_series_data = self.game_results_map[game.game_id]
         game_series_score = game_series_data["series_score"]
 
-        # Handle tied series (return 0 point margin)
+        # Handle tied series (return 0 score statistic)
         home_score, away_score = game_series_score.split("-")
         if home_score == away_score and not self.calculate_occurrences:
             return 0, 0, self.id
@@ -632,10 +632,10 @@ class PlayoffSeries:
         if not self.series_home_team_wins:
             game_series_score = f"{away_score}-{home_score}"
 
-        # Map series score to point margin
+        # Map series score to score statistic
         try:
-            point_margin = self.playoff_map.game_score_map[game_series_score]
+            score_statistic = self.playoff_map.game_score_map[game_series_score]
         except KeyError:
             raise ValueError(f"Series is over {game_series_score}")
         else:
-            return point_margin, -point_margin, self.id
+            return score_statistic, -score_statistic, self.id

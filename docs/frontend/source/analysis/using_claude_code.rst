@@ -2,9 +2,9 @@
 Using Claude Code to AI Auto-Generate This Site
 ***********************************************
 
-.. green-box::
-    
-    Written in March 2025.  Last updated 4/20/2025.
+.. published-date::
+   :published: March 26, 2025
+   :updated: April 20, 2025
 
 .. contents::
   :depth: 1

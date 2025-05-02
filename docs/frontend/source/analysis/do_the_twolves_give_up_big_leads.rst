@@ -2,6 +2,9 @@
 Do the Timberwolves Actually Give Up Big Leads?
 ***********************************************
 
+.. published-date::
+   :published: March 26, 2025
+
 There's a feeling among fans that the Timberwolves of the last few years don't put
 teams away and frequently surrender big leads. I was personally at the `04/21/2022 MEM
 @ MIN playoff game where the Wolves blew a 26-point lead

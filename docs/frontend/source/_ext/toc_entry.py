@@ -111,11 +111,37 @@ class TocEntryDirective(SphinxDirective):
             subtitle_para += nodes.Text(subtitle)
             container += subtitle_para
         
-        # Add date
+        # Add date - if not provided, try to find a published-date directive in the linked RST file
         if date:
             date_para = nodes.paragraph(classes=['toc-entry-date'])
             date_para += nodes.Text(date)
             container += date_para
+        elif link and link.endswith('.rst'):
+            try:
+                # Determine the path to the linked RST file
+                source_dir = self.env.srcdir
+                if link.startswith('/'):
+                    rst_path = link
+                else:
+                    current_doc_dir = os.path.dirname(self.env.doc2path(self.env.docname))
+                    rst_path = os.path.join(current_doc_dir, link)
+                
+                # Read the RST file to look for a published-date directive
+                with open(rst_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # Check for published-date directive
+                import re
+                # Extract just the date value from the published field - more robust pattern
+                match = re.search(r'\.\.\s+published-date::.*?:published:\s+([^:\n]+?)(?:\s*\n|$)', content, re.DOTALL)
+                if match:
+                    published_date = match.group(1).strip()
+                    date_para = nodes.paragraph(classes=['toc-entry-date'])
+                    date_para += nodes.Text(f"{published_date}")
+                    container += date_para
+            except Exception:
+                # If extraction fails, continue without a date
+                pass
         
         # Add image - place all images in _static/toc directory
         if image_path:

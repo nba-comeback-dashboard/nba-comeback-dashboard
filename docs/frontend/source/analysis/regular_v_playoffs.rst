@@ -1,6 +1,9 @@
 ***************************   
 Regular Season vs. Playoffs 
 ***************************
+
+.. published-date::
+   :published: April 17, 2025
     
 
 .. _regular-season-vs-playoffs:

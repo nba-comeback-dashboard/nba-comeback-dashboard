@@ -2,6 +2,9 @@
 So Close: What Are the Odds of Making it A Game
 ***********************************************
 
+.. published-date::
+   :published: April 18, 2025
+
 .. _what-are-the-odds-the-game-will-get-close:
 
 What Are The Odds The Game Will Get Close?

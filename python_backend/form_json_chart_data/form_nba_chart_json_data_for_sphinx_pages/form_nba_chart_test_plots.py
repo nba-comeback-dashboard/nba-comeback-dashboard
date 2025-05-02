@@ -25,7 +25,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    create_score_statistic_v_probability_chart_json,
     plot_percent_versus_time,
     plot_espn_versus_dashboard,
     GameFilter,
@@ -57,8 +57,8 @@ def run_tests():
     """Run all tests for the chart JSON data API."""
     print("Starting API tests...")
 
-    # Test 1: Basic plot_biggest_deficit with different year groups
-    print("Test 1: Testing plot_biggest_deficit with different year groups")
+    # Test 1: Basic create_score_statistic_v_probability_chart_json with different year groups
+    print("Test 1: Testing create_score_statistic_v_probability_chart_json with different year groups")
     test_year_groups()
 
     # Test 2: Different down_modes
@@ -105,7 +105,7 @@ def test_year_groups():
 
     # Test 1.1: Single year group (modern era)
     eras = [(2017, 2024)]
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/year_groups_modern.json",
         year_groups=eras,
         start_time=48,
@@ -118,7 +118,7 @@ def test_year_groups():
         (1996, 2016),  # Older era
         (2017, 2024),  # Modern era
     ]
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/year_groups_compare_eras.json",
         year_groups=eras,
         start_time=48,
@@ -131,7 +131,7 @@ def test_year_groups():
         ("R1996", 2024),  # Regular season
         ("P1996", 2024),  # Playoffs
     ]
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/year_groups_reg_vs_playoffs.json",
         year_groups=eras,
         start_time=24,
@@ -147,7 +147,7 @@ def test_down_modes():
     eras = [(1996, 2024)]
 
     # Test 2.1: at_margin mode
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/down_mode_at_margin.json",
         year_groups=eras,
         start_time=24,
@@ -156,7 +156,7 @@ def test_down_modes():
     )
 
     # Test 2.2: at_down mode
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/down_mode_at_down.json",
         year_groups=eras,
         start_time=24,
@@ -165,7 +165,7 @@ def test_down_modes():
     )
 
     # Test 2.3: max mode
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/down_mode_max.json",
         year_groups=eras,
         start_time=24,
@@ -174,7 +174,7 @@ def test_down_modes():
     )
 
     # Test 2.4: score mode
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/down_mode_score.json",
         year_groups=eras,
         start_time=48,
@@ -190,7 +190,7 @@ def test_cumulate():
     eras = [(1996, 2024)]
 
     # Test 3.1: Without cumulate (exact points)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/cumulate_false.json",
         year_groups=eras,
         start_time=24,
@@ -199,7 +199,7 @@ def test_cumulate():
     )
 
     # Test 3.2: With cumulate (or more points)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/cumulate_true.json",
         year_groups=eras,
         start_time=24,
@@ -219,7 +219,7 @@ def test_game_filters():
         GameFilter(for_at_home=False),  # Away team wins
     ]
 
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_home_away.json",
         year_groups=eras,
         start_time=24,
@@ -233,7 +233,7 @@ def test_game_filters():
         GameFilter(for_rank="bot_10"),  # Bottom 10 team wins
     ]
 
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_team_rank.json",
         year_groups=eras,
         start_time=24,
@@ -246,7 +246,7 @@ def test_game_filters():
         GameFilter(for_rank="top_10", vs_rank="bot_10"),  # Top 10 vs Bottom 10
     ]
 
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_matchup.json",
         year_groups=eras,
         start_time=24,
@@ -259,7 +259,7 @@ def test_game_filters():
         GameFilter(for_team_abbr="MIN"),  # Minnesota wins
     ]
 
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_specific_team.json",
         year_groups=eras,
         start_time=24,
@@ -274,7 +274,7 @@ def test_game_filters():
         GameFilter(playoff_round=4),  # Finals
     ]
 
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_playoff_round.json",
         year_groups=eras,
         start_time=24,
@@ -289,7 +289,7 @@ def test_calculate_occurrences():
     eras = [(1996, 2024)]
 
     # Test 5.1: Win probabilities (default)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_false.json",
         year_groups=eras,
         start_time=24,
@@ -298,7 +298,7 @@ def test_calculate_occurrences():
     )
 
     # Test 5.2: Occurrence percentages
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_true.json",
         year_groups=eras,
         start_time=24,
@@ -307,7 +307,7 @@ def test_calculate_occurrences():
     )
 
     # Test 5.3: Score distribution with occurrences
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_score.json",
         year_groups=eras,
         start_time=48,
@@ -324,7 +324,7 @@ def test_start_times():
     eras = [(1996, 2024)]
 
     # Test 6.1: Start from beginning (48 minutes)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_48min.json",
         year_groups=eras,
         start_time=48,
@@ -332,7 +332,7 @@ def test_start_times():
     )
 
     # Test 6.2: Start from halftime (24 minutes)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_24min.json",
         year_groups=eras,
         start_time=24,
@@ -340,7 +340,7 @@ def test_start_times():
     )
 
     # Test 6.3: Start from 4th quarter (12 minutes)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_12min.json",
         year_groups=eras,
         start_time=12,
@@ -348,7 +348,7 @@ def test_start_times():
     )
 
     # Test 6.4: Start from last minute (1 minute)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_1min.json",
         year_groups=eras,
         start_time=1,
@@ -356,7 +356,7 @@ def test_start_times():
     )
 
     # Test 6.5: Start from 45 seconds left (sub-minute string)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_45sec.json",
         year_groups=eras,
         start_time="45s",
@@ -364,7 +364,7 @@ def test_start_times():
     )
 
     # Test 6.6: Start from end of regulation (0 minutes)
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_0min.json",
         year_groups=eras,
         start_time=0,
@@ -416,7 +416,7 @@ def test_plot_flags():
     eras = [(1996, 2024)]
 
     # Test 8.1: Normal labels
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/flags_normal_labels.json",
         year_groups=eras,
         start_time=24,
@@ -425,7 +425,7 @@ def test_plot_flags():
     )
 
     # Test 8.2: Linear y-axis
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/flags_linear_y_axis.json",
         year_groups=eras,
         start_time=24,
@@ -434,7 +434,7 @@ def test_plot_flags():
     )
 
     # Test 8.3: Logit transformation
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/flags_logit.json",
         year_groups=eras,
         start_time=24,
@@ -450,7 +450,7 @@ def test_playoff_series():
     eras = [("P1996", 2024)]
 
     # Test 9.1: Basic playoff series analysis
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/playoff_series_basic.json",
         year_groups=eras,
         start_time=48,
@@ -458,7 +458,7 @@ def test_playoff_series():
     )
 
     # Test 9.2: Playoff series with occurrences
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/playoff_series_occurrences.json",
         year_groups=eras,
         start_time=48,
@@ -472,7 +472,7 @@ def test_playoff_series():
         GameFilter(playoff_for_home=False),
     ]
 
-    plot_biggest_deficit(
+    create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/playoff_series_home_away.json",
         year_groups=eras,
         start_time=48,

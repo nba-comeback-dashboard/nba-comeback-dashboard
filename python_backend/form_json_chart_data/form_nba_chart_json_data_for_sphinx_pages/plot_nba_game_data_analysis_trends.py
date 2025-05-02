@@ -19,7 +19,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    create_score_statistic_v_probability_chart_json,
 )
 
 # Calculate script directory from __file__
@@ -46,7 +46,7 @@ eras_one = [
 ]
 
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/trend/nbacd_at_24_compare_eras.json",
     year_groups=eras_one,
     start_time=24,
@@ -60,7 +60,7 @@ eras_one = [
     (1996, 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/trend/nbacd_at_24_normal_labels.json",
     year_groups=eras_one,
     start_time=24,
@@ -70,7 +70,7 @@ plot_biggest_deficit(
     max_point_margin=100,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/trend/nbacd_at_24_probit.json",
     year_groups=eras_one,
     start_time=24,
@@ -79,7 +79,7 @@ plot_biggest_deficit(
     max_point_margin=0,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/trend/nbacd_at_24_logit.json",
     year_groups=eras_one,
     start_time=24,
@@ -96,7 +96,7 @@ eras_one = [
     (1996, 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/trend/nbacd_at_24_linear_axis.json",
     year_groups=eras_one,
     start_time=24,

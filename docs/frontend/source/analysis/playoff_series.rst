@@ -2,6 +2,9 @@
 Playoffs: The Odds of Coming Back Or Closing It Out
 ***************************************************
 
+.. published-date::
+   :published: April 28, 2025
+
 
 .. _comeback-odds-occurrence-rate-versus-a-series-deficit:
 
@@ -176,7 +179,30 @@ past (7.64%). There's not a ton of data points here, so some or most of this cou
 be noise, but that data is presented here for one to speculate.
 
 
-.. _notes-on-win--plot:
+
+.. _what-are-the-chances-of-coming-back-from-a-0-3-hole:
+
+What are the Chances of Coming Back from a 0-3 Hole?
+====================================================
+
+Using the :ref:`mapping described below <notes-on-win-plot>` we can then use
+:ref:`probit regression <how-to-fit-the-line>` and predict a trend.  This shows the
+percent chance should be around 1.6%.
+
+And, since there have been 101 0-3 series so far, using a two sided binomial test we
+get a p value of about 0.4 -- meaning it is very well within the statistical odds of
+never seeing a 0-3 comeback even with a 1.5% chance.
+
+Whether my mapping is correct and the underlying data is in fact normal is another
+issue -- so take this with a huge grain of salt. But it suggests the odds are not
+nearly as bad as 0% or even 1 in 1000 and closer to 1 in 100.
+
+.. 
+    https://www.reddit.com/r/nba/comments/13p7a6r/no_team_in_the_nba_has_ever_come_back_from_30
+
+
+
+.. _notes-on-win-plot:
 
 Notes on Win % Plot
 ===================

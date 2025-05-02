@@ -16,8 +16,8 @@ from form_nba_chart_json_data_season_game_loader import GAME_MINUTES, TIME_TO_IN
 from form_nba_chart_json_data_num import Num
 
 
-# Define PointMarginPercent class here to avoid circular imports
-class PointMarginPercent:
+# Define ScoreStatisticPercent class here to avoid circular imports
+class ScoreStatisticPercent:
     def __repr__(self):
         odds, win_count, loss_count, game_count = self.odds
         return f"{int(100.0 * (odds or 0.0))}% {win_count}/{loss_count}"
@@ -96,11 +96,12 @@ class PlotLine:
 
 class PointsDownLine(PlotLine):
     """
-    Represents a line plotting win probability versus point deficit.
+    Represents a line plotting win probability versus score statistic.
 
     This class handles the analysis of how win probability changes based on
-    point deficit at different times in a game. It supports analyzing both
-    deficits at specific moments and maximum deficits faced during periods.
+    various score statistics at different times in a game. It supports analyzing
+    different statistics like point margins at specific moments, minimum point
+    margins during periods, or playoff series scores.
     """
 
     # Boundaries for valid percentage values to avoid numerical issues
@@ -112,17 +113,17 @@ class PointsDownLine(PlotLine):
         games,
         game_filter,
         start_time,
-        down_mode,
+        score_statistic_mode,
         legend=None,
         cumulate=False,
-        min_point_margin=None,
-        max_point_margin=None,
+        min_score_statistic=None,
+        max_score_statistic=None,
         fit_min_win_game_count=None,
         fit_max_points=float("inf"),
         calculate_occurrences=False,
     ):
         """
-        Initialize a line for analyzing point deficit vs. win probability.
+        Initialize a line for analyzing score statistic vs. win probability.
 
         Parameters:
         -----------
@@ -132,16 +133,21 @@ class PointsDownLine(PlotLine):
             Filter to apply to games
         start_time : int or str
             Time point to start analysis from (minute value or sub-minute string)
-        down_mode : str
-            Analysis mode ('at' for specific time point, 'max' for maximum deficit)
+        score_statistic_mode : str
+            Analysis mode:
+            - 'point_margin_at_time': Point margin at specific time point
+            - 'min_point_margin': Minimum point margin faced during the period
+            - 'losing_point_margin_at_time': Negative point margin at specific time
+            - 'final_team_score': Final score of team
+            - 'playoff_series_score': Playoff series score analysis
         legend : str or None
             Legend text for the line
         cumulate : bool
-            Whether to cumulate point totals for "or more" analysis
-        min_point_margin : int or None
-            Minimum point margin to include
-        max_point_margin : int, "auto", or None
-            Maximum point margin to include
+            Whether to cumulate score statistics for "or more" analysis
+        min_score_statistic : int or None
+            Minimum score statistic to include
+        max_score_statistic : int, "auto", or None
+            Maximum score statistic to include
         fit_min_win_game_count : int or None
             Minimum number of wins required for regression
         fit_max_points : float, str, or None
@@ -149,19 +155,17 @@ class PointsDownLine(PlotLine):
         calculate_occurrences : bool
             Whether to calculate occurrence percentages instead of win percentages
         """
-        self.plot_type = "percent_v_margin"
+        self.plot_type = "percent_v_score_statistic"
         self.games = games
         self.legend = legend
 
         self.start_time = start_time
-        self.down_mode = down_mode
+        self.score_statistic_mode = score_statistic_mode
         self.calculate_occurrences = calculate_occurrences
 
-        self.point_margin_map = point_margin_map = self.setup_point_margin_map(
-            games, game_filter, start_time, down_mode
+        self.score_statistic_map = score_statistic_map = self.setup_score_statistic_map(
+            games, game_filter, start_time, score_statistic_mode
         )
-        # x = [(x, y.odds[0])[0] for x, y in sorted(point_margin_map.items())]
-        # y = [(x, y.odds[0])[1] for x, y in sorted(point_margin_map.items())]
 
         all_game_ids = self.get_all_game_ids()
         self.number_of_games = len(all_game_ids)
@@ -169,32 +173,32 @@ class PointsDownLine(PlotLine):
             self.legend = f"{legend} ({self.number_of_games:,} Games)"
 
         if cumulate:
-            self.cumulate_point_totals(point_margin_map)
+            self.cumulate_score_statistics(score_statistic_map)
 
-        # For playoff series analysis, only consider point margins <= 0
+        # For playoff series analysis, only consider score statistics <= 0
         # This focuses on teams that are tied or behind in the series
         # Disable cumulative calculations (or_less/or_more) as they don't apply to series scores
-        if down_mode == "playoff_series":
-            or_less_point_margin = None
-            or_more_point_margin = None
+        if score_statistic_mode == "playoff_series_score":
+            or_less_score_statistic = None
+            or_more_score_statistic = None
         elif calculate_occurrences:
-            or_less_point_margin = None
-            or_more_point_margin = None
+            or_less_score_statistic = None
+            or_more_score_statistic = None
         else:
-            or_less_point_margin, or_more_point_margin = (
-                self.clean_point_margin_map_end_points(point_margin_map)
+            or_less_score_statistic, or_more_score_statistic = (
+                self.clean_score_statistic_map_end_points(score_statistic_map)
             )
 
-        self.point_margin_map = point_margin_map
-        self.point_margins = sorted(point_margin_map)
+        self.score_statistic_map = score_statistic_map
+        self.score_statistics = sorted(score_statistic_map)
         self.percents = [
-            point_margin_map[minute].odds[0] for minute in self.point_margins
+            score_statistic_map[minute].odds[0] for minute in self.score_statistics
         ]
-        if down_mode == "playoff_series":
+        if score_statistic_mode == "playoff_series_score":
             self.occurs = []
-            for point_margin in self.point_margins:
-                point_margin_data = point_margin_map[point_margin]
-                all_games = point_margin_data.wins | point_margin_data.losses
+            for score_statistic in self.score_statistics:
+                score_stat_data = score_statistic_map[score_statistic]
+                all_games = score_stat_data.wins | score_stat_data.losses
                 current_playoff_ids = set()
                 for game_id in all_games:
                     game_playoff_id = games.playoff_map.get_series_id(games[game_id])
@@ -202,9 +206,9 @@ class PointsDownLine(PlotLine):
                 self.occurs.append(len(current_playoff_ids) / len(self.playoff_ids))
         else:
             self.occurs = []
-            for point_margin in self.point_margins:
-                point_margin_data = point_margin_map[point_margin]
-                game_count = len(point_margin_data.wins | point_margin_data.losses)
+            for score_statistic in self.score_statistics:
+                score_stat_data = score_statistic_map[score_statistic]
+                game_count = len(score_stat_data.wins | score_stat_data.losses)
                 self.occurs.append(game_count / (self.number_of_games))
 
         if calculate_occurrences:
@@ -219,51 +223,54 @@ class PointsDownLine(PlotLine):
             fit_max_points,
             calculate_occurrences=calculate_occurrences,
         )
-        if down_mode == "playoff_series":
-            self.point_margins = [k for k in self.point_margins if k <= 0]
-            self.point_margin_map = point_margin_map = {
-                k: v for (k, v) in point_margin_map.items() if k <= 0
+        if score_statistic_mode == "playoff_series_score":
+            self.score_statistics = [k for k in self.score_statistics if k <= 0]
+            self.score_statistic_map = score_statistic_map = {
+                k: v for (k, v) in score_statistic_map.items() if k <= 0
             }
-            max_point_margin = 100
+            max_score_statistic = 100
 
-        elif max_point_margin == "auto":
-            max_point_margin = fix_max_points + 6
+        elif max_score_statistic == "auto":
+            max_score_statistic = fix_max_points + 6
 
-        if self.down_mode == "score" or self.calculate_occurrences:
+        if self.score_statistic_mode == "final_team_score" or self.calculate_occurrences:
             pass
-        elif min_point_margin is not None or max_point_margin is not None:
-            self.filter_max_point_margin(min_point_margin, max_point_margin)
+        elif min_score_statistic is not None or max_score_statistic is not None:
+            self.filter_max_score_statistic(min_score_statistic, max_score_statistic)
 
-        self.max_point_margin = max_point_margin
+        self.max_score_statistic = max_score_statistic
 
-        self.or_less_point_margin = or_less_point_margin
-        self.or_more_point_margin = or_more_point_margin
+        self.or_less_score_statistic = or_less_score_statistic
+        self.or_more_score_statistic = or_more_score_statistic
 
     def get_all_game_ids(self):
         """Get all game IDs included in this plot line.
 
         For playoff series analysis, returns the set of playoff series IDs.
-        For regular analysis, returns the set of all game IDs in the point margin map.
+        For regular analysis, returns the set of all game IDs in the score statistic map.
         """
-        if self.down_mode == "playoff_series":
+        if self.score_statistic_mode == "playoff_series_score":
             # For playoff series, use the playoff_ids set which tracks series IDs
             # rather than individual game IDs
             all_game_ids = self.playoff_ids
         else:
             # For regular analysis, collect all game IDs from wins and losses
             all_game_ids = set()
-            for data in self.point_margin_map.values():
+            for data in self.score_statistic_map.values():
                 all_game_ids.update(data.wins)
                 all_game_ids.update(data.losses)
         return all_game_ids
 
-    def setup_point_margin_map(self, games, game_filter, start_time, down_mode):
+    def setup_score_statistic_map(self, games, game_filter, start_time, score_statistic_mode):
         """
-        Create a mapping of point margins to win/loss outcomes for analysis.
+        Create a mapping of score statistics to win/loss outcomes for analysis.
 
         This method processes the game data according to the specified analysis mode:
-        - 'at' mode: Analyzes point deficit at a specific time point
-        - 'max' mode: Analyzes maximum point deficit faced during the period
+        - 'point_margin_at_time': Analyzes point margin at a specific time point
+        - 'min_point_margin': Analyzes minimum point margin faced during the period
+        - 'losing_point_margin_at_time': Analyzes negative point margin at specific time
+        - 'final_team_score': Analyzes final score of team
+        - 'playoff_series_score': Analyzes playoff series score
 
         Parameters:
         -----------
@@ -273,85 +280,95 @@ class PointsDownLine(PlotLine):
             Filter to apply to games
         start_time : int or str
             Time point to start analysis from
-        down_mode : str
-            Analysis mode ('at' or 'max')
+        score_statistic_mode : str
+            Analysis mode
 
         Returns:
         --------
         dict
-            Dictionary mapping point margins to PointMarginPercent objects
+            Dictionary mapping score statistics to ScoreStatisticPercent objects
 
         Raises:
         -------
         AssertionError
             If start_time is not in TIME_TO_INDEX_MAP
         NotImplementedError
-            If down_mode is not 'at' or 'max'
+            If score_statistic_mode is not one of the supported modes
         """
-        point_margin_map = {}
+        score_statistic_map = {}
         if start_time not in TIME_TO_INDEX_MAP:
             raise AssertionError(
                 f"Invalid start_time: {start_time}, not found in TIME_TO_INDEX_MAP"
             )
 
-        # Initialize tracking of playoff series IDs when in playoff_series mode
+        # Initialize tracking of playoff series IDs when in playoff_series_score mode
         # This set will collect unique series identifiers instead of individual game IDs
-        if down_mode == "playoff_series":
+        if score_statistic_mode == "playoff_series_score":
             self.playoff_ids = set()
 
         for game in games:
-            if down_mode == "score":
-                win_point_margin = max(game.final_home_points, game.final_away_points)
-                lose_point_margin = min(game.final_home_points, game.final_away_points)
-            elif down_mode.startswith("at"):
-                # Analyze point deficit at the specific time point
+            if score_statistic_mode == "final_team_score":
+                win_score_statistic = max(game.final_home_points, game.final_away_points)
+                lose_score_statistic = min(game.final_home_points, game.final_away_points)
+            elif score_statistic_mode == "point_margin_at_time":
+                # Analyze point margin at the specific time point
                 sign = 1 if game.score_diff > 0 else -1
-                point_margin = game.point_margin_map[start_time]["point_margin"]
-                win_point_margin = sign * point_margin
-                lose_point_margin = -1 * win_point_margin
-
-            elif down_mode == "max":
-                # Analyze maximum point deficit faced during the period
-                point_margin = game.point_margin_map[start_time]["point_margin"]
-                win_point_margin = float("inf")
-                lose_point_margin = float("inf")
+                score_statistic = game.point_margin_map[start_time]["point_margin"]
+                win_score_statistic = sign * score_statistic
+                lose_score_statistic = -1 * win_score_statistic
+            elif score_statistic_mode == "losing_point_margin_at_time":
+                # Analyze negative point margin at the specific time point
+                sign = 1 if game.score_diff > 0 else -1
+                score_statistic = game.point_margin_map[start_time]["point_margin"]
+                win_score_statistic = sign * score_statistic
+                lose_score_statistic = -1 * win_score_statistic
+                # Only track negative margins
+                if win_score_statistic > 0:
+                    win_score_statistic = 0
+                if lose_score_statistic > 0:
+                    lose_score_statistic = 0
+            elif score_statistic_mode == "min_point_margin":
+                # Analyze minimum point margin faced during the period
+                score_statistic = game.point_margin_map[start_time]["point_margin"]
+                win_score_statistic = float("inf")
+                lose_score_statistic = float("inf")
 
                 # Determine the range of time to analyze
                 start_index = TIME_TO_INDEX_MAP[start_time]
                 stop_index = TIME_TO_INDEX_MAP[0]  # End of game
 
-                # Find the maximum deficit throughout the period
+                # Find the minimum margin throughout the period
                 for index in range(start_index, stop_index + 1):
                     time = GAME_MINUTES[index]
-                    point_margin_data = game.point_margin_map[time]
+                    score_statistic_data = game.point_margin_map[time]
 
                     # For first time point, use the current margin
                     if index == start_index:
-                        min_point_margin = point_margin_data["point_margin"]
-                        max_point_margin = point_margin_data["point_margin"]
+                        min_score_statistic = score_statistic_data["point_margin"]
+                        max_score_statistic = score_statistic_data["point_margin"]
                     else:
                         # For subsequent time points, use min/max values
-                        min_point_margin = point_margin_data["min_point_margin"]
-                        max_point_margin = point_margin_data["max_point_margin"]
+                        min_score_statistic = score_statistic_data["min_point_margin"]
+                        max_score_statistic = score_statistic_data["max_point_margin"]
 
                     if game.score_diff > 0:  # Home team won
-                        win_point_margin = min(min_point_margin, win_point_margin)
-                        lose_point_margin = min(
-                            -1.0 * max_point_margin, lose_point_margin
+                        win_score_statistic = min(min_score_statistic, win_score_statistic)
+                        lose_score_statistic = min(
+                            -1.0 * max_score_statistic, lose_score_statistic
                         )
                     elif game.score_diff < 0:  # Away team won
-                        win_point_margin = min(
-                            -1.0 * max_point_margin, win_point_margin
+                        win_score_statistic = min(
+                            -1.0 * max_score_statistic, win_score_statistic
                         )
-                        lose_point_margin = min(min_point_margin, lose_point_margin)
+                        lose_score_statistic = min(min_score_statistic, lose_score_statistic)
                     else:
                         raise AssertionError("NBA games can't end in a tie")
             # Special handling for playoff series analysis
-            elif down_mode == "playoff_series":
+            elif score_statistic_mode == "playoff_series_score":
                 try:
-                    # Get point margins based on playoff series score (e.g., 3-1, 2-3)
+                    # Get score statistics based on playoff series score (e.g., 3-1, 2-3)
                     # Returns a tuple of (win_margin, lose_margin, playoff_id)
-                    win_point_margin, lose_point_margin, playoff_id = (
+                    win_score_statistic, lose_score_statistic, playoff_id = (
                         games.playoff_map.get_playoff_point_margins(game, game_filter)
                     )
 
@@ -362,130 +379,131 @@ class PointsDownLine(PlotLine):
                     # Track this playoff series ID for analysis
                     self.playoff_ids.add(playoff_id)
             else:
-                raise NotImplementedError(f"Unsupported down_mode: {down_mode}")
+                raise NotImplementedError(f"Unsupported score_statistic_mode: {score_statistic_mode}")
 
             # Record the outcomes based on the game filter
 
             if self.calculate_occurrences:
                 if (
-                    self.down_mode == "max"
-                    and min(lose_point_margin, win_point_margin) == 0
+                    self.score_statistic_mode == "min_point_margin"
+                    and min(lose_score_statistic, win_score_statistic) == 0
                 ):
                     raise AssertionError
 
-                if self.down_mode == "score":
-                    occurs_point_margin_percent = point_margin_map.setdefault(
-                        win_point_margin, PointMarginPercent()
+                if self.score_statistic_mode == "final_team_score":
+                    occurs_score_stat_percent = score_statistic_map.setdefault(
+                        win_score_statistic, ScoreStatisticPercent()
                     )
-                    occurs_point_margin_percent.wins.add(game.game_id)
-                    occurs_point_margin_percent = point_margin_map.setdefault(
-                        lose_point_margin, PointMarginPercent()
+                    occurs_score_stat_percent.wins.add(game.game_id)
+                    occurs_score_stat_percent = score_statistic_map.setdefault(
+                        lose_score_statistic, ScoreStatisticPercent()
                     )
-                    occurs_point_margin_percent.wins.add(f"{game.game_id}_AWAY")
+                    occurs_score_stat_percent.wins.add(f"{game.game_id}_AWAY")
                 elif (
-                    self.down_mode == "playoff_series" or self.down_mode == "at_margin"
+                    self.score_statistic_mode == "playoff_series_score" or 
+                    self.score_statistic_mode == "point_margin_at_time"
                 ):
-                    occurs_point_margin_percent = point_margin_map.setdefault(
-                        win_point_margin, PointMarginPercent()
+                    occurs_score_stat_percent = score_statistic_map.setdefault(
+                        win_score_statistic, ScoreStatisticPercent()
                     )
-                    occurs_point_margin_percent.wins.add(game.game_id)
-                    occurs_point_margin_percent = point_margin_map.setdefault(
-                        lose_point_margin, PointMarginPercent()
+                    occurs_score_stat_percent.wins.add(game.game_id)
+                    occurs_score_stat_percent = score_statistic_map.setdefault(
+                        lose_score_statistic, ScoreStatisticPercent()
                     )
-                    occurs_point_margin_percent.wins.add(game.game_id)
-                    if self.down_mode == "playoff_series":
-                        if win_point_margin == 0 or lose_point_margin == 0:
+                    occurs_score_stat_percent.wins.add(game.game_id)
+                    if self.score_statistic_mode == "playoff_series_score":
+                        if win_score_statistic == 0 or lose_score_statistic == 0:
                             raise AssertionError
-                        if -3 <= win_point_margin <= 3:
+                        if -3 <= win_score_statistic <= 3:
                             # For playoff series occurs, we track 3-3, 2-2, 1-1 and tied
                             # all as sep. x values.
-                            occurs_point_margin_percent = point_margin_map.setdefault(
-                                0, PointMarginPercent()
+                            occurs_score_stat_percent = score_statistic_map.setdefault(
+                                0, ScoreStatisticPercent()
                             )
-                            occurs_point_margin_percent.wins.add(game.game_id)
+                            occurs_score_stat_percent.wins.add(game.game_id)
 
-                elif self.down_mode == "max" or self.down_mode == "at_down":
-                    occurs_point_margin_percent = point_margin_map.setdefault(
-                        min(lose_point_margin, win_point_margin), PointMarginPercent()
+                elif self.score_statistic_mode == "min_point_margin" or self.score_statistic_mode == "losing_point_margin_at_time":
+                    occurs_score_stat_percent = score_statistic_map.setdefault(
+                        min(lose_score_statistic, win_score_statistic), ScoreStatisticPercent()
                     )
-                    occurs_point_margin_percent.wins.add(game.game_id)
+                    occurs_score_stat_percent.wins.add(game.game_id)
                 else:
                     raise Exception
 
             else:
-                if self.down_mode == "playoff_series":
+                if self.score_statistic_mode == "playoff_series_score":
                     playoff_series = games.playoff_map.get_playoff_series(game)
                 else:
                     playoff_series = None
                 if game_filter is None or game_filter.is_match(
                     game, is_win=True, playoff_series=playoff_series
                 ):
-                    win_point_margin_percent = point_margin_map.setdefault(
-                        win_point_margin, PointMarginPercent()
+                    win_score_stat_percent = score_statistic_map.setdefault(
+                        win_score_statistic, ScoreStatisticPercent()
                     )
-                    win_point_margin_percent.wins.add(game.game_id)
+                    win_score_stat_percent.wins.add(game.game_id)
 
                 if game_filter is None or game_filter.is_match(
                     game, is_win=False, playoff_series=playoff_series
                 ):
-                    lose_point_margin_percent = point_margin_map.setdefault(
-                        lose_point_margin, PointMarginPercent()
+                    lose_score_stat_percent = score_statistic_map.setdefault(
+                        lose_score_statistic, ScoreStatisticPercent()
                     )
-                    lose_point_margin_percent.losses.add(game.game_id)
+                    lose_score_stat_percent.losses.add(game.game_id)
 
-        return point_margin_map
+        return score_statistic_map
 
-    def cumulate_point_totals(self, point_margin_map):
-        point_margin_items = sorted(point_margin_map.items())
-        for index, value in enumerate(point_margin_items):
+    def cumulate_score_statistics(self, score_statistic_map):
+        score_stat_items = sorted(score_statistic_map.items())
+        for index, value in enumerate(score_stat_items):
             p0 = value[1]
             try:
-                p1 = point_margin_items[index + 1][1]
+                p1 = score_stat_items[index + 1][1]
             except IndexError:
                 break
             else:
                 p1.wins.update(p0.wins)
                 p1.losses.update(p0.losses)
 
-    def clean_point_margin_map_end_points(self, point_margin_map):
-        first_point_margin = None
-        for point_margin, point_margin_percent in sorted(point_margin_map.items()):
-            if point_margin_percent.odds[0] > 0:
-                if first_point_margin is None:
-                    first_point_margin = point_margin
+    def clean_score_statistic_map_end_points(self, score_statistic_map):
+        first_score_statistic = None
+        for score_statistic, score_stat_percent in sorted(score_statistic_map.items()):
+            if score_stat_percent.odds[0] > 0:
+                if first_score_statistic is None:
+                    first_score_statistic = score_statistic
                 break
             else:
-                first_point_margin = point_margin
+                first_score_statistic = score_statistic
 
-        last_point_margin = None
-        for point_margin, point_margin_percent in sorted(
-            point_margin_map.items(), reverse=True
+        last_score_statistic = None
+        for score_statistic, score_stat_percent in sorted(
+            score_statistic_map.items(), reverse=True
         ):
-            if point_margin_percent.odds[0] < 1.0:
-                if last_point_margin is None:
-                    last_point_margin = point_margin
+            if score_stat_percent.odds[0] < 1.0:
+                if last_score_statistic is None:
+                    last_score_statistic = score_statistic
                 break
             else:
-                last_point_margin = point_margin
+                last_score_statistic = score_statistic
 
-        for point_margin, point_margin_percent in sorted(point_margin_map.items()):
-            if point_margin < first_point_margin:
-                wins = point_margin_percent.wins
+        for score_statistic, score_stat_percent in sorted(score_statistic_map.items()):
+            if score_statistic < first_score_statistic:
+                wins = score_stat_percent.wins
                 if wins:
                     raise AssertionError
-                point_margin_map[first_point_margin].losses.update(
-                    point_margin_percent.losses
+                score_statistic_map[first_score_statistic].losses.update(
+                    score_stat_percent.losses
                 )
-                point_margin_map.pop(point_margin)
-            elif point_margin > last_point_margin:
-                losses = point_margin_percent.losses
+                score_statistic_map.pop(score_statistic)
+            elif score_statistic > last_score_statistic:
+                losses = score_stat_percent.losses
                 if losses:
                     raise AssertionError
-                point_margin_map[last_point_margin].wins.update(
-                    point_margin_percent.wins
+                score_statistic_map[last_score_statistic].wins.update(
+                    score_stat_percent.wins
                 )
-                point_margin_map.pop(point_margin)
-        return first_point_margin, last_point_margin
+                score_statistic_map.pop(score_statistic)
+        return first_score_statistic, last_score_statistic
 
     def fit_regression_lines(
         self, min_game_count, max_fit_point, calculate_occurrences
@@ -497,7 +515,7 @@ class PointsDownLine(PlotLine):
 
         if str(max_fit_point).endswith("%"):
             amount = float(max_fit_point[:-1]) / 100.0
-            for index, max_fit_point_amount in enumerate(self.point_margins):
+            for index, max_fit_point_amount in enumerate(self.score_statistics):
                 if self.percents[index] > amount:
                     break
             else:
@@ -506,28 +524,28 @@ class PointsDownLine(PlotLine):
 
             # At least 10 points of fit data
             try:
-                safe_fit_point = self.point_margins[10]
+                safe_fit_point = self.score_statistics[10]
             except IndexError:
-                safe_fit_point = self.point_margins[-1]
+                safe_fit_point = self.score_statistics[-1]
             if safe_fit_point > -2:
                 safe_fit_point = -2
             max_fit_point = max(max_fit_point, safe_fit_point)
             max_fit_point = max(max_fit_point, -18)
 
-        if self.point_margins.index(max_fit_point) < 2:
-            max_fit_point = self.point_margins[2]
+        if self.score_statistics.index(max_fit_point) < 2:
+            max_fit_point = self.score_statistics[2]
 
         min_game_count = min_game_count if min_game_count is not None else 0
         max_fit_point = max_fit_point if max_fit_point is not None else float("inf")
 
         fit_xy = [
-            (point_margin, self.sigmas[index])
-            for index, point_margin in enumerate(self.point_margins)
+            (score_statistic, self.sigmas[index])
+            for index, score_statistic in enumerate(self.score_statistics)
             if
             (
-                # len(self.point_margin_map[point_margin].wins) >= min_game_count
+                # len(self.score_statistic_map[score_statistic].wins) >= min_game_count
                 self.min_percent <= self.percents[index] <= self.max_percent
-                and point_margin <= max_fit_point
+                and score_statistic <= max_fit_point
             )
         ]
         fit_x = [p[0] for p in fit_xy]
@@ -547,16 +565,16 @@ class PointsDownLine(PlotLine):
         Y = []
         x = []
         y = []
-        for point_margin, data in sorted(self.point_margin_map.items()):
-            x.append(point_margin)
+        for score_statistic, data in sorted(self.score_statistic_map.items()):
+            x.append(score_statistic)
             y.append(data.odds[0])
             for game_id in data.wins:
                 Y.append(1)
-                X.append(point_margin)
+                X.append(score_statistic)
             for game_id in data.losses:
                 Y.append(0)
-                X.append(point_margin)
-            if point_margin >= max_fit_point:
+                X.append(score_statistic)
+            if score_statistic >= max_fit_point:
                 break
 
         X = Num.array(X)
@@ -574,17 +592,17 @@ class PointsDownLine(PlotLine):
     @property
     def wins_count(self):
         return [
-            len(self.point_margin_map[point_margin].wins)
-            for point_margin in self.point_margins
+            len(self.score_statistic_map[score_statistic].wins)
+            for score_statistic in self.score_statistics
         ]
 
     def margin_at_percent(self, percent):
         percent = percent * 0.01
         amount = Num.PPF(percent)
         margin = (amount - self.b) / self.m
-        point_A = self.point_margin_map.get(int(Num.ceil(margin)), PointMarginPercent())
-        point_B = self.point_margin_map.get(
-            int(Num.floor(margin)), PointMarginPercent()
+        point_A = self.score_statistic_map.get(int(Num.ceil(margin)), ScoreStatisticPercent())
+        point_B = self.score_statistic_map.get(
+            int(Num.floor(margin)), ScoreStatisticPercent()
         )
         if Num.absolute(point_A.odds[0] or 0.0 - percent) < Num.absolute(
             point_B.odds[0] or 0.0 - percent
@@ -594,30 +612,30 @@ class PointsDownLine(PlotLine):
             return margin, int(Num.floor(margin)), point_B
 
     def margin_at_record(self):
-        for point_margin, data in sorted(self.point_margin_map.items()):
+        for score_statistic, data in sorted(self.score_statistic_map.items()):
             if data.wins:
-                return point_margin, point_margin, data
+                return score_statistic, score_statistic, data
 
-    def filter_max_point_margin(self, min_point_margin, max_point_margin):
-        if min_point_margin is not None:
-            self.point_margin_map = {
-                k: v for k, v in self.point_margin_map.items() if k >= min_point_margin
+    def filter_max_score_statistic(self, min_score_statistic, max_score_statistic):
+        if min_score_statistic is not None:
+            self.score_statistic_map = {
+                k: v for k, v in self.score_statistic_map.items() if k >= min_score_statistic
             }
-            self.point_margins = sorted(self.point_margin_map)
-            self.percents = self.percents[-len(self.point_margins) :]
-            self.occurs = self.occurs[-len(self.point_margins) :]
-            self.sigmas = self.sigmas[-len(self.point_margins) :]
-        if max_point_margin is not None:
-            self.point_margin_map = {
-                k: v for k, v in self.point_margin_map.items() if k <= max_point_margin
+            self.score_statistics = sorted(self.score_statistic_map)
+            self.percents = self.percents[-len(self.score_statistics) :]
+            self.occurs = self.occurs[-len(self.score_statistics) :]
+            self.sigmas = self.sigmas[-len(self.score_statistics) :]
+        if max_score_statistic is not None:
+            self.score_statistic_map = {
+                k: v for k, v in self.score_statistic_map.items() if k <= max_score_statistic
             }
-            self.point_margins = sorted(self.point_margin_map)
-            self.percents = self.percents[: len(self.point_margins)]
-            self.occurs = self.occurs[: len(self.point_margins)]
-            self.sigmas = self.sigmas[: len(self.point_margins)]
+            self.score_statistics = sorted(self.score_statistic_map)
+            self.percents = self.percents[: len(self.score_statistics)]
+            self.occurs = self.occurs[: len(self.score_statistics)]
+            self.sigmas = self.sigmas[: len(self.score_statistics)]
 
     def get_xy(self):
-        return self.point_margins, self.sigmas
+        return self.score_statistics, self.sigmas
 
     def to_json(self, calculate_occurrences=False):
         json_data = {
@@ -625,23 +643,23 @@ class PointsDownLine(PlotLine):
             "m": self.m,
             "b": self.b,
             "number_of_games": self.number_of_games,
-            "or_less_point_margin": self.or_less_point_margin,
-            "or_more_point_margin": self.or_more_point_margin,
+            "or_less_score_statistic": self.or_less_score_statistic,
+            "or_more_score_statistic": self.or_more_score_statistic,
         }
-        json_data["x_values"] = list(self.point_margins)
+        json_data["x_values"] = list(self.score_statistics)
         json_data["y_values"] = y_values = []
-        for index, point_margin in enumerate(self.point_margins):
-            point_margin_json = self.point_margin_map[point_margin].to_json(
+        for index, score_statistic in enumerate(self.score_statistics):
+            score_stat_json = self.score_statistic_map[score_statistic].to_json(
                 self.games,
                 self.get_all_game_ids(),
                 calculate_occurrences,
             )
-            point_margin_json["percent"] = self.percents[index]
-            point_margin_json["point_margin_occurs_percent"] = self.occurs[index]
-            point_margin_json["sigma"] = self.sigma_final[index]
-            point_margin_json["y_value"] = self.sigma_final[index]
-            point_margin_json["x_value"] = self.point_margins[index]
-            y_values.append(point_margin_json)
+            score_stat_json["percent"] = self.percents[index]
+            score_stat_json["score_statistic_occurs_percent"] = self.occurs[index]
+            score_stat_json["sigma"] = self.sigma_final[index]
+            score_stat_json["y_value"] = self.sigma_final[index]
+            score_stat_json["x_value"] = self.score_statistics[index]
+            y_values.append(score_stat_json)
         return json_data
 
     def plot_point_raw_margins(self, games):

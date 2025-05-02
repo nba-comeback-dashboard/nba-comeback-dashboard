@@ -5,6 +5,9 @@
 A Rule Of Thumb That Actually Works If Your Thumb Is Good At Math
 *****************************************************************
 
+.. published-date::
+   :published: April 2, 2025
+
 
 .. _a-rule-of-thumb:
 

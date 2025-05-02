@@ -18,7 +18,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    create_score_statistic_v_probability_chart_json,
 )
 
 # Calculate script directory from __file__
@@ -44,7 +44,7 @@ eras = [
     (1996, 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_scores.json.gz",
     year_groups=eras,
     start_time=48,
@@ -55,7 +55,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_scores_or_more.json.gz",
     year_groups=eras,
     start_time=48,
@@ -66,7 +66,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_max_48_point_margin.json.gz",
     year_groups=eras,
     start_time=48,
@@ -76,7 +76,7 @@ plot_biggest_deficit(
     calculate_occurrences=False,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_max_or_more_48_point_margin.json.gz",
     year_groups=eras,
     start_time=48,
@@ -86,7 +86,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
@@ -96,7 +96,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
@@ -106,7 +106,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_24_point_margin.json.gz",
     year_groups=eras,
     start_time=24,
@@ -116,7 +116,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_12_point_margin.json.gz",
     year_groups=eras,
     start_time=12,
@@ -132,7 +132,7 @@ eras = [
     ("P1996", 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_playoffs_at_or_more_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
@@ -150,7 +150,7 @@ eras = [
 ]
 
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_scores.json.gz",
     year_groups=eras,
     start_time=48,
@@ -161,7 +161,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_scores_or_more.json.gz",
     year_groups=eras,
     start_time=48,
@@ -173,7 +173,7 @@ plot_biggest_deficit(
 )
 
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_max_or_more_48_point_margin.json.gz",
     year_groups=eras,
     start_time=48,
@@ -184,7 +184,7 @@ plot_biggest_deficit(
 )
 
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_at_or_more_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
@@ -194,7 +194,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_at_or_more_24_point_margin.json.gz",
     year_groups=eras,
     start_time=24,
@@ -211,7 +211,7 @@ eras = [
     ("P1996", 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_reg_v_playoffs_at_or_more_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
@@ -221,7 +221,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_reg_v_playoffs_at_or_more_0_point_margin.json.gz",
     year_groups=eras,
     start_time=0,
@@ -237,7 +237,7 @@ eras = [
     ("P2021", 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/very_modern_vs_all_time_at_or_more_6_point_margin.json.gz",
     year_groups=eras,
     start_time=6,
@@ -247,7 +247,7 @@ plot_biggest_deficit(
     calculate_occurrences=True,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/very_modern_vs_all_time_at_or_more_0_point_margin.json.gz",
     year_groups=eras,
     start_time=0,

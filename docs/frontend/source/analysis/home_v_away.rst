@@ -1,6 +1,9 @@
 ****************
 Home Versus Away
 ****************
+
+.. published-date::
+   :published: April 15, 2025
     
 .. _home-v-away-all-time:
 

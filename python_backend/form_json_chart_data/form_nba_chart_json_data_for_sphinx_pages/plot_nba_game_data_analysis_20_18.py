@@ -18,7 +18,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    create_score_statistic_v_probability_chart_json,
     GameFilter,
 )
 
@@ -51,14 +51,14 @@ game_filters = [
     # GameFilter(for_rank="bot_10", vs_rank="top_10"),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/20_18/dramatic.json",
     year_groups=eras,
     start_time=48,
-    down_mode="max",
+    score_statistic_mode="min_point_margin",
     cumulate=True,
     game_filters=game_filters,
-    max_point_margin=-4,
+    max_score_statistic=-4,
 )
 
 

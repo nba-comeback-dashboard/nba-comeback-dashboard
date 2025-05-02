@@ -2,6 +2,9 @@
 Occurrence Frequencies of Points Scored, Points Down, and Garbage Time Games
 ****************************************************************************
 
+.. published-date::
+   :published: April 17, 2025
+   :updated: May 2, 2025
 
 .. _largest-and-smallest-final-scores:
 

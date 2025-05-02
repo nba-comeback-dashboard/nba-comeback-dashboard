@@ -330,14 +330,14 @@ class GameFilter:
             return "For All Games"
 
 
-def plot_biggest_deficit(
+def create_score_statistic_v_probability_chart_json(
     json_name,
     year_groups,
     start_time,
-    down_mode,
+    score_statistic_mode,
     cumulate=False,
-    min_point_margin=None,
-    max_point_margin=None,
+    min_score_statistic=None,
+    max_score_statistic=None,
     fit_min_win_game_count=None,
     fit_max_points=None,
     game_filters=None,
@@ -348,11 +348,12 @@ def plot_biggest_deficit(
     use_logit=False,
 ):
     """
-    Generate plots and JSON data showing win probability based on point deficit.
+    Generate plots and JSON data showing win probability based on score statistics.
 
-    Creates chart data showing how point deficits at different game times
-    correlate with comeback probabilities. Can analyze either deficits at a
-    specific moment or maximum deficits faced during a period.
+    Creates chart data showing how different score statistics at different game times
+    correlate with comeback probabilities. Can analyze various statistics like
+    point margins at specific moments, minimum point margins during periods, or
+    playoff series scores.
 
     Parameters:
     -----------
@@ -364,26 +365,29 @@ def plot_biggest_deficit(
         Time point to start analysis from, can be:
         - Integer minute value (e.g., 48 for game start, 24 for halftime)
         - String for sub-minute times in final minute (e.g., "45s", "30s", "15s")
-    down_mode : str
+    score_statistic_mode : str
         Analysis mode:
-        - 'at': Point deficit at specific time point
-        - 'max': Maximum point deficit faced during the period from start_time to end
+        - 'point_margin_at_time': Point margin at specific time point
+        - 'min_point_margin': Minimum point margin faced during the period
+        - 'losing_point_margin_at_time': Negative point margin at specific time
+        - 'final_team_score': Final score of team
+        - 'playoff_series_score': Playoff series score analysis
     cumulate : bool
-        Whether to cumulate point totals (for "or more" analysis)
-    min_point_margin : int or None
-        Minimum point margin to include in analysis
-    max_point_margin : int, "auto", or None
-        Maximum point margin to include in analysis
+        Whether to cumulate score statistics (for "or more" analysis)
+    min_score_statistic : int or None
+        Minimum score statistic to include in analysis
+    max_score_statistic : int, "auto", or None
+        Maximum score statistic to include in analysis
         - int: Specific max value
         - "auto": Automatically determine based on data
-        - None: Use defaults based on down_mode
+        - None: Use defaults based on score_statistic_mode
     fit_min_win_game_count : int or None
         Minimum number of wins required for fitting regression
     fit_max_points : float, str, or None
         Maximum points to include in regression fit
         - float: Specific max value
         - str ending with '%': Percentile cutoff (e.g., "10%")
-        - None: Use defaults based on down_mode
+        - None: Use defaults based on score_statistic_mode
     game_filters : list of GameFilter or None
         List of filters to apply to games. Each filter will be paired with each year group.
     plot : bool
@@ -415,7 +419,7 @@ def plot_biggest_deficit(
     if start_time == 48:
         time_desc = "Entire Game"
     elif start_time == 36:
-        if down_mode.startswith("at"):
+        if score_statistic_mode == "point_margin_at_time":
             time_desc = "2nd Quarter"
         else:
             time_desc = "Final 3 Quarters"
@@ -450,32 +454,35 @@ def plot_biggest_deficit(
     else:
         start_text = "Win % v. "
 
-    if down_mode.startswith("at"):
-        if down_mode == "at_margin":
-            title = f"{start_text}Points Down{or_more} At Start of {time_desc}"
-        elif down_mode == "at_down":
-            title = (
-                f"{start_text}Losing Team Points Down{or_more} At Start of {time_desc}"
-            )
-        else:
-            raise AssertionError
+    if score_statistic_mode == "point_margin_at_time":
+        title = f"{start_text}Points Down{or_more} At Start of {time_desc}"
         or_more = ""
-        max_point_margin = -1 if max_point_margin is None else max_point_margin
+        max_score_statistic = -1 if max_score_statistic is None else max_score_statistic
         fit_max_points = -1 if fit_max_points is None else fit_max_points
+    elif score_statistic_mode == "losing_point_margin_at_time":
+        title = f"{start_text}Losing Team Points Down{or_more} At Start of {time_desc}"
+        or_more = ""
+        max_score_statistic = -1 if max_score_statistic is None else max_score_statistic
+        fit_max_points = -1 if fit_max_points is None else fit_max_points
+    elif score_statistic_mode == "min_point_margin":
+        title = f"{start_text}Min Points Down{or_more} During {time_desc}"
+        max_score_statistic = "auto" if max_score_statistic is None else max_score_statistic
+        if fit_max_points is None:
+            fit_max_points = "10%"
     else:
-        title = f"{start_text}Max Points Down{or_more} During {time_desc}"
-        max_point_margin = "auto" if max_point_margin is None else max_point_margin
+        title = f"{start_text}Score Statistic{or_more} During {time_desc}"
+        max_score_statistic = "auto" if max_score_statistic is None else max_score_statistic
         if fit_max_points is None:
             fit_max_points = "10%"
 
     if calculate_occurrences:
-        max_point_margin = 1000
+        max_score_statistic = 1000
 
     # Special handling for playoff series analysis mode
-    if down_mode == "playoff_series":
-        # For playoff series analysis, only use negative point margins (teams that are behind)
+    if score_statistic_mode == "playoff_series_score":
+        # For playoff series analysis, only use negative score statistics (teams that are behind)
         fit_max_points = "90%"
-        max_point_margin = 0
+        max_score_statistic = 0
         # Ensure we're using playoff data by adding 'P' prefix to year numbers
         # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)
         year_groups = list(year_groups)
@@ -487,7 +494,7 @@ def plot_biggest_deficit(
                 if str(year_group[0]) == "P":
                     pass
                 else:
-                    raise AssertionError("Invalid year format for playoff_series mode")
+                    raise AssertionError("Invalid year format for playoff_series_score mode")
             else:
                 # Add P prefix to year for playoff data
                 year_groups[index] = [f"P{year_group[0]}", year_group[1]]
@@ -520,12 +527,12 @@ def plot_biggest_deficit(
 
             # For playoff series analysis, create the mapping structure between games and series
             # This organizes games into playoff series and calculates series standings for each game
-            if down_mode == "playoff_series":
+            if score_statistic_mode == "playoff_series_score":
                 games.add_playoff_series_lookup_map()
 
             if number_of_year_groups > 1 or number_of_game_filters < 2:
                 legend = games.get_years_string()
-            elif down_mode == "playoff_series" and number_of_game_filters >= 2:
+            elif score_statistic_mode == "playoff_series_score" and number_of_game_filters >= 2:
                 legend = games.get_years_string()
             else:
                 legend = ""
@@ -545,10 +552,10 @@ def plot_biggest_deficit(
                 game_filter=game_filter,
                 legend=legend,
                 start_time=start_time,
-                down_mode=down_mode,
+                score_statistic_mode=score_statistic_mode,
                 cumulate=cumulate,
-                min_point_margin=min_point_margin,
-                max_point_margin=max_point_margin,
+                min_score_statistic=min_score_statistic,
+                max_score_statistic=max_score_statistic,
                 fit_min_win_game_count=fit_min_win_game_count,
                 fit_max_points=fit_max_points,
                 calculate_occurrences=calculate_occurrences,
@@ -563,7 +570,7 @@ def plot_biggest_deficit(
     elif number_of_game_filters == 1:
         title = f"{title} | {game_filters[0].get_filter_string()}"
 
-    if down_mode == "score":
+    if score_statistic_mode == "final_team_score":
         if cumulate:
             title = "Points Scored Or Less"
         else:
@@ -571,7 +578,7 @@ def plot_biggest_deficit(
         for line in points_down_lines:
             line.legend = line.legend.replace("Games)", "Scores)")
     # For playoff series analysis, set appropriate chart title and customize legend
-    elif down_mode == "playoff_series":
+    elif score_statistic_mode == "playoff_series_score":
         if calculate_occurrences:
             # For occurrence analysis, show frequency distribution of different series scores
             title = "Series Score"
@@ -598,17 +605,17 @@ def plot_biggest_deficit(
         max_y = y_tick_values[-1]
         points_down_line.set_sigma_final(min_y, max_y)
 
-    if down_mode == "score":
+    if score_statistic_mode == "final_team_score":
         x_label = "Team Score"
     else:
-        x_label = "Point Margin"
+        x_label = "Score Statistic"
     if calculate_occurrences:
         y_label = "Occurrence %"
     else:
         y_label = "Win %"
 
-    # For playoff series analysis, customize x-axis to show series scores instead of point margins
-    if down_mode == "playoff_series":
+    # For playoff series analysis, customize x-axis to show series scores
+    if score_statistic_mode == "playoff_series_score":
         x_label = "Series Score"
 
         if calculate_occurrences:
@@ -641,7 +648,7 @@ def plot_biggest_deficit(
         x_tick_labels = None
 
     final_plot = FinalPlot(
-        plot_type="point_margin_v_win_percent",
+        plot_type="score_statistic_v_win_percent",
         title=title,
         x_label=x_label,
         y_label=y_label,
@@ -669,7 +676,7 @@ def get_points_down_normally_spaced_y_ticks(plot_lines, bound_x=float("inf")):
     min_x = float("inf")
     max_x = -1.0 * float("inf")
     for plot_line in plot_lines:
-        x = plot_line.point_margins
+        x = plot_line.score_statistics
         y = plot_line.percents
         min_x = min(min_x, min(x))
         max_x = max(max_x, min(max(x), bound_x))
@@ -864,8 +871,8 @@ def plot_percent_versus_time(
                     games=games,
                     game_filter=game_filter,
                     start_time=current_time,
-                    down_mode="at_margin",
-                    max_point_margin=-1,
+                    score_statistic_mode="point_margin_at_time",
+                    max_score_statistic=-1,
                     fit_max_points=-1,
                 )
                 game_count = points_down_line.number_of_games
@@ -1010,9 +1017,7 @@ def plot_espn_versus_dashboard(
     year_groups : list of tuples
         List of (start_year, end_year) ranges to use for Dashboard calculations
     use_home_away_game_filters : bool
-        Whether to apply home/away game filters based on point margin
-    show_modern_only : bool
-        Whether to only show modern era calculations (2017-2024)
+        Whether to apply home/away game filters based on score statistic
     show_team : str
         Which team's perspective to show ('home', 'away', or 'both')
     start_time : int

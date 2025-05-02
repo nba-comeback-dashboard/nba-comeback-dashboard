@@ -19,7 +19,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    create_score_statistic_v_probability_chart_json,
 )
 
 # Calculate script directory from __file__
@@ -47,7 +47,7 @@ eras_one = [
     ("R2023", 2023),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/understand/nbacd_max_or_more_48_espn_0.json",
     year_groups=eras_one,
     start_time=48,
@@ -63,7 +63,7 @@ eras_one = [
     (2017, 2024),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/understand/nbacd_max_48_eras_1.json",
     year_groups=eras_one,
     start_time=48,
@@ -73,11 +73,11 @@ plot_biggest_deficit(
 )
 
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/understand/nbacd_down_at_24_eras_1.json",
     year_groups=eras_one,
     start_time=24,
-    down_mode="at_margin",
+    score_statistic_mode="point_margin_at_time",
     cumulate=False,
-    max_point_margin=2,
+    max_score_statistic=2,
 )

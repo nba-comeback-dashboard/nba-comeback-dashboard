@@ -2,10 +2,13 @@
 Some Notable Record Games, Some Hidden
 **************************************
 
+.. published-date::
+   :published: April 23, 2025
+   :updated: April 26, 2025
+
 .. green-box::
     
-    Last updated 4/26/2025.  Here, all 'records' are from 1996 on, when play-by-play
-    data first became available.
+    Here, all 'records' are from 1996 on, when play-by-play data first became available.
 
 .. _some-hidden-records:
 

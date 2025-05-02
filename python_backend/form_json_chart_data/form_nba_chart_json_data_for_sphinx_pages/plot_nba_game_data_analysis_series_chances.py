@@ -18,7 +18,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 
 # Import API functions
 from form_nba_chart_json_data_api import (
-    plot_biggest_deficit,
+    create_score_statistic_v_probability_chart_json,
     GameFilter,
 )
 
@@ -49,14 +49,14 @@ eras = [
     (1996, 2023),
 ]
 
-# plot_biggest_deficit(
+# create_score_statistic_v_probability_chart_json(
 #     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time.json.gz",
 #     year_groups=eras,
 #     start_time=48,
 #     down_mode="playoff_series",
 # )
 
-# plot_biggest_deficit(
+# create_score_statistic_v_probability_chart_json(
 #     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_occurs.json.gz",
 #     year_groups=eras,
 #     start_time=48,
@@ -74,19 +74,19 @@ game_filters = [
     GameFilter(playoff_for_home=False),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_home_v_away.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_home_v_away_occurs.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
     calculate_occurrences=True,
 )
@@ -104,7 +104,7 @@ game_filters = [
     GameFilter(playoff_round=2),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2.json.gz",
     year_groups=eras,
     start_time=48,
@@ -112,7 +112,7 @@ plot_biggest_deficit(
     game_filters=game_filters,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2_occurs.json.gz",
     year_groups=eras,
     start_time=48,
@@ -126,7 +126,7 @@ game_filters = [
     GameFilter(playoff_round=4),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4.json.gz",
     year_groups=eras,
     start_time=48,
@@ -134,7 +134,7 @@ plot_biggest_deficit(
     game_filters=game_filters,
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4_occurs.json.gz",
     year_groups=eras,
     start_time=48,
@@ -150,14 +150,14 @@ eras = [
     (2017, 2023),
 ]
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern.json.gz",
     year_groups=eras,
     start_time=48,
     down_mode="playoff_series",
 )
 
-plot_biggest_deficit(
+create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern_occurs.json.gz",
     year_groups=eras,
     start_time=48,
