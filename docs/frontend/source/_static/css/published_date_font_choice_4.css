@@ -1,0 +1,10 @@
+/* Published Date styling for Font Choice #4: Balanced Approach */
+
+.published-date {
+    font-family: "Charter", Georgia, serif !important;
+    font-size: 11px;
+    color: #777;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
