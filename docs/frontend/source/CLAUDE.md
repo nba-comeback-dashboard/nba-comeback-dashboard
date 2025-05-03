@@ -23,13 +23,43 @@
 ## Icon Configuration
 
 - Icons are placed in the `/icons` directory and will be copied to the site root during build
-- The site uses a combination of SVG and PNG icons for maximum compatibility:
+- The site implements a comprehensive set of icons for cross-platform compatibility:
+  
+  ### Browser Favicons
   - SVG favicon for modern browsers (`favicon.svg`)
-  - Traditional ICO favicon (`favicon.ico`)
-  - PNG favicon fallback (`favicon-96x96.png`)
-  - iOS home screen icon (`apple-touch-icon.png` - 180×180px)
-  - Android/PWA home screen icons (`web-app-manifest-192x192.png` and `web-app-manifest-512x512.png`)
-  - Web app manifest file (`site.webmanifest`) configures Progressive Web App behavior
+  - Traditional ICO favicon (`favicon.ico`) containing 16×16, 32×32, and 48×48 sizes
+  - PNG favicon fallbacks in multiple sizes:
+    - favicon-16x16.png
+    - favicon-32x32.png
+    - favicon-96x96.png
+    - favicon-196x196.png (for Android Chrome)
+  
+  ### iOS Home Screen Icons
+  - Multiple sizes for different iOS devices:
+    - apple-touch-icon-57x57.png (iPhone non-retina)
+    - apple-touch-icon-60x60.png (iPhone iOS 7+)
+    - apple-touch-icon-72x72.png (iPad non-retina)
+    - apple-touch-icon-76x76.png (iPad iOS 7+)
+    - apple-touch-icon-114x114.png (iPhone retina)
+    - apple-touch-icon-120x120.png (iPhone retina iOS 7+)
+    - apple-touch-icon-144x144.png (iPad retina)
+    - apple-touch-icon-152x152.png (iPad retina iOS 7+)
+    - apple-touch-icon.png (180×180px for iPhone 6+)
+  
+  ### Android Home Screen Icons
+  - web-app-manifest-192x192.png (Android Chrome)
+  - web-app-manifest-512x512.png (Android Chrome)
+  
+  ### Windows Tiles
+  - mstile-70x70.png (small tile)
+  - mstile-144x144.png (medium tile)
+  - mstile-150x150.png (medium tile)
+  - mstile-310x150.png (wide tile)
+  - mstile-310x310.png (large tile)
+  
+  ### Web App Manifest
+  - site.webmanifest configures Progressive Web App behavior
+  
 - All icon paths in HTML reference the root level (e.g., `/favicon.svg` not `_static/icons/favicon.svg`)
 - During build, the `/icons` directory is added to `html_extra_path` in `conf.py`
 
