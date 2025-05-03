@@ -16,8 +16,8 @@ normal probability plot </analysis/methodology_forming_the_plot_trend_lines>` an
 at a lot of playoff series statistics with just a few charts.
 
 First, let's look at the odds of coming back and winning a best-of-seven series versus
-series deficit since 1996 (note, 1st round series before 2003 -- which were 5-game
-series -- are ignored):
+series deficit since 1996 (note, 1st round series before 2003—which were 5-game
+series—are ignored):
 
 .. raw:: html
 

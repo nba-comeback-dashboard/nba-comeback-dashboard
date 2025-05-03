@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1">
+  <defs>
+    <clipPath id="basketballClip">
+      <circle cx="32" cy="32" r="30"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Basketball segments with accurate color and shape matching the original PNG -->
+  <g clip-path="url(#basketballClip)">
+    <!-- Left top segment (teal) -->
+    <path d="M 0,0 L 32,0 L 32,32 L 0,32 z" fill="#006272"/>
+    
+    <!-- Right top segment (orange) -->
+    <path d="M 32,0 L 64,0 L 64,32 L 32,32 z" fill="#F7941D"/>
+    
+    <!-- Left bottom segment (teal) -->
+    <path d="M 0,32 L 32,32 L 32,64 L 0,64 z" fill="#006272"/>
+    
+    <!-- Right bottom segment (orange) -->
+    <path d="M 32,32 L 64,32 L 64,64 L 32,64 z" fill="#F7941D"/>
+  </g>
+  
+  <!-- White lines/seams of the basketball -->
+  <g fill="none" stroke="white" stroke-width="2.5">
+    <!-- Vertical line -->
+    <path d="M 32,2 L 32,62"/>
+    
+    <!-- Horizontal line -->
+    <path d="M 2,32 L 62,32"/>
+    
+    <!-- Curved lines - left top quadrant -->
+    <path d="M 17,2 Q 12,12 10,32"/>
+    
+    <!-- Curved lines - right top quadrant -->
+    <path d="M 47,2 Q 52,12 54,32"/>
+    
+    <!-- Curved lines - left bottom quadrant -->
+    <path d="M 17,62 Q 12,52 10,32"/>
+    
+    <!-- Curved lines - right bottom quadrant -->
+    <path d="M 47,62 Q 52,52 54,32"/>
+  </g>
+</svg>

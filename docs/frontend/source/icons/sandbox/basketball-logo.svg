@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1">
+  <g transform="translate(0,0)">
+    <!-- Basketball icon with teal and orange segments -->
+    <g transform="translate(20,20) scale(0.95)">
+      <!-- Left top quadrant (teal) -->
+      <path
+         d="M 94,50 C 60,80 40,120 30,165 C 70,160 100,140 120,110 C 140,80 130,60 94,50 Z"
+         style="fill:#006272;stroke:none" />
+
+      <!-- Left top center segment (teal) -->
+      <path
+         d="M 135,50 C 90,60 70,100 50,150 C 110,147 150,100 200,90 C 170,65 145,50 135,50 Z"
+         style="fill:#006272;stroke:none" />
+         
+      <!-- Right top quadrant (orange) -->
+      <path
+         d="M 418,50 C 452,80 472,120 482,165 C 442,160 412,140 392,110 C 372,80 382,60 418,50 Z"
+         style="fill:#F7941D;stroke:none" />
+
+      <!-- Right top center segment (orange) -->
+      <path
+         d="M 377,50 C 422,60 442,100 462,150 C 402,147 362,100 312,90 C 342,65 367,50 377,50 Z"
+         style="fill:#F7941D;stroke:none" />
+         
+      <!-- Left bottom quadrant (teal) -->
+      <path
+         d="M 94,462 C 60,432 40,392 30,347 C 70,352 100,372 120,402 C 140,432 130,452 94,462 Z"
+         style="fill:#006272;stroke:none" />
+
+      <!-- Left bottom center segment (teal) -->
+      <path
+         d="M 135,462 C 90,452 70,412 50,362 C 110,365 150,412 200,422 C 170,447 145,462 135,462 Z"
+         style="fill:#006272;stroke:none" />
+         
+      <!-- Right bottom quadrant (orange) -->
+      <path
+         d="M 418,462 C 452,432 472,392 482,347 C 442,352 412,372 392,402 C 372,432 382,452 418,462 Z"
+         style="fill:#F7941D;stroke:none" />
+
+      <!-- Right bottom center segment (orange) -->
+      <path
+         d="M 377,462 C 422,452 442,412 462,362 C 402,365 362,412 312,422 C 342,447 367,462 377,462 Z"
+         style="fill:#F7941D;stroke:none" />
+    </g>
+  </g>
+</svg>

@@ -654,8 +654,8 @@ def calculate_dashboard_probability(
         games=games,
         game_filter=game_filter,
         start_time=time_point,
-        down_mode="at_margin",
-        max_point_margin=-1,
+        score_statistic_mode="point_margin_at_time",
+        max_score_statistic=-1,
         fit_max_points=-1,
     )
 

@@ -313,13 +313,13 @@ class PointsDownLine(PlotLine):
             elif score_statistic_mode == "point_margin_at_time":
                 # Analyze point margin at the specific time point
                 sign = 1 if game.score_diff > 0 else -1
-                score_statistic = game.point_margin_map[start_time]["point_margin"]
+                score_statistic = game.score_statistic_map[start_time]["point_margin"]
                 win_score_statistic = sign * score_statistic
                 lose_score_statistic = -1 * win_score_statistic
             elif score_statistic_mode == "losing_point_margin_at_time":
                 # Analyze negative point margin at the specific time point
                 sign = 1 if game.score_diff > 0 else -1
-                score_statistic = game.point_margin_map[start_time]["point_margin"]
+                score_statistic = game.score_statistic_map[start_time]["point_margin"]
                 win_score_statistic = sign * score_statistic
                 lose_score_statistic = -1 * win_score_statistic
                 # Only track negative margins
@@ -329,7 +329,7 @@ class PointsDownLine(PlotLine):
                     lose_score_statistic = 0
             elif score_statistic_mode == "min_point_margin":
                 # Analyze minimum point margin faced during the period
-                score_statistic = game.point_margin_map[start_time]["point_margin"]
+                score_statistic = game.score_statistic_map[start_time]["point_margin"]
                 win_score_statistic = float("inf")
                 lose_score_statistic = float("inf")
 
@@ -340,7 +340,7 @@ class PointsDownLine(PlotLine):
                 # Find the minimum margin throughout the period
                 for index in range(start_index, stop_index + 1):
                     time = GAME_MINUTES[index]
-                    score_statistic_data = game.point_margin_map[time]
+                    score_statistic_data = game.score_statistic_map[time]
 
                     # For first time point, use the current margin
                     if index == start_index:

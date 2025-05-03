@@ -1,0 +1,54 @@
+/* Fix alignment of the buy-me-coffee icon using its container */
+a[href*="buymeacoffee"] {
+    position: relative;
+    top: 2px; /* Add downward shift */
+    padding-top: 1px !important; 
+    padding-bottom: 1px !important;
+}
+
+/* Size for search icon */
+.search-button a svg {
+    height: 1.1em;
+    width: 1.1em;
+}
+
+/* Make coffee icon 15% bigger */
+.navbar-icon-links a[href*="buymeacoffee"] svg {
+    height: 1.27em; /* 1.1 × 1.15 = 1.265 ≈ 1.27 */
+    width: 1.27em;
+}
+
+/* Default size for other navbar icons */
+.navbar-icon-links a:not([href*="buymeacoffee"]) svg {
+    height: 1.1em;
+    width: 1.1em;
+}
+
+/* Control the size of the logo specifically - increased by 30% total */
+.navbar-brand img {
+    height: 32px !important; /* 30px × 1.05 ≈ 31.5px ≈ 32px (about 30% larger than original) */
+    width: 32px !important;
+    margin-right: 8px;
+}
+
+/* General icon link styling for consistency */
+.navbar .bd-navbar__inner .navbar-icon-links .nav-link {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    height: 40px; /* Fixed height for consistent hover underlines */
+}
+
+/* Fix the search icon container to match */
+.navbar .bd-navbar__inner .search-button .nav-link {
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Ensure all hover underlines align */
+.navbar .bd-navbar__inner .navbar-icon-links .nav-link:hover,
+.navbar .bd-navbar__inner .search-button .nav-link:hover {
+    border-bottom: 2px solid var(--pst-color-primary);
+}

@@ -48,7 +48,7 @@ last 20 seconds.
     149 teams have fallen down exactly 20 points after the first quarter and of those
     only 52 have pulled within 5 or less over the game.
 
-As time winds on, a similar pattern maintains.  At the half you get:
+As time winds on, a similar pattern maintains. At the half you get:
 
 .. raw:: html
 
@@ -78,7 +78,7 @@ limit it to the last 8 years and draws the same conclusions:
 .. _what-are-the-odds-a-beaten-down-team-will-repay-the-favor:
 
 What Are The Odds A Beaten Down Team Will Repay The Favor?
-==============================================================
+===========================================================
 
 And, just because it was easy, we can also look at some games with huge point swings:
 

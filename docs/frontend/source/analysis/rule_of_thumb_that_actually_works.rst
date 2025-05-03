@@ -128,8 +128,8 @@ for all eras you get:
 Which is very close to the 2, 4, 6 times the square root of minutes remaining number,
 but fits a little bit better.
 
-As you change conditions, the constant changes, but usually only slightly.  For
-example, if we look at just at the "old school" era (1996-2016), we get:
+As you change conditions, the constant changes, but usually only slightly. For
+example, if we look just at the "old school" era (1996-2016), we get:
 
 .. math::
     \text{Points Down} \approx 2.43 \cdot \Phi^{-1}(\text{% Win Chance}) \cdot \sqrt{\text{Minutes Remaining}}

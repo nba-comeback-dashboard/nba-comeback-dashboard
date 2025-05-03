@@ -35,7 +35,7 @@ This is a 'hidden record', because it's really a `tied record
 with the `4/29/2012 game <https://www.nba.com/game/0041100171>`_ where the Clippers
 didn't fall behind to Memphis until a little after the 10-minute mark and came back.
 
-Still, though, a record, albeit a tie -- but a 24-point lead with 10 minutes should be
+Still, though, a record, albeit a tie—but a 24-point lead with 10 minutes should be
 safe!
 
 .. _4242025-game-3-of-okc-at-memphis-httpswwwnbacomgame0042400143:

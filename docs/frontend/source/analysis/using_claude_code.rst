@@ -45,8 +45,8 @@ it didn't take me long to settle on using it over Cursor or Copilot. Agentic/age
 based AI code systems are newly emerging and Claude Code seems to be the state of the
 art of these approaches.  And with a price tag of 10 to 100x over other options, you
 pay for this extra power. To boot, I really like that it's a REPL as opposed to having
-it integrated in an IDE.  (And recently, after I finished this project up, Open AI has
-`released CodeX which takes a similar tack -- something I'm checking out next
+it integrated in an IDE. (And recently, after I finished this project up, OpenAI has
+`released CodeX which takes a similar tack—something I'm checking out next
 <https://openai.com/index/openai-codex/>`_).
 
 Overall, I settled on a hybrid project where I wrote most of the Python myself for the
@@ -403,8 +403,8 @@ and we need to match the python functions exactly.  Some examples:
                 }
 
 
-    In python, if point_margins is not big enough, it will raise an error.  However, in JS it will just return undefined.  Therefore, we need to check
-    that it is safe_fit_point = this.point_margins[10]; is undefined, then do the safe_fit_point = this.point_margins[this.point_margins.length - 1];
+    In python, if point_margins is not big enough, it will raise an error. However, in JS it will just return undefined. Therefore, we need to check
+    if safe_fit_point = this.point_margins[10]; is undefined, then do safe_fit_point = this.point_margins[this.point_margins.length - 1];
 
     ⏺ You're absolutely right. In JavaScript, accessing an array index that doesn't exist returns undefined rather than raising an exception like
       Python's IndexError. Let me fix that translation:

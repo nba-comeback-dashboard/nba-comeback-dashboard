@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="64" height="64"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+   
+  <!-- Basketball with transparent background and 4px thick lines -->
+  
+  <!-- Left half (teal color) -->
+  <path d="M 32,4 A 28,28 0 0 0 4,32 A 28,28 0 0 0 32,60 L 32,4 Z" fill="#006272"></path>
+  
+  <!-- Right half (orange color) -->
+  <path d="M 32,4 A 28,28 0 0 1 60,32 A 28,28 0 0 1 32,60 L 32,4 Z" fill="#F7941D"></path>
+  
+  <!-- White lines/seams -->
+  <!-- Outer circle -->
+  <circle cx="32" cy="32" r="28" fill="none" stroke="white" stroke-width="4"></circle>
+  
+  <!-- Vertical line -->
+  <path d="M 32,4 L 32,60" fill="none" stroke="white" stroke-width="4"></path>
+  
+  <!-- Horizontal line  -->
+  <path d="M 4,32 L 60,32" fill="none" stroke="white" stroke-width="4"></path>
+    <!-- Curved lines - left top quadrant -->
+
+    <!-- Curved lines - left bottom quadrant -->
+
+
+    <!-- Curved lines - left -->
+    <path d="M 13,54 Q 24,32 19,30" fill="none" stroke="white" stroke-width="4"></path>
+    <path d="M 13,12 Q 24,32 19,34" fill="none" stroke="white" stroke-width="4"></path>
+
+    <!-- Curved lines - right -->
+    <path d="M 51,54 Q 40,32 45,30" fill="none" stroke="white" stroke-width="4"></path>
+    <path d="M 51,12 Q 40,32 45,34" fill="none" stroke="white" stroke-width="4"></path>
+
+
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>

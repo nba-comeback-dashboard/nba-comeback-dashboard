@@ -33,3 +33,5 @@ Thumbs.db
 .pydevproject
 .doctrees
 docs/frontend/build
+
+**/.claude/settings.local.json

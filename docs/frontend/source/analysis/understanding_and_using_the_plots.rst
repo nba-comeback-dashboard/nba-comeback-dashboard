@@ -71,7 +71,7 @@ Even though this is a common way of talking about comebacks, it's a little unfai
 sense. For the -10 point deficit, the odds of coming back are weighted down by all the
 other more unlikely comebacks.
 
-A somewhat fairer way to look at it is: the maximum point deficit you face *at most* --
+A somewhat fairer way to look at it is: the maximum point deficit you face *at most* —
 that leads to these types of plots:
 
 .. raw:: html

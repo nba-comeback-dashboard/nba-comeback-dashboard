@@ -1,0 +1,27 @@
+/* Ensure theme switcher is visible */
+.theme-switcher-group {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Style the theme switcher better */
+.btn-toggle-theme-group {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Make sure the light/dark toggle is visible */
+.theme-switch-button {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Theme switcher icon override */
+.theme-switch-button-icon {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

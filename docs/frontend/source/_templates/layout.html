@@ -1,0 +1,30 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+    {{ super() }}
+    <!-- Icons - All icons will be at the root level during build -->
+    <!-- Standard Favicon (SVG and ICO) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+    <!-- Apple Touch Icons for iOS home screen - these MUST be PNG files -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- PNG fallbacks for browsers that don't support SVG icons -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NBA Comeback Dashboard">
+    <meta name="application-name" content="NBA Comeback Dashboard">
+    
+    <!-- MS/Windows Meta Tags -->
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileImage" content="/web-app-manifest-192x192.png">
+    <meta name="theme-color" content="#ffffff">
+{% endblock %}

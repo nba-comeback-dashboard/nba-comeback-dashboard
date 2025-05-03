@@ -24,7 +24,7 @@ the entire game, we see about a 3.5 point shift:
 
 Looking at the odds of coming back from a point deficit at the half, the chances of
 coming back from a 20 point deficit for the home team is about the same as the road
-team coming back from down 16 is a little larger, about a four point shift:
+team coming back from down 16, showing about a four point shift:
 
 .. raw:: html
 

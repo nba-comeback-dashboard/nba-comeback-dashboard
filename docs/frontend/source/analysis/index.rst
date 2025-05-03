@@ -86,7 +86,7 @@ Analysis
 
    .. toc-entry::
       :link:    plots/index.rst
-      :subtitle: A auto generated page of comeback plots with varying conditions. 
+      :subtitle: An auto-generated page of comeback plots with varying conditions. 
 
    .. toc-entry::
       :link: using_claude_code.rst

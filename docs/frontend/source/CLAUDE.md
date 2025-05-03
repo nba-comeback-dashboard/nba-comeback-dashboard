@@ -10,6 +10,29 @@
   5. Dashboard modules
   6. UI module
 
+## Theme Configuration Notes
+
+- Dark mode is intentionally disabled due to significant rendering issues with plots, charts, and tables in dark mode
+- Attempting to enable dark mode requires extensive CSS overrides to properly style all dashboard components
+- If dark mode is needed in the future, a comprehensive testing and styling effort will be required that addresses:
+  1. Chart backgrounds and grid colors
+  2. Table formatting
+  3. Interactive elements
+  4. Data visualization color schemes
+
+## Icon Configuration
+
+- Icons are placed in the `/icons` directory and will be copied to the site root during build
+- The site uses a combination of SVG and PNG icons for maximum compatibility:
+  - SVG favicon for modern browsers (`favicon.svg`)
+  - Traditional ICO favicon (`favicon.ico`)
+  - PNG favicon fallback (`favicon-96x96.png`)
+  - iOS home screen icon (`apple-touch-icon.png` - 180×180px)
+  - Android/PWA home screen icons (`web-app-manifest-192x192.png` and `web-app-manifest-512x512.png`)
+  - Web app manifest file (`site.webmanifest`) configures Progressive Web App behavior
+- All icon paths in HTML reference the root level (e.g., `/favicon.svg` not `_static/icons/favicon.svg`)
+- During build, the `/icons` directory is added to `html_extra_path` in `conf.py`
+
 ## Font Configuration Options
 
 Four font options are available for the documentation:

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64">
+   
+  <!-- Basketball with transparent background -->
+  
+  <!-- Define the circle shape for clipping -->
+  <defs>
+    <clipPath id="circleClip">
+      <circle cx="32" cy="32" r="30" />
+    </clipPath>
+  </defs>
+  
+  <!-- Apply the circular clipping to all components -->
+  <g clip-path="url(#circleClip)">
+    <!-- Main basketball colors -->
+    <!-- Left half (teal color) -->
+    <path d="M 0,0 L 32,0 L 32,64 L 0,64 Z" fill="#006272" />
+    
+    <!-- Right half (orange color) -->
+    <path d="M 32,0 L 64,0 L 64,64 L 32,64 Z" fill="#F7941D" />
+    
+    <!-- White curved panels that match the PNG exactly -->
+    <path d="M 0,0 L 0,64 L 64,64 L 64,0 Z" fill="none" stroke="white" stroke-width="4" />
+    
+    <!-- Straight lines -->
+    <path d="M 32,0 L 32,64" fill="none" stroke="white" stroke-width="4" />
+    <path d="M 0,32 L 64,32" fill="none" stroke="white" stroke-width="4" />
+    
+    <!-- Curved panels -->
+    <!-- These are positioned to match the PNG exactly -->
+    <path d="M 12,4 A 36,36 0 0 0 12,60" fill="none" stroke="white" stroke-width="4" />
+    <path d="M 52,4 A 36,36 0 0 1 52,60" fill="none" stroke="white" stroke-width="4" />
+  </g>
+</svg>

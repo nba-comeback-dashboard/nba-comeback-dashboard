@@ -61,9 +61,9 @@ def run_tests():
     print("Test 1: Testing create_score_statistic_v_probability_chart_json with different year groups")
     test_year_groups()
 
-    # Test 2: Different down_modes
-    print("Test 2: Testing different down_modes")
-    test_down_modes()
+    # Test 2: Different score statistic modes
+    print("Test 2: Testing different score statistic modes")
+    test_score_statistic_modes()
 
     # Test 3: Testing cumulate parameter
     print("Test 3: Testing cumulate parameter")
@@ -109,7 +109,7 @@ def test_year_groups():
         json_name=f"{chart_base_path}/test_plots/year_groups_modern.json",
         year_groups=eras,
         start_time=48,
-        down_mode="max",
+        score_statistic_mode="min_point_margin",
         cumulate=True,
     )
 
@@ -122,7 +122,7 @@ def test_year_groups():
         json_name=f"{chart_base_path}/test_plots/year_groups_compare_eras.json",
         year_groups=eras,
         start_time=48,
-        down_mode="max",
+        score_statistic_mode="min_point_margin",
         cumulate=True,
     )
 
@@ -135,52 +135,52 @@ def test_year_groups():
         json_name=f"{chart_base_path}/test_plots/year_groups_reg_vs_playoffs.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         cumulate=False,
     )
 
 
-def test_down_modes():
-    """Test different down_modes."""
+def test_score_statistic_modes():
+    """Test different score statistic modes."""
 
     # Use one consistent era for all tests
     eras = [(1996, 2024)]
 
-    # Test 2.1: at_margin mode
+    # Test 2.1: point_margin_at_time mode (previously at_margin)
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/down_mode_at_margin.json",
+        json_name=f"{chart_base_path}/test_plots/score_statistic_mode_point_margin_at_time.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         cumulate=False,
     )
 
-    # Test 2.2: at_down mode
+    # Test 2.2: losing_point_margin_at_time mode (previously at_down)
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/down_mode_at_down.json",
+        json_name=f"{chart_base_path}/test_plots/score_statistic_mode_losing_point_margin_at_time.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_down",
+        score_statistic_mode="losing_point_margin_at_time",
         cumulate=False,
     )
 
-    # Test 2.3: max mode
+    # Test 2.3: min_point_margin mode (previously max)
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/down_mode_max.json",
+        json_name=f"{chart_base_path}/test_plots/score_statistic_mode_min_point_margin.json",
         year_groups=eras,
         start_time=24,
-        down_mode="max",
+        score_statistic_mode="min_point_margin",
         cumulate=False,
     )
 
-    # Test 2.4: score mode
+    # Test 2.4: final_team_score mode (previously score)
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/down_mode_score.json",
+        json_name=f"{chart_base_path}/test_plots/score_statistic_mode_final_team_score.json",
         year_groups=eras,
         start_time=48,
-        down_mode="score",
-        min_point_margin=-1000,
-        max_point_margin=1000,
+        score_statistic_mode="final_team_score",
+        min_score_statistic=-1000,
+        max_score_statistic=1000,
     )
 
 
@@ -194,7 +194,7 @@ def test_cumulate():
         json_name=f"{chart_base_path}/test_plots/cumulate_false.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         cumulate=False,
     )
 
@@ -203,7 +203,7 @@ def test_cumulate():
         json_name=f"{chart_base_path}/test_plots/cumulate_true.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         cumulate=True,
     )
 
@@ -223,7 +223,7 @@ def test_game_filters():
         json_name=f"{chart_base_path}/test_plots/filters_home_away.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
     )
 
@@ -237,7 +237,7 @@ def test_game_filters():
         json_name=f"{chart_base_path}/test_plots/filters_team_rank.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
     )
 
@@ -250,7 +250,7 @@ def test_game_filters():
         json_name=f"{chart_base_path}/test_plots/filters_matchup.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
     )
 
@@ -263,7 +263,7 @@ def test_game_filters():
         json_name=f"{chart_base_path}/test_plots/filters_specific_team.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
     )
 
@@ -278,7 +278,7 @@ def test_game_filters():
         json_name=f"{chart_base_path}/test_plots/filters_playoff_round.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
     )
 
@@ -293,7 +293,7 @@ def test_calculate_occurrences():
         json_name=f"{chart_base_path}/test_plots/calc_occurr_false.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         calculate_occurrences=False,
     )
 
@@ -302,7 +302,7 @@ def test_calculate_occurrences():
         json_name=f"{chart_base_path}/test_plots/calc_occurr_true.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         calculate_occurrences=True,
     )
 
@@ -311,9 +311,9 @@ def test_calculate_occurrences():
         json_name=f"{chart_base_path}/test_plots/calc_occurr_score.json",
         year_groups=eras,
         start_time=48,
-        down_mode="score",
-        min_point_margin=-1000,
-        max_point_margin=1000,
+        score_statistic_mode="final_team_score",
+        min_score_statistic=-1000,
+        max_score_statistic=1000,
         calculate_occurrences=True,
     )
 
@@ -328,7 +328,7 @@ def test_start_times():
         json_name=f"{chart_base_path}/test_plots/time_48min.json",
         year_groups=eras,
         start_time=48,
-        down_mode="max",
+        score_statistic_mode="min_point_margin",
     )
 
     # Test 6.2: Start from halftime (24 minutes)
@@ -336,7 +336,7 @@ def test_start_times():
         json_name=f"{chart_base_path}/test_plots/time_24min.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
     )
 
     # Test 6.3: Start from 4th quarter (12 minutes)
@@ -344,7 +344,7 @@ def test_start_times():
         json_name=f"{chart_base_path}/test_plots/time_12min.json",
         year_groups=eras,
         start_time=12,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
     )
 
     # Test 6.4: Start from last minute (1 minute)
@@ -352,7 +352,7 @@ def test_start_times():
         json_name=f"{chart_base_path}/test_plots/time_1min.json",
         year_groups=eras,
         start_time=1,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
     )
 
     # Test 6.5: Start from 45 seconds left (sub-minute string)
@@ -360,7 +360,7 @@ def test_start_times():
         json_name=f"{chart_base_path}/test_plots/time_45sec.json",
         year_groups=eras,
         start_time="45s",
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
     )
 
     # Test 6.6: Start from end of regulation (0 minutes)
@@ -368,7 +368,7 @@ def test_start_times():
         json_name=f"{chart_base_path}/test_plots/time_0min.json",
         year_groups=eras,
         start_time=0,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
     )
 
 
@@ -420,7 +420,7 @@ def test_plot_flags():
         json_name=f"{chart_base_path}/test_plots/flags_normal_labels.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         use_normal_labels="at",
     )
 
@@ -429,7 +429,7 @@ def test_plot_flags():
         json_name=f"{chart_base_path}/test_plots/flags_linear_y_axis.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         linear_y_axis=True,
     )
 
@@ -438,7 +438,7 @@ def test_plot_flags():
         json_name=f"{chart_base_path}/test_plots/flags_logit.json",
         year_groups=eras,
         start_time=24,
-        down_mode="at_margin",
+        score_statistic_mode="point_margin_at_time",
         use_logit=True,
     )
 
@@ -454,7 +454,7 @@ def test_playoff_series():
         json_name=f"{chart_base_path}/test_plots/playoff_series_basic.json",
         year_groups=eras,
         start_time=48,
-        down_mode="playoff_series",
+        score_statistic_mode="playoff_series_score",
     )
 
     # Test 9.2: Playoff series with occurrences
@@ -462,7 +462,7 @@ def test_playoff_series():
         json_name=f"{chart_base_path}/test_plots/playoff_series_occurrences.json",
         year_groups=eras,
         start_time=48,
-        down_mode="playoff_series",
+        score_statistic_mode="playoff_series_score",
         calculate_occurrences=True,
     )
 
@@ -476,7 +476,7 @@ def test_playoff_series():
         json_name=f"{chart_base_path}/test_plots/playoff_series_home_away.json",
         year_groups=eras,
         start_time=48,
-        down_mode="playoff_series",
+        score_statistic_mode="playoff_series_score",
         game_filters=game_filters,
     )
 
@@ -509,4 +509,8 @@ def test_espn_dashboard():
 
 
 if __name__ == "__main__":
-    run_tests()
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "test_year_groups":
+        test_year_groups()
+    else:
+        run_tests()

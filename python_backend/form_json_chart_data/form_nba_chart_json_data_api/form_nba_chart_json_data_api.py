@@ -487,17 +487,20 @@ def create_score_statistic_v_probability_chart_json(
         # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)
         year_groups = list(year_groups)
         for index, year_group in enumerate(year_groups):
+            start_year = str(year_group[0])  # Convert to string to handle both int and string inputs
+            
+            # If already has P prefix, leave it
+            if start_year.startswith('P'):
+                continue
+                
+            # Try to convert to int to make sure it's a valid year
             try:
-                int(year_group[0])
-            except ValueError:
-                # If already has P prefix, leave it
-                if str(year_group[0]) == "P":
-                    pass
-                else:
-                    raise AssertionError("Invalid year format for playoff_series_score mode")
-            else:
+                int(start_year)
                 # Add P prefix to year for playoff data
-                year_groups[index] = [f"P{year_group[0]}", year_group[1]]
+                year_groups[index] = [f"P{start_year}", year_group[1]]
+            except ValueError:
+                # Not a valid year format for playoff analysis
+                raise AssertionError(f"Invalid year format '{start_year}' for playoff_series_score mode. Expected format: P1996 or 1996.")
 
     # Prepare data for combinations of year groups and filters
     points_down_lines = []
@@ -595,7 +598,7 @@ def create_score_statistic_v_probability_chart_json(
 
     bound_x = float("inf")
     for line in points_down_lines:
-        bound_x = min(bound_x, line.max_point_margin)
+        bound_x = min(bound_x, line.max_score_statistic)
     min_x, max_x, y_tick_values, y_tick_labels = (
         get_points_down_normally_spaced_y_ticks(points_down_lines, bound_x=bound_x)
     )
@@ -742,7 +745,17 @@ def get_points_down_normally_spaced_y_ticks(plot_lines, bound_x=float("inf")):
     y_tick_indicies = [
         index for index, key in enumerate(y_ticks) if next_min_y <= key <= next_max_y
     ]
-    y_min_index, y_max_index = y_tick_indicies[0] - 1, y_tick_indicies[-1] + 1
+    
+    # Handle edge case where no ticks are in the range
+    if not y_tick_indicies:
+        # Use default range if no ticks match
+        y_min_index, y_max_index = 0, len(y_ticks) - 1
+    else:
+        y_min_index, y_max_index = y_tick_indicies[0] - 1, y_tick_indicies[-1] + 1
+        
+    # Make sure indices are valid
+    y_min_index = max(0, y_min_index)
+    y_max_index = min(len(y_ticks) - 1, y_max_index)
     y_ticks_final = {
         k: v
         for index, (k, v) in enumerate(y_ticks.items())

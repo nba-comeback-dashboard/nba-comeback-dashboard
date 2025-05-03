@@ -42,8 +42,8 @@ sharing the record for surrendering such a lead. And, after averaging out the
 statistical noise, it appears the odds were about 1 in 1000. As we say in Minnesota,
 "Oh Geez."
 
-And, I'll just quickly note, that if you look at teams up 24 points *entering* the 10th
-minute we actually hold the record:
+And, I'll just quickly note that if you look at teams up 24 points *entering* the 10th
+minute, we actually hold the record:
 
 .. raw:: html
 

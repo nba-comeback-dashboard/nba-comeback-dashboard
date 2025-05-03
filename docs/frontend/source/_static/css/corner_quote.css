@@ -1,0 +1,59 @@
+.corner-quote {
+    width: 25%;
+    padding: 0.8em 0.4em 0em 0.4em;
+    text-align: left;
+    font-style: italic;
+    font-family: Georgia, serif;
+    font-size: 0.85em;
+    line-height: 1.1;
+    color: #555;
+    position: relative;
+    border-top: 0.5px solid #888;
+    border-bottom: 0.5px solid #888;
+    box-sizing: border-box;
+    clear: right;
+    float: right;
+    margin: 0.5em 2em 0.75em 2.5em;
+}
+
+.corner-quote-left {
+    float: left;
+    clear: left;
+    margin: 0.5em 1em 0.75em 2em;
+}
+
+.corner-quote::before,
+.corner-quote::after {
+    content: "";
+    display: block;
+    height: 0.5px;
+    background-color: #888;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+
+.corner-quote::before {
+    top: -0.5px;
+}
+
+.corner-quote::after {
+    bottom: -0.5px;
+}
+
+/* Make responsive for smaller screens */
+@media (max-width: 768px) {
+    .corner-quote,
+    .corner-quote-left {
+        width: 100%;
+        float: none;
+        margin: 0.75em 0;
+    }
+    
+    /* Hide elements with corner-quote-hide-mobile class on mobile screens */
+    .corner-quote-hide-mobile {
+        display: none !important;
+    }
+}

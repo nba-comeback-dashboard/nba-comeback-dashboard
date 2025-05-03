@@ -55,8 +55,13 @@ max points or more, which tells us the median game runs at least a 17-point defi
 
 .. _garbage-time-games:
 
-Garbage Time Games  
+Garbage Time Games
 ==================
+
+.. corner-quote::
+   :text: A full 28% of games -- over 1 in 4 -- are effectively over by
+          the 6-minute mark, needing a 15-point comeback or more (which has about a 1%
+          or lower chance of happening).
 
 There's no exact definition of a garbage time game, so I am just going to propose a
 working one: being down so much at the 6-minute mark that you have a 1% or less chance
@@ -88,8 +93,9 @@ that:
 
 Using those two numbers we can say:
 
-* A full 28% of games -- over 1 in 4! -- are effectively over by the 6-minute mark,
-  needing a 15-point comeback or more (1% chance or lower).
+* A full 28% of games -- over 1 in 4 -- are effectively over by the 6-minute mark,
+  needing a 15-point comeback or more (which has about a 1% or lower chance of
+  happening).
     
 * And 10.4% of games would require a record-setting 23-point comeback.
 

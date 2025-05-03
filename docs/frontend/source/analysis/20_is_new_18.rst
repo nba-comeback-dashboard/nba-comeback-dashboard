@@ -13,6 +13,10 @@
 Are Big Leads No Longer Safe?
 =============================
 
+.. corner-quote::
+   :text: When comparing the chances of pulling off a 20-or-more point comeback the
+          shift is more about 2 points, not 8.
+
 There's a perception that, in recent times, teams are climbing out of big deficits more
 often than ever before. Just as `Kevin Pelton and Baxter Holmes noted in 2019
 <https://www.espn.com/nba/story/_/id/26725776/this-season-massive-comeback-nba>`_, so
@@ -30,8 +34,9 @@ comebacks in a single season since 1996-97 and continues with analysis by Steve 
     mean, there's definitely an awareness from everybody that leads are not safe."
 
 
-But is this true? In short... not really. While a statistically significant shift has
-occurred comparing new to old, the shift is more about 2 to 2.5 points, not 8.
+But is this true? In short... not really. While there's certainly been a significant
+shift, when comparing the chances of pulling off a 20-or-more point comeback the shift
+is more about 2 points, not 8.
 
 To show this, let's look at a chart showing the percent chance of coming back when a
 team is :ref:`down N or more points at some point in a game <max-points-down-or-more>`:
@@ -44,16 +49,16 @@ Looking at this data, the chance of coming back from 20 points-or-more down (``~
 is about the same as coming back from 18 points-or-more down (``~4.9%``) in the earlier
 era. And this shift remains fairly constant comparing other points on the graph.
 
-To put this in perspective, this overall 2 to 2.5 point shift is on par with but not
-quite as pronounced as :doc:`the advantage a home team has over a road team
+To put this in perspective, this overall 2 point shift is on par with but not quite as
+pronounced as :doc:`the advantage a home team has over a road team
 </analysis/home_v_away>` when attempting a comeback. Note, there are :doc:`many ways to
-compare the comeback chances of the eras
-</analysis/understanding_and_using_the_plots>`, but roughly 2 points is a fairly stable
-characterization of the shift under varying conditions.
+compare the comeback chances of the eras at different points in time during the game
+</analysis/understanding_and_using_the_plots>` which affects the size of the shift
+(explained below), but roughly 2 points is a pretty good average.  ()
 
-To be clear, there has been a marked shift in the data: there are about 1.8 times as
-many 20-points-or-more comebacks comparing the eras. And when viewed through the lens
-of a point spread in sports betting, a 2-3 point shift is significant.
+To note, there has been a marked shift in the data: there are about 1.8 times as many
+20-points-or-more comebacks comparing the eras. And when viewed through the lens of a
+point spread in sports betting, a 2 point shift is significant.
 
 But as a fan watching the game, the data shows that leads are *roughly* as safe as they
 have been, perhaps needing an extra bucket to maintain the same level of security.
@@ -76,12 +81,12 @@ dramatically around 2016. And if you:
   </analysis/plots/old_old_school_v_old_school>` you can see there is very little shift
   in the numbers.
 
-* Similarly, if you :doc:`break up the modern era into the more fine-grained 4 year
+* Similarly, if you :doc:`break up the modern era into the more fine-grained 4-year
   chunks of 2017-2020 v 2021-2024 </analysis/plots/new_school_v_new_new_school>` you
   again see very little difference.
 
-So -- always wanting as many games as possible to reduce the statistical noise -- I
-felt that was the fairest breakdown: :doc:`1996-2016 v
+So—always wanting as many games as possible to reduce the statistical noise—I felt that
+was the fairest breakdown: :doc:`1996-2016 v
 2017-2024</analysis/plots/old_school_v_modern>`.
 
 
@@ -144,9 +149,10 @@ or more there was about a ``~0.50%`` chance of winning.
 
 .. green-box::
 
-    Note, this uses the raw data points, which is a little more intuitive. You can also
-    do this using the trend line in the chart, which cleans up the noise in the data
-    and is statistically more accurate. Overall, either way draws the same conclusion.
+    Note, this table above uses the raw game data points, which is a little more
+    intuitive. You can also do this using the trend line in the chart, which cleans up
+    the noise in the data and is statistically more accurate. Overall, either way draws
+    the same conclusion.
 
 As time dwindles, this shift is slightly smaller. Looking at biggest 4th quarter
 comebacks we get:
@@ -192,7 +198,6 @@ the same as 17.75 points down when comparing new to old:
     <div id="plots/old_school_v_modern/down_at_12" class="nbacd-chart"></div>
 
 
-
 .. _20-is-18-win-versus-time:
 
 Win % Versus Time
@@ -219,7 +224,7 @@ characterization.
 
 .. _real-time-probabilities:
 
-Real Time Probabilities
+Real-Time Probabilities
 =======================
 
 One interesting way to look at the data is to show what the running probabilities would
@@ -231,8 +236,8 @@ solely on win/loss data from the specified time ranges.
 
     <div id="20_18/espn_v_dashboard_old_school_v_modern_min_at_lal_401767915" class="nbacd-chart"></div>
 
-So at halftime, the wolves had 12.9% chance of winning using modern data versus a 9.1%
-chance if you use data from the past.
+So at halftime, the Wolves had a 12.9% chance of winning using modern data versus a
+9.1% chance if you use data from the past.
 
 Here's another game:
 
@@ -247,10 +252,10 @@ the half.
 
 .. _what-an-8-point-shift-looks-like:
 
-What An 8 Point Shift Looks Like
+What An 8-Point Shift Looks Like
 ================================
 
-I thought it would be useful to get a sense of what an 8 point shift looks like and the
+I thought it would be useful to get a sense of what an 8-point shift looks like and the
 kind of trend I was expecting to see. So if we look at top 10 teams (out of 30) vs.
 bottom 10 teams in the modern era we get:
 
@@ -262,7 +267,7 @@ Here, the chance of a top ten team playing a bottom 10 team coming back from a
 20-points-or-more deficit (``~20%``) is about the same for any team coming back from 12
 or more down against any other team. And, over the last 8 years, the chance of coming
 back from 15 points or more is about 13% -- but for a top ten team playing a bottom ten
-team, it's about 34%. That feels very different and is what an 8 point shift in the
+team, it's about 34%. That feels very different and is what an 8-point shift in the
 data would foretell.
 
 
@@ -272,7 +277,7 @@ What Else Could Be Going On?
 ============================
 
 Blowing a 20-point lead now has about the same chances as blowing a 17 to 18-point lead
-in the past. This two to three point shift is significant but I don't think matches
+in the past. This two to three point shift is significant but I don't think it matches
 what `I see people saying about leads these days
 <https://www.reddit.com/r/nba/comments/1cc2qqv/dumb_question_is_blowing_a_20_point_lead_that_bad/>`_.
 
@@ -284,10 +289,10 @@ this issue:
   percent of times a team came back from 15 or more down is about 12.8% recently
   compared to 9.2% in the past. While that's an increase of about 40%, I don't think
   having a 12.8% chance versus a 9.2% chance gives you a markedly different feeling
-  about the game. If you :ref:`compare that to the 8 point shift graph
+  about the game. If you :ref:`compare that to the 8-point shift graph
   <what-an-8-point-shift-looks-like>`, here the percent chance is about 34% for a top
   10 team to come back 15 or more against a bottom ten team over the last 8 years. That
-  is dramatic and would warrant the kind of talk of "a 15 point lead doesn't matter
+  is dramatic and would warrant the kind of talk of "a 15-point lead doesn't matter
   anymore".
 
 * Scoring is up dramatically. :ref:`The median score is 111 points in the modern era

@@ -1,5 +1,5 @@
-***************************   
-Regular Season vs. Playoffs 
+***************************
+Regular Season vs. Playoffs
 ***************************
 
 .. published-date::

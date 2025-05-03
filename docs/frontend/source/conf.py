@@ -23,7 +23,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "colored_boxes",
     "toc_entry",
-    "published_date"
+    "published_date",
+    "corner_quote"
 ]
 
 templates_path = ["_templates"]
@@ -47,6 +48,8 @@ html_css_files = [
     "css/pydata-customizations.css",
     "css/toc_entry.css",
     "css/published_date.css",
+    "css/corner_quote.css",
+    "css/icon_alignment_fix.css",
     # Font choices - uncomment only ONE of these blocks at a time:
 
     # Font Choice #1: Original PyData Theme
@@ -119,22 +122,21 @@ html_context = {
     "default_mode": "light",
 }
 html_theme_options = {
-    # Note we have omitted `theme-switcher` below
     "navbar_start": ["navbar-logo"],
     # "navbar_center": [],
     "navbar_persistent": [],
-    # "navbar_end": ["navbar-icon-links", "search-button"],
+    # Note: theme-switcher is disabled due to dark mode formatting issues with plots and tables
     "navbar_end": ["navbar-icon-links", "search-button"],
     "show_prev_next": False,
     "logo": {
         "text": "NBA Comeback Dashboard",
-        "image_light": "_static/nbacd_v2_small.png",
+        "image_light": "/nba-comeback-dashboard-basketball.svg",
     },
     "icon_links": [
         {
             "name": "Buy Me a Coffee",
             "url": "https://buymeacoffee.com/nba.comeback.dashboard",
-            "icon": "_static/icons/buy-me-coffee.svg",
+            "icon": "/buy-me-coffee.svg",
             "type": "local",
             "attributes": {"target": "_blank"}
         },
@@ -144,8 +146,12 @@ html_theme_options = {
     },
 }
 
-# Favicon configuration
-html_favicon = "_static/nbacd_v2.png"
+# Favicon and web app configuration
+html_favicon = "icons/nba-comeback-dashboard-basketball.svg"
+
+# Extra files to copy to output directory
+# Note: during the build process, the icons directory will be copied to the root level
+html_extra_path = ["icons"]
 
 html_show_sourcelink = False
 

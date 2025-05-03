@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1">
+  <!-- A more accurate representation of the original basketball icon -->
+  
+  <!-- Main ball outline - fully transparent -->
+  <circle cx="16" cy="16" r="16" fill="none" />
+  
+  <!-- Ball segments - using a more subtle layout with proper curves -->
+  <!-- Left half (teal) -->
+  <path 
+    d="M 16,0 A 16,16 0 0,0 16,32 L 16,0 Z" 
+    fill="#006272" />
+  
+  <!-- Right half (orange) -->
+  <path 
+    d="M 16,0 A 16,16 0 0,1 16,32 L 16,0 Z" 
+    fill="#F7941D" />
+    
+  <!-- Vertical separator line -->
+  <path 
+    d="M 16,0 L 16,32" 
+    stroke="white" 
+    stroke-width="1" />
+    
+  <!-- Horizontal separator line -->
+  <path 
+    d="M 0,16 L 32,16" 
+    stroke="white" 
+    stroke-width="1" />
+    
+  <!-- Curved lines matching original icon style -->
+  <!-- Upper left quadrant curve -->
+  <path 
+    d="M 8,4 C 3,8 0.5,12 0.5,16" 
+    stroke="white" 
+    fill="none" 
+    stroke-width="1" />
+    
+  <!-- Upper right quadrant curve -->
+  <path 
+    d="M 24,4 C 29,8 31.5,12 31.5,16" 
+    stroke="white" 
+    fill="none" 
+    stroke-width="1" />
+    
+  <!-- Lower left quadrant curve -->
+  <path 
+    d="M 8,28 C 3,24 0.5,20 0.5,16" 
+    stroke="white" 
+    fill="none" 
+    stroke-width="1" />
+    
+  <!-- Lower right quadrant curve -->
+  <path 
+    d="M 24,28 C 29,24 31.5,20 31.5,16" 
+    stroke="white" 
+    fill="none" 
+    stroke-width="1" />
+</svg>
