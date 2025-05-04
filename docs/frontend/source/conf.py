@@ -147,11 +147,11 @@ html_theme_options = {
 }
 
 # Favicon and web app configuration
-html_favicon = "icons/nba-comeback-dashboard-basketball.svg"
+html_favicon = "icons_basketball/nba-comeback-dashboard-basketball.svg"
 
 # Extra files to copy to output directory
 # Note: during the build process, the icons directory will be copied to the root level
-html_extra_path = ["icons"]
+html_extra_path = ["icons_basketball"]
 
 html_show_sourcelink = False
 
