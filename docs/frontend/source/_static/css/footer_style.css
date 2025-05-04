@@ -12,3 +12,18 @@ footer p {
     font-size: 0.75rem !important;
     color: #999999 !important;
 }
+
+/* Mobile-specific styling */
+@media (max-width: 768px) {
+    footer {
+        font-size: 0.55rem !important;
+    }
+    
+    footer a {
+        font-size: 0.55rem !important;
+    }
+    
+    footer p {
+        font-size: 0.55rem !important;
+    }
+}
