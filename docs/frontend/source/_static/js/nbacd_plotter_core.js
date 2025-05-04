@@ -34,7 +34,7 @@ const nbacd_plotter_core = (() => {
             background-image: url("${nbacd_utils.staticDir}/exit_full_screen_icon.svg");
         }
         .save-png-icon {
-            background-image: url("${nbacd_utils.staticDir}/save_disk_drive_icon.svg");
+            background-image: url("${nbacd_utils.staticDir}/save_icon.svg");
         }
         .trash-icon {
             background-image: url("${nbacd_utils.staticDir}/trash_can_light.svg");
