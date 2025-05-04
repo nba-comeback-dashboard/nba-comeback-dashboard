@@ -52,6 +52,7 @@ html_css_files = [
     "css/published_date.css",
     "css/corner_quote.css",
     "css/icon_alignment_fix.css",
+    "css/footer_style.css",    # Custom styling for the footer to make copyright smaller
     # Font choices - uncomment only ONE of these blocks at a time:
 
     # Font Choice #1: Original PyData Theme

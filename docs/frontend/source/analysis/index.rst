@@ -30,7 +30,7 @@ Analysis
    .. toc-entry::
       :title: 20 is the New 18
       :link: 20_is_new_18.rst
-      :subtitle: How 'unsafe' have big leads in the modern NBA become?
+      :subtitle: How 'unsafe' have big leads become in the modern NBA?
 
    .. toc-entry::
       :link: occurs.rst
