@@ -54,7 +54,7 @@ game_filters = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/20_18/dramatic.json",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="min_point_margin",
     cumulate=True,

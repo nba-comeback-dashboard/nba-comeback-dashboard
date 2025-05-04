@@ -20,6 +20,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     create_score_statistic_v_probability_chart_json,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -42,14 +43,14 @@ loader.json_base_path = json_base_path
 
 eras_one = [
     # ERA ONE
-    ("R1997", 1997),
-    ("R2022", 2022),
-    ("R2023", 2023),
+    Era(1997, 1997, season_type="regular_season"),
+    Era(2022, 2022, season_type="regular_season"),
+    Era(2023, 2023, season_type="regular_season"),
 ]
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/understand/nbacd_max_or_more_48_espn_0.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=48,
     down_mode="max",
     cumulate=True,
@@ -59,13 +60,13 @@ create_score_statistic_v_probability_chart_json(
 
 eras_one = [
     # ERA ONE
-    (1996, 2016),
-    (2017, 2024),
+    Era(1996, 2016),
+    Era(2017, 2024),
 ]
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/understand/nbacd_max_48_eras_1.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=48,
     down_mode="max",
     cumulate=False,
@@ -75,7 +76,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/understand/nbacd_down_at_24_eras_1.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=24,
     score_statistic_mode="point_margin_at_time",
     cumulate=False,

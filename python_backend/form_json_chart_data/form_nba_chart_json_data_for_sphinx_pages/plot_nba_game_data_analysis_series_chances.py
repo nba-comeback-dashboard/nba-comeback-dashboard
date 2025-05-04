@@ -52,14 +52,14 @@ eras = [
 
 # create_score_statistic_v_probability_chart_json(
 #     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time.json.gz",
-#     year_groups=eras,
+#     eras=eras,
 #     start_time=48,
 #     score_statistic_mode="playoff_series_score",
 # )
 
 # create_score_statistic_v_probability_chart_json(
 #     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_occurs.json.gz",
-#     year_groups=eras,
+#     eras=eras,
 #     start_time=48,
 #     score_statistic_mode="playoff_series_score",
 #     calculate_occurrences=True,
@@ -77,7 +77,7 @@ game_filters = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_home_v_away.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
@@ -85,7 +85,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_home_v_away_occurs.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
@@ -107,7 +107,7 @@ game_filters = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
@@ -115,7 +115,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2_occurs.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     calculate_occurrences=True,
@@ -129,7 +129,7 @@ game_filters = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
@@ -137,7 +137,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4_occurs.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     calculate_occurrences=True,
@@ -153,14 +153,14 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
 )
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern_occurs.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="playoff_series_score",
     calculate_occurrences=True,

@@ -47,7 +47,7 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_scores.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="score",
     # cumulate=True,
@@ -58,7 +58,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_scores_or_more.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="score",
     cumulate=True,
@@ -69,7 +69,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_max_48_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="max",
     # cumulate=True,
@@ -79,7 +79,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_max_or_more_48_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="max",
     cumulate=True,
@@ -89,7 +89,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_6_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=6,
     down_mode="at_down",
     # cumulate=True,
@@ -99,7 +99,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_6_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=6,
     down_mode="at_down",
     cumulate=True,
@@ -109,7 +109,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_24_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     down_mode="at_down",
     cumulate=True,
@@ -119,7 +119,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_at_or_more_12_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=12,
     down_mode="at_down",
     cumulate=True,
@@ -135,7 +135,7 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_playoffs_at_or_more_6_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=6,
     down_mode="at_down",
     cumulate=True,
@@ -153,7 +153,7 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_scores.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="score",
     # cumulate=True,
@@ -164,7 +164,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_scores_or_more.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="score",
     cumulate=True,
@@ -176,7 +176,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_max_or_more_48_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="max",
     cumulate=True,
@@ -187,7 +187,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_at_or_more_6_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=6,
     down_mode="at_down",
     cumulate=True,
@@ -197,7 +197,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/old_school_v_modern_at_or_more_24_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     down_mode="at_down",
     cumulate=True,
@@ -214,7 +214,7 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_reg_v_playoffs_at_or_more_6_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=6,
     down_mode="at_down",
     cumulate=True,
@@ -224,7 +224,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/all_time_reg_v_playoffs_at_or_more_0_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=0,
     down_mode="at_down",
     cumulate=True,
@@ -240,7 +240,7 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/very_modern_vs_all_time_at_or_more_6_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=6,
     down_mode="at_down",
     cumulate=True,
@@ -250,7 +250,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/occurs/very_modern_vs_all_time_at_or_more_0_point_margin.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=0,
     down_mode="at_down",
     cumulate=True,

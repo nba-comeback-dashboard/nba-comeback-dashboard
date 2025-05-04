@@ -52,14 +52,14 @@ eras_one = [
 
 plot_percent_versus_time(
     json_name=f"{base_path}/nbacd_points_versus_time_all_eras.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=24,
     percents=["20%", "10%", "5%", "1%", "Record"],
 )
 
 plot_percent_versus_time(
     json_name=f"{base_path}/nbacd_points_versus_time_with_guides_all_eras.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=24,
     percents=["20%", "5%", "1%"],
     plot_2x_guide=True,
@@ -69,7 +69,7 @@ plot_percent_versus_time(
 
 plot_percent_versus_time(
     json_name=f"{base_path}/nbacd_points_versus_time_with_bad_guides_all_eras.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=16,
     plot_2x_bad_guide=True,
     plot_3x_bad_guide=True,
@@ -78,7 +78,7 @@ plot_percent_versus_time(
 
 plot_percent_versus_time(
     json_name=f"{base_path}/nbacd_points_versus_time_with_calculated_guides_all_eras.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=24,
     percents=["20%", "5%", "1%"],
     plot_calculated_guides=True,
@@ -92,7 +92,7 @@ eras_one = [
 
 plot_percent_versus_time(
     json_name=f"{base_path}/nbacd_points_versus_time_with_guides_old_school_era.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=24,
     percents=["20%", "5%", "1%"],
     plot_calculated_guides=True,
@@ -105,7 +105,7 @@ eras_one = [
 
 plot_percent_versus_time(
     json_name=f"{base_path}/nbacd_points_versus_time_with_guides_modern_era.json",
-    year_groups=eras_one,
+    eras=eras_one,
     start_time=24,
     percents=["20%", "5%", "1%"],
     plot_calculated_guides=True,

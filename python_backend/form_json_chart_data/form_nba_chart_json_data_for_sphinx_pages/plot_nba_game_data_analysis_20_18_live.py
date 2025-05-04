@@ -55,21 +55,21 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_min_at_bucks_401705718.json.gz",
     espn_game_id="401705718",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_gsw_at_hou_401767823.json.gz",
     espn_game_id="401767823",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_min_at_lal_401767915.json.gz",
     espn_game_id="401767915",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
@@ -77,14 +77,14 @@ plot_espn_versus_dashboard(
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_grizz_at_okc_401767903.json.gz",
     espn_game_id="401767903",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/goto/espn_v_dashboard_all_time_lac_at_den_401768061.json.gz",
     espn_game_id="401768061",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=True,
 )
 
@@ -97,7 +97,7 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"{chart_base_path}/20_18/espn_v_dashboard_modern_at_home_min_at_bucks_401705718.json.gz",
     espn_game_id="401705718",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=True,
 )
 
@@ -188,7 +188,7 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"/tmp/a.json.gz",
     espn_game_id="401705718",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
@@ -200,7 +200,7 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"/tmp/b.json.gz",
     espn_game_id="401705718",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
@@ -225,7 +225,7 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"/tmp/a.json.gz",
     espn_game_id="401767915",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 
@@ -237,7 +237,7 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=f"/tmp/b.json.gz",
     espn_game_id="401767915",
-    year_groups=eras,
+    eras=eras,
     use_home_away_game_filters=False,
 )
 

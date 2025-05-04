@@ -58,7 +58,7 @@ os.makedirs(test_plots_dir, exist_ok=True)
 
 # Dictionary mapping test function names to their descriptions
 test_functions = {
-    "test_year_groups": "Testing year group combinations",
+    "test_eras": "Testing year group combinations",
     "test_score_statistic_modes": "Testing score statistic modes",
     "test_cumulate": "Testing cumulate parameter",
     "test_game_filters": "Testing game filters",
@@ -67,8 +67,9 @@ test_functions = {
     "test_plot_percent_versus_time": "Testing plot_percent_versus_time",
     "test_plot_flags": "Testing plot flags",
     "test_playoff_series": "Testing playoff series",
-    "test_espn_dashboard": "Testing ESPN vs Dashboard comparison"
+    "test_espn_dashboard": "Testing ESPN vs Dashboard comparison",
 }
+
 
 def generate_test_charts_html():
     """Generate HTML file with links to all test chart JSONs."""
@@ -79,7 +80,7 @@ def generate_test_charts_html():
             # Remove .gz extension if present
             base_file = file.replace(".gz", "") if file.endswith(".gz") else file
             test_files.append(base_file)
-    
+
     # Group files by test categories
     test_categories = {}
     for file in test_files:
@@ -90,7 +91,7 @@ def generate_test_charts_html():
             if category not in test_categories:
                 test_categories[category] = []
             test_categories[category].append(file)
-    
+
     # Generate HTML content with TOC
     html_content = """<!DOCTYPE html>
 <html>
@@ -144,45 +145,49 @@ def generate_test_charts_html():
         <h2>Table of Contents</h2>
         <ul>
 """
-    
+
     # Add TOC entries
     for category in sorted(test_categories.keys()):
         display_category = category.replace("_", " ").title()
-        html_content += f'            <li><a href="#{category}">{display_category}</a></li>\n'
-    
+        html_content += (
+            f'            <li><a href="#{category}">{display_category}</a></li>\n'
+        )
+
     html_content += """        </ul>
     </div>
     
 """
-    
+
     # Add chart sections
     for category in sorted(test_categories.keys()):
         display_category = category.replace("_", " ").title()
         html_content += f'    <h2 id="{category}">{display_category}</h2>\n'
-        
+
         for file in sorted(test_categories[category]):
             file_name = file.replace(".json", "")
             file_path = f"/_static/json/charts/test_plots/{file}"
-            
-            html_content += f'    <div class="chart-container">\n'
-            html_content += f'        <div id="test_plots/{file_name}" class="nbacd-chart"></div>\n'
-            html_content += f'    </div>\n'
-    
+
+            html_content += '    <div class="chart-container">\n'
+            html_content += (
+                f'        <div id="test_plots/{file_name}" class="nbacd-chart"></div>\n'
+            )
+            html_content += "    </div>\n"
+
     html_content += """</body>
 </html>
 """
-    
+
     # Write HTML file
     with open(test_charts_html_path, "w") as f:
         f.write(html_content)
-    
+
     print(f"Generated test charts HTML at {test_charts_html_path}")
 
 
 def run_tests(test_name_pattern=None):
     """Run all tests for the chart JSON data API with optional test name filter."""
     print("Starting API tests...")
-    
+
     # Compile regex pattern if provided
     pattern = None
     if test_name_pattern:
@@ -192,10 +197,10 @@ def run_tests(test_name_pattern=None):
         except re.error:
             print(f"Invalid regex pattern: {test_name_pattern}. Running all tests.")
             pattern = None
-    
+
     # Track which tests were run
     tests_run = []
-    
+
     # Run each test function if it matches the pattern or no pattern provided
     for test_name, test_description in test_functions.items():
         if pattern is None or pattern.search(test_name):
@@ -206,26 +211,26 @@ def run_tests(test_name_pattern=None):
             tests_run.append(test_name)
         else:
             print(f"Skipping test: {test_description}")
-    
+
     if not tests_run:
         print(f"No tests matched the pattern: {test_name_pattern}")
     else:
         print(f"Completed {len(tests_run)} test(s): {', '.join(tests_run)}")
-    
+
     # Generate HTML file with chart links
     generate_test_charts_html()
-    
+
     print("All tests completed successfully!")
 
 
-def test_year_groups():
+def test_eras():
     """Test different year group combinations."""
 
     # Test 1.1: Single year group (modern era)
     eras = [Era(2017, 2024)]
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/year_groups_modern.json",
-        year_groups=eras,
+        json_name=f"{chart_base_path}/test_plots/eras_modern.json",
+        eras=eras,
         start_time=48,
         score_statistic_mode="min_point_margin",
         cumulate=True,
@@ -237,8 +242,8 @@ def test_year_groups():
         Era(2017, 2024),  # Modern era
     ]
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/year_groups_compare_eras.json",
-        year_groups=eras,
+        json_name=f"{chart_base_path}/test_plots/eras_compare_eras.json",
+        eras=eras,
         start_time=48,
         score_statistic_mode="min_point_margin",
         cumulate=True,
@@ -250,8 +255,8 @@ def test_year_groups():
         Era(1996, 2024, season_type="playoffs"),  # Playoffs
     ]
     create_score_statistic_v_probability_chart_json(
-        json_name=f"{chart_base_path}/test_plots/year_groups_reg_vs_playoffs.json",
-        year_groups=eras,
+        json_name=f"{chart_base_path}/test_plots/eras_reg_vs_playoffs.json",
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         cumulate=False,
@@ -267,7 +272,7 @@ def test_score_statistic_modes():
     # Test 2.1: point_margin_at_time mode (previously at_margin)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/score_statistic_mode_point_margin_at_time.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         cumulate=False,
@@ -276,7 +281,7 @@ def test_score_statistic_modes():
     # Test 2.2: losing_point_margin_at_time mode (previously at_down)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/score_statistic_mode_losing_point_margin_at_time.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="losing_point_margin_at_time",
         cumulate=False,
@@ -285,7 +290,7 @@ def test_score_statistic_modes():
     # Test 2.3: min_point_margin mode (previously max)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/score_statistic_mode_min_point_margin.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="min_point_margin",
         cumulate=False,
@@ -294,7 +299,7 @@ def test_score_statistic_modes():
     # Test 2.4: final_team_score mode (previously score)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/score_statistic_mode_final_team_score.json",
-        year_groups=eras,
+        eras=eras,
         start_time=48,
         score_statistic_mode="final_team_score",
         min_score_statistic=-1000,
@@ -310,7 +315,7 @@ def test_cumulate():
     # Test 3.1: Without cumulate (exact points)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/cumulate_false.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         cumulate=False,
@@ -319,7 +324,7 @@ def test_cumulate():
     # Test 3.2: With cumulate (or more points)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/cumulate_true.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         cumulate=True,
@@ -339,7 +344,7 @@ def test_game_filters():
 
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_home_away.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
@@ -353,7 +358,7 @@ def test_game_filters():
 
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_team_rank.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
@@ -366,7 +371,7 @@ def test_game_filters():
 
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_matchup.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
@@ -379,7 +384,7 @@ def test_game_filters():
 
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_specific_team.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
@@ -394,7 +399,7 @@ def test_game_filters():
 
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/filters_playoff_round.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         game_filters=game_filters,
@@ -409,7 +414,7 @@ def test_calculate_occurrences():
     # Test 5.1: Win probabilities (default)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_false.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         calculate_occurrences=False,
@@ -418,7 +423,7 @@ def test_calculate_occurrences():
     # Test 5.2: Occurrence percentages
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_true.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         calculate_occurrences=True,
@@ -427,7 +432,7 @@ def test_calculate_occurrences():
     # Test 5.3: Score distribution with occurrences
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/calc_occurr_score.json",
-        year_groups=eras,
+        eras=eras,
         start_time=48,
         score_statistic_mode="final_team_score",
         min_score_statistic=-1000,
@@ -444,7 +449,7 @@ def test_start_times():
     # Test 6.1: Start from beginning (48 minutes)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_48min.json",
-        year_groups=eras,
+        eras=eras,
         start_time=48,
         score_statistic_mode="min_point_margin",
     )
@@ -452,7 +457,7 @@ def test_start_times():
     # Test 6.2: Start from halftime (24 minutes)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_24min.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
     )
@@ -460,7 +465,7 @@ def test_start_times():
     # Test 6.3: Start from 4th quarter (12 minutes)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_12min.json",
-        year_groups=eras,
+        eras=eras,
         start_time=12,
         score_statistic_mode="point_margin_at_time",
     )
@@ -468,7 +473,7 @@ def test_start_times():
     # Test 6.4: Start from last minute (1 minute)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_1min.json",
-        year_groups=eras,
+        eras=eras,
         start_time=1,
         score_statistic_mode="point_margin_at_time",
     )
@@ -476,7 +481,7 @@ def test_start_times():
     # Test 6.5: Start from 45 seconds left (sub-minute string)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_45sec.json",
-        year_groups=eras,
+        eras=eras,
         start_time="45s",
         score_statistic_mode="point_margin_at_time",
     )
@@ -484,7 +489,7 @@ def test_start_times():
     # Test 6.6: Start from end of regulation (0 minutes)
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/time_0min.json",
-        year_groups=eras,
+        eras=eras,
         start_time=0,
         score_statistic_mode="point_margin_at_time",
     )
@@ -498,7 +503,7 @@ def test_plot_percent_versus_time():
     # Test 7.1: Basic plot_percent_versus_time
     plot_percent_versus_time(
         json_name=f"{chart_base_path}/test_plots/percent_v_time_basic.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         percents=["20%", "10%", "5%", "1%"],
     )
@@ -511,7 +516,7 @@ def test_plot_percent_versus_time():
 
     plot_percent_versus_time(
         json_name=f"{chart_base_path}/test_plots/percent_v_time_filters.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         percents=["10%", "1%"],
         game_filters=game_filters,
@@ -520,7 +525,7 @@ def test_plot_percent_versus_time():
     # Test 7.3: With guide lines
     plot_percent_versus_time(
         json_name=f"{chart_base_path}/test_plots/percent_v_time_guides.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         percents=["5%"],
         plot_2x_guide=True,
@@ -536,7 +541,7 @@ def test_plot_flags():
     # Test 8.1: Normal labels
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/flags_normal_labels.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         use_normal_labels="at",
@@ -545,7 +550,7 @@ def test_plot_flags():
     # Test 8.2: Linear y-axis
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/flags_linear_y_axis.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         linear_y_axis=True,
@@ -554,7 +559,7 @@ def test_plot_flags():
     # Test 8.3: Logit transformation
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/flags_logit.json",
-        year_groups=eras,
+        eras=eras,
         start_time=24,
         score_statistic_mode="point_margin_at_time",
         use_logit=True,
@@ -570,7 +575,7 @@ def test_playoff_series():
     # Test 9.1: Basic playoff series analysis
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/playoff_series_basic.json",
-        year_groups=eras,
+        eras=eras,
         start_time=48,
         score_statistic_mode="playoff_series_score",
     )
@@ -578,7 +583,7 @@ def test_playoff_series():
     # Test 9.2: Playoff series with occurrences
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/playoff_series_occurrences.json",
-        year_groups=eras,
+        eras=eras,
         start_time=48,
         score_statistic_mode="playoff_series_score",
         calculate_occurrences=True,
@@ -592,7 +597,7 @@ def test_playoff_series():
 
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/playoff_series_home_away.json",
-        year_groups=eras,
+        eras=eras,
         start_time=48,
         score_statistic_mode="playoff_series_score",
         game_filters=game_filters,
@@ -612,7 +617,7 @@ def test_espn_dashboard():
     plot_espn_versus_dashboard(
         json_name=f"{chart_base_path}/test_plots/espn_dashboard_basic.json",
         espn_game_id=espn_game_id,
-        year_groups=eras,
+        eras=eras,
         show_team="away",  # Minnesota perspective
     )
 
@@ -620,7 +625,7 @@ def test_espn_dashboard():
     plot_espn_versus_dashboard(
         json_name=f"{chart_base_path}/test_plots/espn_dashboard_home_away.json",
         espn_game_id=espn_game_id,
-        year_groups=eras,
+        eras=eras,
         use_home_away_game_filters=True,
         show_team="away",
     )
@@ -628,9 +633,13 @@ def test_espn_dashboard():
 
 if __name__ == "__main__":
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description="Run test plots for NBA chart JSON data API")
-    parser.add_argument("--test-name", type=str, help="Regex pattern to filter test names")
+    parser = argparse.ArgumentParser(
+        description="Run test plots for NBA chart JSON data API"
+    )
+    parser.add_argument(
+        "--test-name", type=str, help="Regex pattern to filter test names"
+    )
     args = parser.parse_args()
-    
+
     # Run tests with optional filter
     run_tests(args.test_name)

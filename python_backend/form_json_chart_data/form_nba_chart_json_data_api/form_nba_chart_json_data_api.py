@@ -367,7 +367,7 @@ class GameFilter:
 
 def create_score_statistic_v_probability_chart_json(
     json_name,
-    year_groups,
+    eras,
     start_time,
     score_statistic_mode,
     cumulate=False,
@@ -394,7 +394,7 @@ def create_score_statistic_v_probability_chart_json(
     -----------
     json_name : str
         Path to save the JSON output
-    year_groups : list of Era
+    eras : list of Era
         List of Era objects specifying the time periods to analyze
     start_time : int or str
         Time point to start analysis from, can be:
@@ -520,15 +520,15 @@ def create_score_statistic_v_probability_chart_json(
         max_score_statistic = 0
         
         # Ensure we're using playoff data for each Era
-        for i in range(len(year_groups)):
-            if year_groups[i].season_type != "playoffs":
-                era = year_groups[i]
-                year_groups[i] = Era(era.start_year, era.stop_year, season_type="playoffs")
+        for i in range(len(eras)):
+            if eras[i].season_type != "playoffs":
+                era = eras[i]
+                eras[i] = Era(era.start_year, era.stop_year, season_type="playoffs")
 
-    # Prepare data for combinations of year groups and filters
+    # Prepare data for combinations of eras and filters
     points_down_lines = []
 
-    number_of_year_groups = len(year_groups)
+    number_of_eras = len(eras)
     number_of_game_filters = len(game_filters)
     if number_of_game_filters == 1 and game_filters[0] is None:
         number_of_game_filters = 0
@@ -537,7 +537,7 @@ def create_score_statistic_v_probability_chart_json(
     game_filter_strings = []
 
     # Create combinations of eras and filters
-    for era in year_groups:
+    for era in eras:
         for game_filter_index, game_filter in enumerate(game_filters):
             # Map the Era season_type to Games season_type
             if era.season_type == "regular_season":
@@ -560,7 +560,7 @@ def create_score_statistic_v_probability_chart_json(
             if score_statistic_mode == "playoff_series_score":
                 games.add_playoff_series_lookup_map()
 
-            if number_of_year_groups > 1 or number_of_game_filters < 2:
+            if number_of_eras > 1 or number_of_game_filters < 2:
                 legend = games.get_years_string()
             elif score_statistic_mode == "playoff_series_score" and number_of_game_filters >= 2:
                 legend = games.get_years_string()
@@ -594,7 +594,7 @@ def create_score_statistic_v_probability_chart_json(
             # To create js objects
             points_down_lines.append(points_down_line)
 
-    if number_of_year_groups == 1 and number_of_game_filters > 1:
+    if number_of_eras == 1 and number_of_game_filters > 1:
         title = f"{title} | {points_down_lines[0].games.get_years_string()}"
 
     elif number_of_game_filters == 1:
@@ -816,7 +816,7 @@ def get_points_down_normally_spaced_y_ticks(plot_lines, bound_x=float("inf")):
 
 def plot_percent_versus_time(
     json_name,
-    year_groups,
+    eras,
     start_time,
     percents,
     game_filters=None,
@@ -839,7 +839,7 @@ def plot_percent_versus_time(
     -----------
     json_name : str
         Path to save the JSON output
-    year_groups : list of Era
+    eras : list of Era
         List of Era objects specifying the time periods to analyze
     start_time : int
         Starting minute of analysis (e.g., 24 for halftime)
@@ -870,7 +870,7 @@ def plot_percent_versus_time(
         game_filters = [game_filters]
 
     # Prepare for tracking variables
-    number_of_year_groups = len(year_groups)
+    number_of_eras = len(eras)
     number_of_game_filters = len(game_filters)
     if number_of_game_filters == 1 and game_filters[0] is None:
         number_of_game_filters = 0
@@ -887,7 +887,7 @@ def plot_percent_versus_time(
 
     # Create combinations of eras, filters, and percents
     all_percent_data = []
-    for era in year_groups:
+    for era in eras:
         for game_filter_index, game_filter in enumerate(game_filters):
             # Map the Era season_type to Games season_type
             if era.season_type == "regular_season":
@@ -948,7 +948,7 @@ def plot_percent_versus_time(
             #     amount = percent_string[0:-1]
             #     display_percent = f"{amount}t"
             legend = f"{percent_string}"
-            if number_of_year_groups > 1:
+            if number_of_eras > 1:
                 legend = f"{legend} | {games.get_years_string()} ({game_count:,} Games)"
             if number_of_game_filters > 1:
                 legend = f"{legend} | {game_filter.get_filter_string()}"
@@ -988,7 +988,7 @@ def plot_percent_versus_time(
         percent_lines.append(PercentLine(None, "3t", times, [-3.0 * x for x in times]))
 
     title = "% Chance of Coming Back: Points Down v. Time"
-    if number_of_year_groups == 1:
+    if number_of_eras == 1:
         title = f"{title} | {games.get_years_string()} ({game_count:,} Games)"
     if number_of_game_filters == 1:
         title = f"{title} | {game_filters[0].get_filter_string()}"
@@ -1040,7 +1040,7 @@ def plot_percent_versus_time(
 def plot_espn_versus_dashboard(
     json_name,
     espn_game_id,
-    year_groups,
+    eras,
     use_home_away_game_filters=False,
     show_team="away",
     start_time=18,
@@ -1058,7 +1058,7 @@ def plot_espn_versus_dashboard(
         Path to save the JSON output
     espn_game_id : str
         ESPN game ID to fetch data for
-    year_groups : list of Era
+    eras : list of Era
         List of Era objects specifying the time periods to use for Dashboard calculations
     use_home_away_game_filters : bool
         Whether to apply home/away game filters based on score statistic
@@ -1131,7 +1131,7 @@ def plot_espn_versus_dashboard(
         lines.append(espn_away_line)
 
     # Add Dashboard probability lines
-    for era in year_groups:
+    for era in eras:
         # Build legend string
         years_string = f"{era.start_year}-{era.stop_year}"
         if len(game_years_strings) == 0:
@@ -1191,7 +1191,7 @@ def plot_espn_versus_dashboard(
     title = f"{title} | Use Seasons: {game_years_strings[0]}"
     
     # Get the season type from the first era
-    season_type = year_groups[0].season_type
+    season_type = eras[0].season_type
     
     if season_type == "all":
         pass

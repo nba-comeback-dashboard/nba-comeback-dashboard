@@ -58,7 +58,7 @@ game_filters = [
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/home_v_away/max_down_or_more_48_home_v_away_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="max",
     game_filters=game_filters,
@@ -68,7 +68,7 @@ plot_biggest_deficit(
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/home_v_away/at_24_home_v_away_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     down_mode="at_margin",
     game_filters=game_filters,
@@ -78,7 +78,7 @@ plot_biggest_deficit(
 
 plot_percent_versus_time(
     json_name=f"{chart_base_path}/home_v_away/nbacd_points_versus_24_home_v_away_time_all_eras.json",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     percents=["10%", "1%"],
     game_filters=game_filters,
@@ -93,7 +93,7 @@ eras = [
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/home_v_away/max_down_or_more_48_home_v_away_modern_era.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="max",
     game_filters=game_filters,
@@ -103,7 +103,7 @@ plot_biggest_deficit(
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/home_v_away/at_24_home_v_away_modern_era.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     down_mode="at_margin",
     game_filters=game_filters,
@@ -113,7 +113,7 @@ plot_biggest_deficit(
 
 plot_percent_versus_time(
     json_name=f"{chart_base_path}/home_v_away/nbacd_points_versus_24_home_v_away_modern_era.json",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     percents=["10%", "1%"],
     game_filters=game_filters,

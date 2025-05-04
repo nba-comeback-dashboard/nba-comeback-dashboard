@@ -53,7 +53,7 @@ eras = [
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoffs/max_down_or_more_48_reg_v_playoffs_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     score_statistic_mode="min_point_margin",
     cumulate=True,
@@ -61,7 +61,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoffs/at_24_reg_v_playoffs_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     score_statistic_mode="point_margin_at_time",
     cumulate=False,
@@ -69,7 +69,7 @@ create_score_statistic_v_probability_chart_json(
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoffs/at_12_reg_v_playoffs_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=12,
     score_statistic_mode="point_margin_at_time",
     cumulate=False,
@@ -77,7 +77,7 @@ create_score_statistic_v_probability_chart_json(
 
 plot_percent_versus_time(
     json_name=f"{chart_base_path}/playoffs/percent_from_24_reg_v_playoffs_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=24,
     percents=["5%"],
 )

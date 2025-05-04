@@ -16,14 +16,15 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_espn_versus_dashboard,
-    GameFilter,
 )
 
 # Import the loader module to set json_base_path
 import form_nba_chart_json_data_season_game_loader as loader
 
 # Set the path to the JSON season data
-json_base_path = os.path.join(parent_dir, "..", "..", "docs", "frontend", "source", "_static", "json", "seasons")
+json_base_path = os.path.join(
+    parent_dir, "..", "..", "docs", "frontend", "source", "_static", "json", "seasons"
+)
 json_base_path = os.path.abspath(json_base_path)
 loader.json_base_path = json_base_path
 print(f"JSON base path: {json_base_path}")
@@ -40,7 +41,7 @@ eras = [
 plot_espn_versus_dashboard(
     json_name=output_path,
     espn_game_id="401705392",  # Use the same ID as in goto script
-    year_groups=eras,
+    eras=eras,
     game_filters=None,
 )
 

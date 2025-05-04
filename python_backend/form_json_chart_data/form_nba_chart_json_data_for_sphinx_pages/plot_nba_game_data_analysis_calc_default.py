@@ -49,7 +49,7 @@ eras = [
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/calc/modern_max_down_or_more_48.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=48,
     down_mode="max",
     cumulate=True,

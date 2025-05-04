@@ -19,6 +19,8 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
+    Era,
+    GameFilter,
 )
 
 # Calculate script directory from __file__
@@ -45,13 +47,13 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2024),
+    Era(1996, 2024),
 ]
 
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/twolves_leads/max_10min_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=10,
     down_mode="max",
     cumulate=False,
@@ -59,7 +61,7 @@ plot_biggest_deficit(
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/twolves_leads/at_10min_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=10,
     down_mode="at_margin",
     cumulate=False,
@@ -68,7 +70,7 @@ plot_biggest_deficit(
 
 plot_biggest_deficit(
     json_name=f"{chart_base_path}/twolves_leads/max_4min_all_time.json.gz",
-    year_groups=eras,
+    eras=eras,
     start_time=4,
     down_mode="max",
     cumulate=False,
@@ -82,7 +84,7 @@ plot_biggest_deficit(
 
 # plot_biggest_deficit(
 #     json_name=f"{chart_base_path}/twolves_leads/at_4min_all_time.json.gz",
-#     year_groups=eras,
+#     eras=eras,
 #     start_time="15s",
 #     down_mode="max",
 #     cumulate=False,
