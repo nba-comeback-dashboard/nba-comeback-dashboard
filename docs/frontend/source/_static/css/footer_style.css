@@ -1,0 +1,14 @@
+/* Styling for the Sphinx footer to make copyright text small and light grey */
+footer {
+    font-size: 0.75rem !important;
+    color: #999999 !important;
+}
+
+footer a {
+    color: #999999 !important;
+}
+
+footer p {
+    font-size: 0.75rem !important;
+    color: #999999 !important;
+}
