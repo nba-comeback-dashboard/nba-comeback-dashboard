@@ -740,9 +740,13 @@ nbacd_plotter_data = (() => {
                     maxRotation: 45,
                     minRotation: 45,
                     // If we have custom x tick labels, use them
+                    // Otherwise, format regular values to have at most 1 decimal place
                     callback: hasCustomXTicks ? function(value) {
                         return xTickLabelMap[value] !== undefined ? xTickLabelMap[value] : value;
-                    } : undefined,
+                    } : function(value) {
+                        // Limit decimal places to 1 for regular numeric values
+                        return Number.isInteger(value) ? value : value.toFixed(1);
+                    },
                     // For mobile with custom ticks, always show all labels
                     autoSkip: isMobile() && hasCustomXTicks ? false : true,
                     // Only allow skipping major ticks on desktop
