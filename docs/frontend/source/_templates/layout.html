@@ -1,5 +1,9 @@
 {% extends "!layout.html" %}
 
+{% block htmltitle %}
+    <title>{{ shorttitle|striptags|e }}{{ titlesuffix }}</title>
+{% endblock %}
+
 {% block extrahead %}
     {{ super() }}
     <!-- Icons - All icons will be at the root level during build -->

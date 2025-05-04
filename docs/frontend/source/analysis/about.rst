@@ -7,6 +7,11 @@ About
    you would like to tip this work <https://buymeacoffee.com/nba.comeback.dashboard>`_
    so I can buy some more tokens.
 
+The NBA Comeback Dashboard is a plotting tool that lets you :doc:`analyze and compare
+</analysis/methodology_forming_the_plot_trend_lines>` NBA comeback probability data
+taken from the NBA play-by-play database from the 1996-1997 season to now.
+
+
 This project started when I was :doc:`trying to examine a rule of thumb
 </analysis/rule_of_thumb_that_actually_works>` about how safe leads are while watching
 NBA games and I wanted to create :doc:`a chart I could reference when watching games

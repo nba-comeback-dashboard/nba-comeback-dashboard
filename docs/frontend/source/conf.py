@@ -15,6 +15,8 @@ sys.path.append(os.path.abspath('_ext'))
 project = "NBA Comeback Dashboard"
 copyright = "2025"
 author = ""
+html_title = "NBA Comeback Dashboard"
+html_short_title = "NBA Comeback Dashboard"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -131,6 +133,7 @@ html_theme_options = {
     "logo": {
         "text": "NBA Comeback Dashboard",
         "image_light": "/nba-comeback-dashboard-basketball.svg",
+        "title": "NBA Comeback Dashboard",
     },
     "icon_links": [
         {
