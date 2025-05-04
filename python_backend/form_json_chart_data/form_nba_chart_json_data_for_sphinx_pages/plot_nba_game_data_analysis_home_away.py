@@ -21,6 +21,7 @@ from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
     plot_percent_versus_time,
     GameFilter,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -47,7 +48,7 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2024),
+    Era(1996, 2024),
 ]
 
 game_filters = [
@@ -86,7 +87,7 @@ plot_percent_versus_time(
 
 eras = [
     # ERA ONE
-    (2017, 2024),
+    Era(2017, 2024),
 ]
 
 

@@ -14,6 +14,18 @@ The original API was designed primarily for plotting win probability versus poin
 | `down_mode` | `score_statistic_mode` |
 | `point_margin_map` | `score_statistic_map` |
 
+## Era Class
+
+Added a new `Era` class to replace tuple-based year ranges and string prefixes for season types:
+
+| Original Syntax | New Syntax |
+|-----------------|------------|
+| `(1996, 2024)` | `Era(1996, 2024)` |
+| `("R1996", 2024)` | `Era(1996, 2024, season_type="regular_season")` |
+| `("P1996", 2024)` | `Era(1996, 2024, season_type="playoffs")` |
+
+The `Era` class provides a more explicit and type-safe way to define time periods with optional season type filtering.
+
 ## Score Statistic Modes
 
 The `down_mode` parameter has been renamed to `score_statistic_mode` with the following mappings:

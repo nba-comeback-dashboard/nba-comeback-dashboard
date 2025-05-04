@@ -20,6 +20,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     plot_percent_versus_time,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -45,8 +46,8 @@ plot_all = True
 
 eras_one = [
     # ERA ONE
-    (1996, 2024),
-    # (2017, 2024),
+    Era(1996, 2024),
+    # Era(2017, 2024),
 ]
 
 plot_percent_versus_time(
@@ -85,7 +86,7 @@ plot_percent_versus_time(
 
 eras_one = [
     # ERA ONE
-    (1996, 2016),
+    Era(1996, 2016),
 ]
 
 
@@ -99,7 +100,7 @@ plot_percent_versus_time(
 
 eras_one = [
     # ERA ONE
-    (2017, 2024),
+    Era(2017, 2024),
 ]
 
 plot_percent_versus_time(

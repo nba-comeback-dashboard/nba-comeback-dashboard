@@ -21,32 +21,67 @@ from form_nba_chart_json_data_num import Num
 __LINEAR_Y_AXIS__ = False
 
 
-def parse_season_type(year):
+class Era:
     """
-    Parse year string to determine season type and numeric year.
-
-    Parameters:
-    -----------
-    year : str or int
-        Year string (possibly with prefix) or year as int
-
-    Returns:
-    --------
-    tuple
-        (numeric_year, season_type) where season_type is 'Regular Season', 'Playoffs', or 'all'
+    Represents a time period of NBA seasons with optional season type filtering.
+    
+    This class replaces the previous tuple-based era representation and the P/R prefix
+    notation for season types. It provides a cleaner, more explicit way to define
+    time periods for analysis.
+    
+    Examples:
+    ---------
+    # All games (regular season and playoffs) from 1996-2024
+    Era(1996, 2024)
+    
+    # Only playoff games from 1996-2024
+    Era(1996, 2024, season_type="playoffs")
+    
+    # Only regular season games from 1996-2024
+    Era(1996, 2024, season_type="regular_season")
     """
-    year_str = str(year)
-    if year_str.startswith("R"):
-        season_type = "Regular Season"
-        numeric_year = int(year_str[1:])
-    elif year_str.startswith("P"):
-        season_type = "Playoffs"
-        numeric_year = int(year_str[1:])
-    else:
-        season_type = "all"
-        numeric_year = int(year)
-
-    return numeric_year, season_type
+    
+    def __init__(self, start_year, stop_year, season_type="all"):
+        """
+        Initialize an NBA Era for analysis.
+        
+        Parameters:
+        -----------
+        start_year : int
+            Starting year of the era (inclusive)
+        stop_year : int
+            Ending year of the era (inclusive)
+        season_type : str, optional
+            Type of season data to include: "all", "regular_season", or "playoffs"
+            Default is "all" which includes both regular season and playoff games
+        """
+        self.start_year = int(start_year)
+        self.stop_year = int(stop_year)
+        
+        # Validate season_type
+        valid_season_types = ["all", "regular_season", "playoffs"]
+        if season_type not in valid_season_types:
+            raise ValueError(f"Invalid season_type: {season_type}. Must be one of {valid_season_types}")
+        
+        self.season_type = season_type
+    
+    def get_years_string(self):
+        """
+        Get a string representation of the era years and season type.
+        
+        Returns:
+        --------
+        str
+            Formatted string representing the era (e.g., "1996-2024 (Regular Season)")
+        """
+        base = f"{self.start_year}-{self.stop_year}"
+        if self.season_type == "all":
+            return base
+        elif self.season_type == "regular_season":
+            return f"{base} (Regular Season)"
+        elif self.season_type == "playoffs":
+            return f"{base} (Playoffs)"
+        return f"{base} ({self.season_type})"
 
 
 class GameFilter:
@@ -359,8 +394,8 @@ def create_score_statistic_v_probability_chart_json(
     -----------
     json_name : str
         Path to save the JSON output
-    year_groups : list of tuples
-        List of (start_year, end_year) ranges to analyze
+    year_groups : list of Era
+        List of Era objects specifying the time periods to analyze
     start_time : int or str
         Time point to start analysis from, can be:
         - Integer minute value (e.g., 48 for game start, 24 for halftime)
@@ -389,7 +424,7 @@ def create_score_statistic_v_probability_chart_json(
         - str ending with '%': Percentile cutoff (e.g., "10%")
         - None: Use defaults based on score_statistic_mode
     game_filters : list of GameFilter or None
-        List of filters to apply to games. Each filter will be paired with each year group.
+        List of filters to apply to games. Each filter will be paired with each era.
     plot : bool
         Whether to generate matplotlib plots in addition to JSON output
     calculate_occurrences : bool
@@ -483,24 +518,12 @@ def create_score_statistic_v_probability_chart_json(
         # For playoff series analysis, only use negative score statistics (teams that are behind)
         fit_max_points = "90%"
         max_score_statistic = 0
-        # Ensure we're using playoff data by adding 'P' prefix to year numbers
-        # This converts regular season years (e.g., 2023) to playoff format (e.g., P2023)
-        year_groups = list(year_groups)
-        for index, year_group in enumerate(year_groups):
-            start_year = str(year_group[0])  # Convert to string to handle both int and string inputs
-            
-            # If already has P prefix, leave it
-            if start_year.startswith('P'):
-                continue
-                
-            # Try to convert to int to make sure it's a valid year
-            try:
-                int(start_year)
-                # Add P prefix to year for playoff data
-                year_groups[index] = [f"P{start_year}", year_group[1]]
-            except ValueError:
-                # Not a valid year format for playoff analysis
-                raise AssertionError(f"Invalid year format '{start_year}' for playoff_series_score mode. Expected format: P1996 or 1996.")
+        
+        # Ensure we're using playoff data for each Era
+        for i in range(len(year_groups)):
+            if year_groups[i].season_type != "playoffs":
+                era = year_groups[i]
+                year_groups[i] = Era(era.start_year, era.stop_year, season_type="playoffs")
 
     # Prepare data for combinations of year groups and filters
     points_down_lines = []
@@ -513,18 +536,22 @@ def create_score_statistic_v_probability_chart_json(
     game_years_strings = []
     game_filter_strings = []
 
-    # Create combinations of year groups and filters
-    for start_year, stop_year in year_groups:
+    # Create combinations of eras and filters
+    for era in year_groups:
         for game_filter_index, game_filter in enumerate(game_filters):
-            # Parse season type using the helper function
-            start_year_numeric, season_type = parse_season_type(start_year)
-            stop_year_numeric, _ = parse_season_type(stop_year)
-
+            # Map the Era season_type to Games season_type
+            if era.season_type == "regular_season":
+                games_season_type = "Regular Season"
+            elif era.season_type == "playoffs":
+                games_season_type = "Playoffs"
+            else:  # "all"
+                games_season_type = "all"
+                
             # Use the Games class that loads from JSON with optional game filter
             games = Games(
-                start_year=start_year_numeric,
-                stop_year=stop_year_numeric,
-                season_type=season_type,
+                start_year=era.start_year,
+                stop_year=era.stop_year,
+                season_type=games_season_type,
                 calculate_occurrences=calculate_occurrences,
             )
 
@@ -812,14 +839,14 @@ def plot_percent_versus_time(
     -----------
     json_name : str
         Path to save the JSON output
-    year_groups : list of tuples
-        List of (start_year, end_year) ranges to analyze
+    year_groups : list of Era
+        List of Era objects specifying the time periods to analyze
     start_time : int
         Starting minute of analysis (e.g., 24 for halftime)
     percents : list
         List of percentages to track (e.g., ["20%", "10%", "5%", "1%"])
     game_filters : list of GameFilter or None
-        List of filters to apply to games. Each filter will be paired with each year group.
+        List of filters to apply to games. Each filter will be paired with each era.
     plot_2x_guide : bool
         Whether to plot the 2√t theoretical curve guide
     plot_4x_guide : bool
@@ -858,19 +885,23 @@ def plot_percent_versus_time(
     game_years_strings = []
     game_filter_strings = []
 
-    # Create combinations of year groups, filters, and percents
+    # Create combinations of eras, filters, and percents
     all_percent_data = []
-    for start_year, stop_year in year_groups:
+    for era in year_groups:
         for game_filter_index, game_filter in enumerate(game_filters):
-            # Parse season type using the helper function
-            start_year_numeric, season_type = parse_season_type(start_year)
-            stop_year_numeric, _ = parse_season_type(stop_year)
-
+            # Map the Era season_type to Games season_type
+            if era.season_type == "regular_season":
+                games_season_type = "Regular Season"
+            elif era.season_type == "playoffs":
+                games_season_type = "Playoffs"
+            else:  # "all"
+                games_season_type = "all"
+                
             # Use the Games class that loads from JSON with optional game filter
             games = Games(
-                start_year=start_year_numeric,
-                stop_year=stop_year_numeric,
-                season_type=season_type,
+                start_year=era.start_year,
+                stop_year=era.stop_year,
+                season_type=games_season_type,
                 calculate_occurrences=False,
             )
             if game_filter_index == 0:
@@ -1027,8 +1058,8 @@ def plot_espn_versus_dashboard(
         Path to save the JSON output
     espn_game_id : str
         ESPN game ID to fetch data for
-    year_groups : list of tuples
-        List of (start_year, end_year) ranges to use for Dashboard calculations
+    year_groups : list of Era
+        List of Era objects specifying the time periods to use for Dashboard calculations
     use_home_away_game_filters : bool
         Whether to apply home/away game filters based on score statistic
     show_team : str
@@ -1065,16 +1096,8 @@ def plot_espn_versus_dashboard(
     # Filter data to only include times >= start_time
     plays = [play for play in plays if play["minutesElapsed"] >= start_time]
 
-    # Get team abbreviations
-    # home_abbr = get_team_abbreviation(home_team)
-    # away_abbr = get_team_abbreviation(away_team)
-
     # Prepare data for lines
     lines = []
-
-    # Create metrics for title and eventual URL construction
-    # number_of_year_groups = len(year_groups)
-
     game_years_strings = []
     game_filter_strings = []
 
@@ -1108,23 +1131,27 @@ def plot_espn_versus_dashboard(
         lines.append(espn_away_line)
 
     # Add Dashboard probability lines
-    for start_year, stop_year in year_groups:
-        # Parse season type using the helper function
-        start_year_numeric, season_type = parse_season_type(start_year)
-        stop_year_numeric, _ = parse_season_type(stop_year)
-
+    for era in year_groups:
         # Build legend string
-        years_string = f"{start_year_numeric}-{stop_year_numeric}"
+        years_string = f"{era.start_year}-{era.stop_year}"
         if len(game_years_strings) == 0:
             game_years_strings.append(years_string)
+
+        # Map the Era season_type to Games season_type
+        if era.season_type == "regular_season":
+            games_season_type = "Regular Season"
+        elif era.season_type == "playoffs":
+            games_season_type = "Playoffs"
+        else:  # "all"
+            games_season_type = "all"
 
         # Calculate dashboard probabilities
         times, dashboard_probabilities, dashboard_point_margins = (
             get_dashboard_win_probability(
                 plays=plays,
-                start_year=start_year_numeric,
-                stop_year=stop_year_numeric,
-                season_type=season_type,
+                start_year=era.start_year,
+                stop_year=era.stop_year,
+                season_type=games_season_type,
                 use_home_away_game_filter=use_home_away_game_filters,
             )
         )
@@ -1146,14 +1173,15 @@ def plot_espn_versus_dashboard(
             url_params += "&filter=ANY-h-ANY"
         dashboard_url = f"{url_base}{url_params}"
 
+        # For the DashboardLine, we need to pass start_year and stop_year as values
         dashboard_line = DashboardLine(
             legend=f"{team_nickname} Dashboard Win Probability {years_string}",
             x_values=list(times),
             y_values=list(dashboard_probabilities),
             point_margins=list(dashboard_point_margins),
             team_name=team_for_dashboard,
-            start_year=start_year,
-            stop_year=stop_year,
+            start_year=era.start_year,
+            stop_year=era.stop_year,
             use_home_away_game_filter=use_home_away_game_filters,
         )
         lines.append(dashboard_line)
@@ -1161,22 +1189,21 @@ def plot_espn_versus_dashboard(
     # Create title
     title = f"{away_team} @ {home_team} ({game_date})"
     title = f"{title} | Use Seasons: {game_years_strings[0]}"
+    
+    # Get the season type from the first era
+    season_type = year_groups[0].season_type
+    
     if season_type == "all":
         pass
-    elif season_type == "Regular Season":
+    elif season_type == "regular_season":
         title = f"{title} | Use Regular Season Data"
-    elif season_type == "Playoffs":
+    elif season_type == "playoffs":
         title = f"{title} | Use Playoff Data"
     else:
         raise ValueError(f"Invalid season type: {season_type}")
 
     if use_home_away_game_filters:
         title = f"{title} | Use {away_team.split()[-1]} @ Away"
-
-    # if number_of_year_groups == 1 and number_of_game_filters > 1:
-    #    title = f"{title} | {game_years_strings[0]}"
-    # elif number_of_game_filters == 1:
-    #    title = f"{title} | {game_filters[0].get_filter_string()}"
 
     # Convert probabilities to Gaussian sigma values using norm.ppf
     for line in lines:
@@ -1196,8 +1223,6 @@ def plot_espn_versus_dashboard(
         line.y_values = new_y_values
 
     # For ESPN charts, use fixed min_y=0.0001 and max_y=0.9999 to ensure consistent scale
-    # These values can be adjusted later if needed
-
     min_prob = min(min(away_win_probability), min(dashboard_probabilities))
     max_prob = max(max(away_win_probability), max(dashboard_probabilities))
     # Match the y_ticks structure from get_points_down_normally_spaced_y_ticks function

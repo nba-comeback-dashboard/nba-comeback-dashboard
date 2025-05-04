@@ -10,6 +10,10 @@ ESPN's predicted win probabilities and those calculated using the NBA Dashboard.
 
 # Standard library imports
 import datetime
+import os
+import hashlib
+import json
+import gzip
 from typing import Tuple, List, Dict, Any
 
 # Third-party imports
@@ -316,7 +320,16 @@ class DashboardLine(PlotLine):
 
 def get_espn_game_data(espn_game_id: str) -> dict:
     """
-    Fetch game data from ESPN API.
+    Fetch game data from ESPN API with filesystem caching.
+    
+    First checks if data for the given ESPN game ID exists in the cache.
+    If it does, loads and returns that data. Otherwise, fetches from ESPN API,
+    caches the result, and returns the data.
+    
+    Cache structure:
+    - Base directory: /Users/ajcarter/nbav0/espn
+    - Each file is stored in a subdirectory based on first 2 chars of SHA-1 hash
+    - Filename: {espn_game_id}.json.gz (gzip compressed JSON)
 
     Parameters:
     -----------
@@ -333,11 +346,47 @@ def get_espn_game_data(espn_game_id: str) -> dict:
     Exception
         If the API request fails
     """
+    # Generate the SHA-1 hash and get first 2 characters
+    game_id_hash = hashlib.sha1(espn_game_id.encode()).hexdigest()
+    hash_prefix = game_id_hash[:2]
+    
+    # Create cache directory path
+    cache_dir = f"/Users/ajcarter/nbav0/espn/{hash_prefix}"
+    cache_file = f"{cache_dir}/{espn_game_id}.json.gz"
+    
+    # Check if cache file exists
+    if os.path.exists(cache_file):
+        try:
+            # Load from cache
+            with gzip.open(cache_file, 'rt', encoding='utf-8') as f:
+                return json.load(f)
+        except (IOError, json.JSONDecodeError) as e:
+            # If there's an error reading the cache, fetch from API
+            pass
+    
+    # Cache miss or read error, fetch from API
     url = f"http://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={espn_game_id}"
     response = requests.get(url)
     if response.status_code != 200:
+        breakpoint()
         raise Exception(f"Failed to fetch data: {response.status_code}")
-    return response.json()
+    
+    # Get the data
+    data = response.json()
+    
+    # Save to cache
+    try:
+        # Create cache subdirectory if it doesn't exist
+        os.makedirs(cache_dir, exist_ok=True)
+        
+        # Save to gzipped JSON file
+        with gzip.open(cache_file, 'wt', encoding='utf-8') as f:
+            json.dump(data, f)
+    except IOError as e:
+        # Log but don't fail if we can't write to cache
+        print(f"Warning: Failed to write ESPN data to cache: {e}")
+    
+    return data
 
 
 def extract_win_probability_data(game_data: dict) -> dict:

@@ -22,6 +22,7 @@ from form_nba_chart_json_data_api import (
     plot_percent_versus_time,
     plot_espn_versus_dashboard,
     GameFilter,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -48,7 +49,7 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2024),
+    Era(1996, 2024),
 ]
 
 plot_espn_versus_dashboard(
@@ -90,7 +91,7 @@ plot_espn_versus_dashboard(
 
 eras = [
     # ERA ONE
-    (2017, 2024),
+    Era(2017, 2024),
 ]
 
 plot_espn_versus_dashboard(
@@ -154,6 +155,7 @@ from form_nba_chart_json_data_api import (
     plot_percent_versus_time,
     plot_espn_versus_dashboard,
     GameFilter,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -180,7 +182,7 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2016)
+    Era(1996, 2016)
 ]
 
 plot_espn_versus_dashboard(
@@ -192,7 +194,7 @@ plot_espn_versus_dashboard(
 
 eras = [
     # ERA ONE
-    (2017, 2024)
+    Era(2017, 2024)
 ]
 
 plot_espn_versus_dashboard(
@@ -217,7 +219,7 @@ write_gzipped_json(a_data, json_name)
 
 eras = [
     # ERA ONE
-    (1996, 2016)
+    Era(1996, 2016)
 ]
 
 plot_espn_versus_dashboard(
@@ -229,7 +231,7 @@ plot_espn_versus_dashboard(
 
 eras = [
     # ERA ONE
-    (2017, 2024)
+    Era(2017, 2024)
 ]
 
 plot_espn_versus_dashboard(

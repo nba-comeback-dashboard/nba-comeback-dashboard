@@ -14,6 +14,8 @@ used in the original scripts.
 
 import sys
 import os
+import re
+import argparse
 
 # Add the API directory to the path using relative path from script location
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +31,7 @@ from form_nba_chart_json_data_api import (
     plot_percent_versus_time,
     plot_espn_versus_dashboard,
     GameFilter,
+    Era,
 )
 
 import form_nba_chart_json_data_season_game_loader as loader
@@ -43,6 +46,7 @@ print(f"Working directory changed to: {os.getcwd()}")
 # Base paths for input and output files
 json_base_path = "../../../docs/frontend/source/_static/json/seasons"
 chart_base_path = "../../../docs/frontend/source/_static/json/charts"
+test_charts_html_path = "../../../docs/frontend/source/_static/test_charts.html"
 
 # Convert relative json_base_path to an absolute path
 json_base_path = os.path.abspath(os.path.join(script_dir, json_base_path))
@@ -52,51 +56,165 @@ loader.json_base_path = json_base_path
 test_plots_dir = os.path.join(chart_base_path, "test_plots")
 os.makedirs(test_plots_dir, exist_ok=True)
 
+# Dictionary mapping test function names to their descriptions
+test_functions = {
+    "test_year_groups": "Testing year group combinations",
+    "test_score_statistic_modes": "Testing score statistic modes",
+    "test_cumulate": "Testing cumulate parameter",
+    "test_game_filters": "Testing game filters",
+    "test_calculate_occurrences": "Testing calculate_occurrences",
+    "test_start_times": "Testing start times",
+    "test_plot_percent_versus_time": "Testing plot_percent_versus_time",
+    "test_plot_flags": "Testing plot flags",
+    "test_playoff_series": "Testing playoff series",
+    "test_espn_dashboard": "Testing ESPN vs Dashboard comparison"
+}
 
-def run_tests():
-    """Run all tests for the chart JSON data API."""
+def generate_test_charts_html():
+    """Generate HTML file with links to all test chart JSONs."""
+    # Get list of all JSON files in test_plots directory
+    test_files = []
+    for file in os.listdir(os.path.join(chart_base_path, "test_plots")):
+        if file.endswith(".json") or file.endswith(".json.gz"):
+            # Remove .gz extension if present
+            base_file = file.replace(".gz", "") if file.endswith(".gz") else file
+            test_files.append(base_file)
+    
+    # Group files by test categories
+    test_categories = {}
+    for file in test_files:
+        # Extract category from filename
+        parts = file.split("_")
+        if len(parts) > 1:
+            category = "_".join(parts[:-1])
+            if category not in test_categories:
+                test_categories[category] = []
+            test_categories[category].append(file)
+    
+    # Generate HTML content with TOC
+    html_content = """<!DOCTYPE html>
+<html>
+<head>
+    <title>NBA Chart Test Visualizations</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        h2 { color: #444; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .toc { background-color: #f8f8f8; padding: 15px; border-radius: 5px; margin-bottom: 30px; }
+        .toc h2 { margin-top: 0; padding-top: 0; border-top: none; }
+        .toc ul { list-style-type: none; padding-left: 10px; }
+        .toc li { margin-bottom: 8px; }
+        .toc a { text-decoration: none; color: #0066cc; }
+        .toc a:hover { text-decoration: underline; }
+        .chart-container { margin: 20px 0; }
+        .chart-link { margin-bottom: 10px; display: block; }
+    </style>
+    <script>DOCUMENTATION_OPTIONS = {pagename: 'dashboard/index'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.2.0/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/basicLightbox/5.0.0/basicLightbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fmin@0.0.4/build/fmin.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    
+    <!-- NBA Dashboard JS files -->
+    <script src="/_static/js/nbacd_utils.js"></script>
+    <script src="/_static/js/nbacd_saveas_image_dialog.js"></script>
+    <script src="/_static/js/nbacd_plotter_plugins.js"></script>
+    <script src="/_static/js/nbacd_dashboard_num.js"></script>
+    <script src="/_static/js/nbacd_plotter_data.js"></script>
+    <script src="/_static/js/nbacd_plotter_core.js"></script>
+    <script src="/_static/js/nbacd_plotter_ui.js"></script>
+    <script src="/_static/js/nbacd_chart_loader.js"></script>
+    <script src="/_static/js/nbacd_dashboard_season_game_loader.js"></script>
+    <script src="/_static/js/nbacd_dashboard_plot_primitives.js"></script>
+    <script src="/_static/js/nbacd_dashboard_api.js"></script>
+    <script src="/_static/js/nbacd_dashboard_state.js"></script>
+    <script src="/_static/js/nbacd_dashboard_ui.js"></script>
+    <script src="/_static/js/nbacd_dashboard_init.js"></script>
+</head>
+<body>
+    <h1>NBA Chart Test Visualizations</h1>
+    
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+"""
+    
+    # Add TOC entries
+    for category in sorted(test_categories.keys()):
+        display_category = category.replace("_", " ").title()
+        html_content += f'            <li><a href="#{category}">{display_category}</a></li>\n'
+    
+    html_content += """        </ul>
+    </div>
+    
+"""
+    
+    # Add chart sections
+    for category in sorted(test_categories.keys()):
+        display_category = category.replace("_", " ").title()
+        html_content += f'    <h2 id="{category}">{display_category}</h2>\n'
+        
+        for file in sorted(test_categories[category]):
+            file_name = file.replace(".json", "")
+            file_path = f"/_static/json/charts/test_plots/{file}"
+            
+            html_content += f'    <div class="chart-container">\n'
+            html_content += f'        <div id="test_plots/{file_name}" class="nbacd-chart"></div>\n'
+            html_content += f'    </div>\n'
+    
+    html_content += """</body>
+</html>
+"""
+    
+    # Write HTML file
+    with open(test_charts_html_path, "w") as f:
+        f.write(html_content)
+    
+    print(f"Generated test charts HTML at {test_charts_html_path}")
+
+
+def run_tests(test_name_pattern=None):
+    """Run all tests for the chart JSON data API with optional test name filter."""
     print("Starting API tests...")
-
-    # Test 1: Basic create_score_statistic_v_probability_chart_json with different year groups
-    print("Test 1: Testing create_score_statistic_v_probability_chart_json with different year groups")
-    test_year_groups()
-
-    # Test 2: Different score statistic modes
-    print("Test 2: Testing different score statistic modes")
-    test_score_statistic_modes()
-
-    # Test 3: Testing cumulate parameter
-    print("Test 3: Testing cumulate parameter")
-    test_cumulate()
-
-    # Test 4: Test game filters
-    print("Test 4: Testing game filters")
-    test_game_filters()
-
-    # Test 5: Test calculate_occurrences
-    print("Test 5: Testing calculate_occurrences")
-    test_calculate_occurrences()
-
-    # Test 6: Test special time strings and different start_times
-    print("Test 6: Testing special time strings and different start_times")
-    test_start_times()
-
-    # Test 7: Test plot_percent_versus_time
-    print("Test 7: Testing plot_percent_versus_time")
-    test_plot_percent_versus_time()
-
-    # Test 8: Test plot flags (normal labels, linear y axis, logit)
-    print("Test 8: Testing plot flags")
-    test_plot_flags()
-
-    # Test 9: Test playoff series analysis
-    print("Test 9: Testing playoff series analysis")
-    test_playoff_series()
-
-    # Test 10: Test ESPN vs Dashboard comparison
-    print("Test 10: Testing ESPN vs Dashboard comparison")
-    test_espn_dashboard()
-
+    
+    # Compile regex pattern if provided
+    pattern = None
+    if test_name_pattern:
+        try:
+            pattern = re.compile(test_name_pattern, re.IGNORECASE)
+            print(f"Filtering tests with pattern: {test_name_pattern}")
+        except re.error:
+            print(f"Invalid regex pattern: {test_name_pattern}. Running all tests.")
+            pattern = None
+    
+    # Track which tests were run
+    tests_run = []
+    
+    # Run each test function if it matches the pattern or no pattern provided
+    for test_name, test_description in test_functions.items():
+        if pattern is None or pattern.search(test_name):
+            print(f"Running test: {test_description}")
+            # Get the function object from globals
+            test_func = globals()[test_name]
+            test_func()
+            tests_run.append(test_name)
+        else:
+            print(f"Skipping test: {test_description}")
+    
+    if not tests_run:
+        print(f"No tests matched the pattern: {test_name_pattern}")
+    else:
+        print(f"Completed {len(tests_run)} test(s): {', '.join(tests_run)}")
+    
+    # Generate HTML file with chart links
+    generate_test_charts_html()
+    
     print("All tests completed successfully!")
 
 
@@ -104,7 +222,7 @@ def test_year_groups():
     """Test different year group combinations."""
 
     # Test 1.1: Single year group (modern era)
-    eras = [(2017, 2024)]
+    eras = [Era(2017, 2024)]
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/year_groups_modern.json",
         year_groups=eras,
@@ -115,8 +233,8 @@ def test_year_groups():
 
     # Test 1.2: Multiple year groups (comparing eras)
     eras = [
-        (1996, 2016),  # Older era
-        (2017, 2024),  # Modern era
+        Era(1996, 2016),  # Older era
+        Era(2017, 2024),  # Modern era
     ]
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/year_groups_compare_eras.json",
@@ -128,8 +246,8 @@ def test_year_groups():
 
     # Test 1.3: Regular season vs Playoffs
     eras = [
-        ("R1996", 2024),  # Regular season
-        ("P1996", 2024),  # Playoffs
+        Era(1996, 2024, season_type="regular_season"),  # Regular season
+        Era(1996, 2024, season_type="playoffs"),  # Playoffs
     ]
     create_score_statistic_v_probability_chart_json(
         json_name=f"{chart_base_path}/test_plots/year_groups_reg_vs_playoffs.json",
@@ -144,7 +262,7 @@ def test_score_statistic_modes():
     """Test different score statistic modes."""
 
     # Use one consistent era for all tests
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 2.1: point_margin_at_time mode (previously at_margin)
     create_score_statistic_v_probability_chart_json(
@@ -187,7 +305,7 @@ def test_score_statistic_modes():
 def test_cumulate():
     """Test the cumulate parameter with different settings."""
 
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 3.1: Without cumulate (exact points)
     create_score_statistic_v_probability_chart_json(
@@ -211,7 +329,7 @@ def test_cumulate():
 def test_game_filters():
     """Test different game filter combinations."""
 
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 4.1: Home vs Away filter
     game_filters = [
@@ -268,7 +386,7 @@ def test_game_filters():
     )
 
     # Test 4.5: Playoff round filter
-    eras = [("P1996", 2024)]
+    eras = [Era(1996, 2024, season_type="Playoffs")]
     game_filters = [
         GameFilter(playoff_round=1),  # First round
         GameFilter(playoff_round=4),  # Finals
@@ -286,7 +404,7 @@ def test_game_filters():
 def test_calculate_occurrences():
     """Test the calculate_occurrences parameter."""
 
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 5.1: Win probabilities (default)
     create_score_statistic_v_probability_chart_json(
@@ -321,7 +439,7 @@ def test_calculate_occurrences():
 def test_start_times():
     """Test different start time values including special string times."""
 
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 6.1: Start from beginning (48 minutes)
     create_score_statistic_v_probability_chart_json(
@@ -375,7 +493,7 @@ def test_start_times():
 def test_plot_percent_versus_time():
     """Test the plot_percent_versus_time function with different parameters."""
 
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 7.1: Basic plot_percent_versus_time
     plot_percent_versus_time(
@@ -413,7 +531,7 @@ def test_plot_percent_versus_time():
 def test_plot_flags():
     """Test various plot flag options."""
 
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 8.1: Normal labels
     create_score_statistic_v_probability_chart_json(
@@ -447,7 +565,7 @@ def test_playoff_series():
     """Test playoff series analysis mode."""
 
     # Only use playoff data for playoff series analysis
-    eras = [("P1996", 2024)]
+    eras = [Era(1996, 2024, season_type="Playoffs")]
 
     # Test 9.1: Basic playoff series analysis
     create_score_statistic_v_probability_chart_json(
@@ -484,11 +602,11 @@ def test_playoff_series():
 def test_espn_dashboard():
     """Test ESPN vs Dashboard comparison."""
 
-    # Example ESPN game ID - Minnesota vs Denver 2022-04-26
-    espn_game_id = "401430254"
+    # Example ESPN game ID - Minnesota vs Buck
+    espn_game_id = "401705718"
 
     # Era for Dashboard calculations
-    eras = [(1996, 2024)]
+    eras = [Era(1996, 2024)]
 
     # Test 10.1: Basic ESPN vs Dashboard comparison
     plot_espn_versus_dashboard(
@@ -509,8 +627,10 @@ def test_espn_dashboard():
 
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) > 1 and sys.argv[1] == "test_year_groups":
-        test_year_groups()
-    else:
-        run_tests()
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description="Run test plots for NBA chart JSON data API")
+    parser.add_argument("--test-name", type=str, help="Regex pattern to filter test names")
+    args = parser.parse_args()
+    
+    # Run tests with optional filter
+    run_tests(args.test_name)

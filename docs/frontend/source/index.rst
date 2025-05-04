@@ -11,7 +11,7 @@ NBA Comeback Dashboard
    dashboard/index
 
 .. published-date::
-   :published: Game data last updated 04/21/2025.
+   :published: Game data last updated May 5th, 2025.
 
 .. toc-entries::
 

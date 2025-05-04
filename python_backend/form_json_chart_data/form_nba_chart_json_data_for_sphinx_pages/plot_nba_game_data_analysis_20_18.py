@@ -20,6 +20,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 from form_nba_chart_json_data_api import (
     create_score_statistic_v_probability_chart_json,
     GameFilter,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -42,7 +43,7 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (2017, 2024),
+    Era(2017, 2024),
 ]
 
 game_filters = [

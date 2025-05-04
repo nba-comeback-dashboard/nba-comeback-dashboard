@@ -19,6 +19,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 # Import API functions
 from form_nba_chart_json_data_api import (
     create_score_statistic_v_probability_chart_json,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -41,7 +42,7 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2024),
+    Era(1996, 2024),
 ]
 
 create_score_statistic_v_probability_chart_json(
@@ -129,7 +130,7 @@ create_score_statistic_v_probability_chart_json(
 
 eras = [
     # ERA ONE
-    ("P1996", 2024),
+    Era(1996, 2024, season_type="Playoffs"),
 ]
 
 create_score_statistic_v_probability_chart_json(
@@ -145,8 +146,8 @@ create_score_statistic_v_probability_chart_json(
 
 eras = [
     # ERA ONE
-    (1996, 2016),
-    (2017, 2024),
+    Era(1996, 2016),
+    Era(2017, 2024),
 ]
 
 
@@ -207,8 +208,8 @@ create_score_statistic_v_probability_chart_json(
 
 eras = [
     # ERA ONE
-    ("R1996", 2024),
-    ("P1996", 2024),
+    Era(1996, 2024, season_type="Regular Season"),
+    Era(1996, 2024, season_type="Playoffs"),
 ]
 
 create_score_statistic_v_probability_chart_json(
@@ -233,8 +234,8 @@ create_score_statistic_v_probability_chart_json(
 
 eras = [
     # ERA ONE
-    ("P1996", 2024),
-    ("P2021", 2024),
+    Era(1996, 2024, season_type="Playoffs"),
+    Era(2021, 2024, season_type="Playoffs"),
 ]
 
 create_score_statistic_v_probability_chart_json(

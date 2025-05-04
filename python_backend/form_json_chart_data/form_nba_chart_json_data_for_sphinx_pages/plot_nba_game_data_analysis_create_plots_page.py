@@ -24,6 +24,7 @@ from form_nba_chart_json_data_api import (
     plot_biggest_deficit,
     plot_percent_versus_time,
     GameFilter,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -529,18 +530,18 @@ def create_plot_page(page_name, years_groups, game_filters=None):
 create_index_rst_file(sphinx_dir)
 
 # Create all the plot pages
-create_plot_page("all_time_v_modern", years_groups=[(1996, 2024), (2017, 2024)])
-create_plot_page("old_school_v_modern", years_groups=[(1996, 2016), (2017, 2024)])
+create_plot_page("all_time_v_modern", years_groups=[Era(1996, 2024), Era(2017, 2024)])
+create_plot_page("old_school_v_modern", years_groups=[Era(1996, 2016), Era(2017, 2024)])
 create_plot_page(
-    "old_old_school_v_old_school", years_groups=[(1996, 2006), (2007, 2016)]
+    "old_old_school_v_old_school", years_groups=[Era(1996, 2006), Era(2007, 2016)]
 )
 create_plot_page(
-    "new_school_v_new_new_school", years_groups=[(2017, 2020), (2021, 2024)]
+    "new_school_v_new_new_school", years_groups=[Era(2017, 2020), Era(2021, 2024)]
 )
 
 create_plot_page(
     "modern_top_5_v_bot_5",
-    years_groups=[(2017, 2024)],
+    years_groups=[Era(2017, 2024)],
     game_filters=[
         GameFilter(),
         GameFilter(for_rank="top_5", vs_rank="bot_5"),
@@ -550,7 +551,7 @@ create_plot_page(
 
 create_plot_page(
     "modern_top_10_v_bot_10",
-    years_groups=[(2017, 2024)],
+    years_groups=[Era(2017, 2024)],
     game_filters=[
         GameFilter(),
         GameFilter(for_rank="top_10", vs_rank="bot_10"),
@@ -560,7 +561,7 @@ create_plot_page(
 
 create_plot_page(
     "modern_top_10_v_mid_10",
-    years_groups=[(2017, 2024)],
+    years_groups=[Era(2017, 2024)],
     game_filters=[
         GameFilter(),
         GameFilter(for_rank="top_10", vs_rank="mid_10"),
@@ -570,7 +571,7 @@ create_plot_page(
 
 create_plot_page(
     "modern_bot_10_v_mid_10",
-    years_groups=[(2017, 2024)],
+    years_groups=[Era(2017, 2024)],
     game_filters=[
         GameFilter(),
         GameFilter(for_rank="bot_10", vs_rank="mid_10"),
@@ -580,7 +581,7 @@ create_plot_page(
 
 create_plot_page(
     "modern_home_v_away",
-    years_groups=[(2017, 2024)],
+    years_groups=[Era(2017, 2024)],
     game_filters=[
         GameFilter(),
         GameFilter(for_at_home=True),
@@ -590,7 +591,7 @@ create_plot_page(
 
 create_plot_page(
     "recent_min_versus",
-    years_groups=[(2021, 2024)],
+    years_groups=[Era(2021, 2024)],
     game_filters=[
         GameFilter(),
         GameFilter(for_team_abbr="MIN"),

@@ -20,6 +20,7 @@ sys.path.append(form_nba_chart_json_data_api_dir)
 from form_nba_chart_json_data_api import (
     create_score_statistic_v_probability_chart_json,
     GameFilter,
+    Era,
 )
 
 # Calculate script directory from __file__
@@ -46,27 +47,27 @@ loader.json_base_path = json_base_path
 
 eras = [
     # ERA ONE
-    (1996, 2023),
+    Era(1996, 2023, season_type="playoffs"),
 ]
 
 # create_score_statistic_v_probability_chart_json(
 #     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time.json.gz",
 #     year_groups=eras,
 #     start_time=48,
-#     down_mode="playoff_series",
+#     score_statistic_mode="playoff_series_score",
 # )
 
 # create_score_statistic_v_probability_chart_json(
 #     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_occurs.json.gz",
 #     year_groups=eras,
 #     start_time=48,
-#     down_mode="playoff_series",
+#     score_statistic_mode="playoff_series_score",
 #     calculate_occurrences=True,
 # )
 
 eras = [
     # ERA ONE
-    (1996, 2023),
+    Era(1996, 2023, season_type="playoffs"),
 ]
 
 game_filters = [
@@ -96,7 +97,7 @@ exit()
 
 eras = [
     # ERA ONE
-    (1996, 2023),
+    Era(1996, 2023, season_type="playoffs"),
 ]
 
 game_filters = [
@@ -108,7 +109,7 @@ create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
 )
 
@@ -116,7 +117,7 @@ create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_1_2_occurs.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     calculate_occurrences=True,
     game_filters=game_filters,
 )
@@ -130,7 +131,7 @@ create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     game_filters=game_filters,
 )
 
@@ -138,7 +139,7 @@ create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_all_time_by_round_3_4_occurs.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     calculate_occurrences=True,
     game_filters=game_filters,
 )
@@ -146,21 +147,21 @@ create_score_statistic_v_probability_chart_json(
 
 eras = [
     # ERA ONE
-    (1996, 2016),
-    (2017, 2023),
+    Era(1996, 2016, season_type="playoffs"),
+    Era(2017, 2023, season_type="playoffs"),
 ]
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
 )
 
 create_score_statistic_v_probability_chart_json(
     json_name=f"{chart_base_path}/playoff_series/playoff_series_old_school_versus_modern_occurs.json.gz",
     year_groups=eras,
     start_time=48,
-    down_mode="playoff_series",
+    score_statistic_mode="playoff_series_score",
     calculate_occurrences=True,
 )

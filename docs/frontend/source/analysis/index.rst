@@ -33,8 +33,8 @@ Analysis
       :subtitle: How 'unsafe' have big leads become in the modern NBA?
 
    .. toc-entry::
-      :link: occurs.rst
-      :subtitle: How much more scoring is there recently?  Plus, how often do we get garbage time games?
+      :link: rule_of_thumb_that_actually_works.rst 
+      :subtitle: A mathematical formula that has stood up to time.
 
    .. toc-entry::
       :link: goto_chart.rst
@@ -43,14 +43,14 @@ Analysis
                  tracker.
 
    .. toc-entry::
-      :link: playoff_series.rst
-      :subtitle: Lots of playoff series statistics on just a few plots.  Plus, a look 
-                 at the occurrence rate of "garbage time" series.
+      :link: occurs.rst
+      :subtitle: How much more scoring is there recently?  Plus, how often do we get garbage time games?
 
 
    .. toc-entry::
-      :link: rule_of_thumb_that_actually_works.rst 
-      :subtitle: A mathematical formula that has stood up to time.
+      :link: playoff_series.rst
+      :subtitle: Lots of playoff series statistics on just a few plots.  Plus, a look 
+                 at the occurrence rate of "garbage time" series.
 
 
    .. toc-entry::
