@@ -745,7 +745,7 @@ nbacd_plotter_data = (() => {
                         return xTickLabelMap[value] !== undefined ? xTickLabelMap[value] : value;
                     } : function(value) {
                         // Limit decimal places to 1 for regular numeric values
-                        return Number.isInteger(value) ? value : value.toFixed(1);
+                        return Number.isInteger(value) ? value : parseFloat(value.toFixed(1));
                     },
                     // For mobile with custom ticks, always show all labels
                     autoSkip: isMobile() && hasCustomXTicks ? false : true,
